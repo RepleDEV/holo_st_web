@@ -11,7 +11,7 @@ export interface MinimizedStream {
     streamId: string;
 
     title: string;
-    thumbnail?: YoutubeThumbnails,
+    thumbnail: YoutubeThumbnails,
 
     channelName: string;
     channelId: string;
@@ -30,4 +30,15 @@ export interface MinimizedStreamCache {
     ongoingStreams: MinimizedOngoingStream[];
     upcomingStreams: MinimizedUpcomingStream[];
     writtenAt: number;
+}
+
+export interface Channel {
+    name: string;
+    alias: string[];
+    generation: [string, number] | "GAMERS";
+    channel: {
+        name: string;
+        id: string;
+    }
+    icon: string;
 }

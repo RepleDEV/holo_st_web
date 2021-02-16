@@ -1,12 +1,13 @@
 import express from "express";
 import path from "path";
+import moment from "moment";
+import logUpdate from "log-update";
 
 import * as holo_st from "./modules/holo_st/";
 import * as callbacks from "./modules/callbacks";
 
 import { Cache } from "./modules/cache";
 import { MinimizedOngoingStream, MinimizedStreamCache, MinimizedUpcomingStream, StreamCache } from "./globals";
-import { OngoingStream, UpcomingStream } from "./modules/holo_st/globals";
 
 const app = express();
 const PORT = 9106;
@@ -14,15 +15,26 @@ const PORT = 9106;
 async function cache_streams(cache: Cache): Promise<void> {
     console.log("Checking for ongoing streams...");
     const ongoing_streams = await holo_st.get_all_ongoing_streams((s, i) => {
-        console.log(`Checked ${i + 1}`);
+        logUpdate(`Checked ${i + 1}.`);
     });
+    logUpdate.done();
     console.log("Finished checking for ongoing streams.")
 
     console.log("Checking for upcoming streams...");
     const upcoming_streams = await holo_st.get_all_upcoming_streams((s, i) => {
-        console.log(`Checked ${i + 1}`);
+        logUpdate(`Checked ${i+1}.`);
     });
+    logUpdate.done();
     console.log("Finished checking for upcoming streams.");
+
+    // Sort ongoing_streams
+    ongoing_streams.sort((a, b) => {
+        return (+moment(a.scheduledStartTime)) - (+moment(b.scheduledStartTime));
+    });
+    // Sort upcoming_streams
+    upcoming_streams.sort((a, b) => {
+        return (+moment(a.scheduledStartTime)) - (+moment(b.scheduledStartTime));
+    });
 
     const streamCache: StreamCache = {
         ongoingStreams: ongoing_streams,
@@ -81,7 +93,8 @@ async function cache_streams(cache: Cache): Promise<void> {
     console.log("Caching streams...")
 
     const cache = new Cache();
-    // TODO: Comment when testing. Skip waiting 2-5 minutes just to cache streams.
+    // TODO: Comment when testing FRONTEND. Skip waiting 2-5 minutes just to cache streams.
+    // Don't comment when testing stream caching ;)
     // await cache_streams(cache);
     console.log("Finished caching streams.");
 
@@ -89,9 +102,11 @@ async function cache_streams(cache: Cache): Promise<void> {
     app.get("/", callbacks.home);
     app.get("/streams", callbacks.streams(cache));
 
+    // 404 redirect. ALWAYS KEEP THIS AT THE BACK. (things will go wrong~)
+    app.use(callbacks.redirect);
 
     console.log("Starting server.");
     app.listen(PORT, () => {
         console.log("App Started!");
     });
-})()
+})();

@@ -25,7 +25,7 @@ function config_factory(target, port) {
                     use: ["ts-loader"]
                 },
             ],
-        },
+        }
     };
     
     const SERVER = {
@@ -47,7 +47,7 @@ function config_factory(target, port) {
                 },
             ],
         },
-        externals: [require("webpack-node-externals")()]
+        externals: [require("webpack-node-externals")({ allowlist: ["jquery", "fs"] })]
     };
 
     if (target === "BROWSER") {

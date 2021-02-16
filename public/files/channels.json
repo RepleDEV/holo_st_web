@@ -1,0 +1,412 @@
+[
+    {
+        "name": "Hoshimachi Suisei",
+        "alias": ["Hoshimati Suisei", "Sui-chan"],
+        "generation": ["JP", 0],
+        "channel": {
+            "name": "Suisei Channel",
+            "id": "UC5CwaMl1eIgY8h02uZw7u8A"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwnjdAl5rn3IjWzl55_0-skvKced7znPZRuPC5xLB=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Roboco",
+        "alias": ["Robocosan"],
+        "generation": ["JP", 0],
+        "channel": {
+            "name": "Roboco Ch. - ロボ子",
+            "id": "UCDqI2jOz0weumE8s7paEk6g"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwnjiwtRNYHIo1zl37gOIiEeOh-2s7HUdhv6WB8M1vQ=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Sakura Miko",
+        "alias": [],
+        "generation": ["JP", 0],
+        "channel": {
+            "name": "Miko Ch. さくらみこ",
+            "id": "UC-hM6YJuNYVAmUWxeIr9FeA"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwnivs5rzf7KS1U5FWL3Q23g31ZDNrsTFeczXsTV2hw=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Tokino Sora",
+        "alias": [],
+        "generation": ["JP", 0],
+        "channel": {
+            "name": "SoraCh. ときのそらチャンネル",
+            "id": "UCp6993wxpyDPHUpavwDFqgg"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwngZmr_qbKhGIvHaHwLRmKhKxdeFfM7ZbK316vFNSw=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Akai Haato",
+        "alias": ["Haachama"],
+        "generation": ["JP", 1],
+        "channel": {
+            "name": "Akaihaato Ch. 赤井はあと",
+            "id": "UC1CfXB_kRs3C-zaeTG3oGyg"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwniruUMMRA9d0AYBYLW1b86T2l7kQCjF65CFGVmrDA=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Aki Rosenthal",
+        "alias": [],
+        "generation": ["JP", 1],
+        "channel": {
+            "name": "アキロゼCh。Vtuber/ホロライブ所属",
+            "id": "UCFTLzh12_nrtzqBPsTCqenA"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwnhPGqWt_E_8rBXpKUTgHCuyTq0Zz7TXlkRtiIww=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Natsuiro Matsuri",
+        "alias": [],
+        "generation": ["JP", 1],
+        "channel": {
+            "name": "Matsuri Channel 夏色まつり",
+            "id": "UCQ0UDLQCjY0rmuxCDE38FGg"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwni8cjtyc08E7rocvO9_gR1b5BhO1O6O1VreDxMW=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Shirakami Fubuki",
+        "alias": ["FBK"],
+        "generation": ["JP", 1],
+        "channel": {
+            "name": "フブキCh。白上フブキ",
+            "id": "UCdn5BQ06XqgXoAxIhbqw5Rg"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwnjuIuUXMlbp7p_v4Uy5nilu4uG5OKgoeX8ORdfXfg=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Yozora Mel",
+        "alias": [],
+        "generation": ["JP", 1],
+        "channel": {
+            "name": "Mel Channel 夜空メルチャンネル",
+            "id": "UCD8HOxPs4Xvsm8H0ZxXGiBw"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwnj5J44v4_Ua9qGrh_n8IR0Dp-r2yj0Nl0mv4lkR=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Oozora Subaru",
+        "alias": [],
+        "generation": ["JP", 2],
+        "channel": {
+            "name": "Subaru Ch. 大空スバル",
+            "id": "UCvzGlP9oQwU--Y0r9id_jnA"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwniCgko15I_x5bYWm0G2vnf5hZqD5hLOtLEDw0Na=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Minato Aqua",
+        "alias": ["Akutan", "Baqua"],
+        "generation": ["JP", 2],
+        "channel": {
+            "name": "Aqua Ch. 湊あくあ",
+            "id": "UC1opHUrw8rvnsadT-iGp7Cg"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwngM9Jmc29dvbOY43w7RWFbOZLU4tGtOkEwtt-g7PA=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Murasaki Shion",
+        "alias": [],
+        "generation": ["JP", 2],
+        "channel": {
+            "name": "Shion Ch. 紫咲シオン",
+            "id": "UCXTpFs_3PqI41qX2d9tL2Rw"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwni5CHNTkw8RlOj-78oqDbWS6sEdH4VQR_c06B6s6Q=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Nakiri Ayame",
+        "alias": [],
+        "generation": ["JP", 2],
+        "channel": {
+            "name": "Nakiri Ayame Ch. 百鬼あやめ",
+            "id": "UC7fk0CB07ly8oSl0aqKkqFg"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwnh66ZORNcVma4Pn-Qic23kU3Kl4ZkHM3asCWjDh=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Yuzuki Choco",
+        "alias": [],
+        "generation": ["JP", 2],
+        "channel": {
+            "name": "Choco Ch. 癒月ちょこ",
+            "id": "UC1suqwovbL1kzsoaZgFZLKg"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwnh0dIB3uStuGrUZGGrubOATPiVSFDiweFCK-0cr=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Inugami Korone",
+        "alias": ["Koro-san"],
+        "generation": "GAMERS",
+        "channel": {
+            "name": "Korone Ch. 戌神ころね",
+            "id": "UChAnqc_AY5_I3Px5dig3X1Q"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwnimjdERaJDGopfH8UaB0r9tr_p8uyuEWWyYVkAd5Q=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Nekomata Okayu",
+        "alias": ["Okayun", "Oka-nyan"],
+        "generation": "GAMERS",
+        "channel": {
+            "name": "Okayu Ch. 猫又おかゆ",
+            "id": "UCvaTdHTWBGv3MKj3KVqJVCw"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwnimjdERaJDGopfH8UaB0r9tr_p8uyuEWWyYVkAd5Q=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Houshou Marine",
+        "alias": ["Senchou"],
+        "generation": ["JP", 3],
+        "channel": {
+            "name": "Marine Ch. 宝鐘マリン",
+            "id": "UCCzUftO8KOVkV4wQG1vkUvg"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwnjPuFWs42Vx2yIhK7z1w4L-e1GIpHn_5R1uknbS=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Shiranui Flare",
+        "alias": ["Fuu-tan"],
+        "generation": ["JP", 3],
+        "channel": {
+            "name": "Flare Ch. 不知火フレア",
+            "id": "UCvInZx9h3jC2JzsIzoOebWg"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwngtkUgGkgWTz57Er3GSzuMUR07HISM_yDhKQFnR_A=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Shirogane Noel",
+        "alias": ["Danchou"],
+        "generation": ["JP", 3],
+        "channel": {
+            "name": "Noel Ch. 白銀ノエル",
+            "id": "UCdyqAaZDKHXg4Ahi7VENThQ"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwnijLF2X1YBVQo3rClt7ub29cYM7OzpmRmliaGbw=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Uruha Rushia",
+        "alias": [],
+        "generation": ["JP", 3],
+        "channel": {
+            "name": "Rushia Ch. 潤羽るしあ",
+            "id": "UCl_gCybOJRIgOXw6Qb4qJzQ"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwngKVHYXNDzaEG9KIXm9lK0nBxHkA-NxlE88dLtl=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Usada Pekora",
+        "alias": [],
+        "generation": ["JP", 3],
+        "channel": {
+            "name": "Pekora Ch. 兎田ぺこら",
+            "id": "UC1DCedRgGHBdm81E1llLhOQ"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwnjvkyPGzOmEXZ34mEFPlwMKTbCDl1ZkQ_HkxY-O5Q=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Amane Kanata",
+        "alias": ["Kanatan", "PPTenshi"],
+        "generation": ["JP", 4],
+        "channel": {
+            "name": "Kanata Ch. Kanata Amane",
+            "id": "UCZlDXzGoo7d44bwdNObFacg"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwnjvkyPGzOmEXZ34mEFPlwMKTbCDl1ZkQ_HkxY-O5Q=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Himemori Luna",
+        "alias": [],
+        "generation": ["JP", 4],
+        "channel": {
+            "name": "Luna Ch. 姫森ルーナ",
+            "id": "UCa9Y57gfeY0Zro_noHRVrnw"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwnh8JcbM8f3Zvl9eszRVnuqrAF3bjQIEjuOPdBR2=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Kiryu Coco",
+        "alias": ["Kaichou"],
+        "generation": ["JP", 4],
+        "channel": {
+            "name": "Coco Ch. 桐生ココ",
+            "id": "UCS9uQI-jC3DE0L4IpXyvr6w"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwniAjGmotDDxZK7psIMoRbqhY7Ici621OQrO7fB9Wg=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Tokoyami Towa",
+        "alias": ["TMT", "TMD", "Towa-sama"],
+        "generation": ["JP", 4],
+        "channel": {
+            "name": "Towa Ch. 常闇トワ",
+            "id": "UC1uv2Oq6kNxgATlCiez59hw"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwnjPaiimZva5GECAyNDn0qraqPm62LlH-0oN21I5=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Tsunomaki Watame",
+        "alias": [],
+        "generation": ["JP", 4],
+        "channel": {
+            "name": "Watame Ch. 角巻わため",
+            "id": "UCqm3BQLlJfvkTsX_hvm0UmA"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwnitWcmmZK60TDG8y5aUeQfZlmH9YlBNJ4D1ZSFI=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Momosuzu Nene",
+        "alias": ["Nenechi", "Nenemax", "Suzumomo", "Supernenechi"],
+        "generation": ["JP", 5],
+        "channel": {
+            "name": "Nene Ch.桃鈴ねね",
+            "id": "UCAWSyEs_Io8MtpY3m-zqILA"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwnilXc5WPsj69fn_xew6see04Cmj3x1vIkW62boi=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Omaru Polka",
+        "alias": ["Pol", "Omapol", "Omarun"],
+        "generation": ["JP", 5],
+        "channel": {
+            "name": "Polka Ch. 尾丸ポルカ",
+            "id": "UCK9V2B22uJYu3N7eR_BT9QA"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwnh-sak3t15svmMDNF8w_uxnNEChOL7C1DKAO-Ht=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Shishiro Botan",
+        "alias": ["Shishiron"],
+        "generation": ["JP", 5],
+        "channel": {
+            "name": "Botan Ch.獅白ぼたん",
+            "id": "UCUKD-uaobj9jiqB-VXt71mA"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwngRC-JqguPnj9ljVH3UulyfdlyQzLYzLeSrhvD6=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Yukihana Lamy",
+        "alias": [],
+        "generation": ["JP", 5],
+        "channel": {
+            "name": "Lamy Ch. 雪花ラミィ",
+            "id": "UCFKOVgVbGmX65RxO3EtH3iw"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwng8eQJdCX3r4RgCmRGwigXkDp9a2JJSPq-dZcMF=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Airani Iofifteen",
+        "alias": [],
+        "generation": ["ID", 1],
+        "channel": {
+            "name": "Airani Iofifteen Channel hololive-ID",
+            "id": "UCAoy6rzhSf4ydcYjJw3WoVg"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwnh4NDjjjUAfPj8Aa4kjyQb4C85KzMWobSCaso-8=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Ayunda Risu",
+        "alias": [],
+        "generation": ["ID", 1],
+        "channel": {
+            "name": "Ayunda Risu Ch. hololive-ID",
+            "id": "UCOyYb1c43VlX9rc_lT6NKQw"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwniS_ftaXhqYt1SQPjyuFx5MD_-v0fIUkbCTq5Q_gg=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Moona Hoshinova",
+        "alias": [],
+        "generation": ["ID", 1],
+        "channel": {
+            "name": "Moona Hoshinova hololive-ID",
+            "id": "UCP0BspO_AMEe3aQqqpo89Dg"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwnj-XzL4TRZCzwo-7FCmdsTikQo9wMZwz9RGNoT0XA=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Anya Melfissa",
+        "alias": [],
+        "generation": ["ID", 2],
+        "channel": {
+            "name": "Anya Melfissa Ch. hololive-ID",
+            "id": "UC727SQYUvx5pDDGQpTICNWg"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwnie9uw8oBbjgTKmoLPSo9b_K0AbNPRbD2rjCApl=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Kureiji Ollie",
+        "alias": [],
+        "generation": ["ID", 2],
+        "channel": {
+            "name": "Kureiji Ollie Ch. hololive-ID",
+            "id": "UCYz_5n-uDuChHtLo7My1HnQ"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwnitFviHjDNyLPjA95sz4Supbhvm8Ea3dKrRAKk=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Pavolia Reine",
+        "alias": [],
+        "generation": ["ID", 2],
+        "channel": {
+            "name": "Pavolia Reine Ch. hololive-ID",
+            "id": "UChgTyjG-pdNvxxhdsXfHQ5Q"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwnjXvzYgBg5mJv8RZLZhgn0-Zb_4zzE1zhCHrJ2w=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Gawr Gura",
+        "alias": ["Apex Predator"],
+        "generation": ["EN", 1],
+        "channel": {
+            "name": "Gawr Gura Ch. hololive-EN",
+            "id": "UCoSrY_IQQVpmIRZ9Xf-y93g"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwnhSSaF3Q-PyyTSis4EH6Cu8FZ32LNvkxI9Gl_rn=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Mori Calliope",
+        "alias": [],
+        "generation": ["EN", 1],
+        "channel": {
+            "name": "Mori Calliope Ch. hololive-EN",
+            "id": "UCL_qhgtOy0dy1Agp8vkySQg"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwnjcINfsv5JK45I4EIIT4hrb8bFlKM_kxkbzonPC=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Ninomae Ina'nis",
+        "alias": ["Tako"],
+        "generation": ["EN", 1],
+        "channel": {
+            "name": "Ninomae Ina'nis Ch. hololive-EN",
+            "id": "UCMwGHR0BTZuLsmjY_NT5Pwg"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwng37V0l-NwF3bu7QA4XmOP5EZFwk5zJE-78OHP9=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Takanashi Kiara",
+        "alias": [],
+        "generation": ["EN", 1],
+        "channel": {
+            "name": "Takanashi Kiara Ch. hololive-EN",
+            "id": "UCHsx4Hqa-1ORjQTh9TYDhww"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwnicJ682cy4GKD-ulxRnE2jOuihNWCULnqW2caej=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "Watson Amelia",
+        "alias": ["Tako"],
+        "generation": ["EN", 1],
+        "channel": {
+            "name": "Watson Amelia Ch. hololive-EN",
+            "id": "UCyl1z3jo3XHR1riLFKG5UAg"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwngENhxNHPzV4jjip28G3vswMxutvkaBhBjAMS0i=s{size}-c-k-c0x00ffffff-no-rj"
+    }
+]

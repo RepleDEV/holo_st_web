@@ -2,18 +2,17 @@ import express from "express";
 import path from "path";
 
 import { Cache } from "./cache";
-import { StreamCache } from "../globals.d";
-import { OngoingStream, UpcomingStream } from "./holo_st/globals";
+
+export function redirect(req: express.Request, res: express.Response): void {
+    res.redirect("/");
+}
 
 export function streams(cache: Cache): (req: express.Request, res: express.Response) => void {
     return function(req: express.Request, res: express.Response): void {
-        if (req.query.minimize === "true") {
-            if (cache) {
-                cache.readFile("minimizedstreamcache.json").then((data) => {
-                    console.log("YES");
-                    res.json(JSON.parse(data));
-                });
-            }
+        if (req.query.minimize === "true" || req.query.minimize === "1") {
+            cache.readFile("minimizedstreamcache.json").then((data) => {
+                res.json(JSON.parse(data));
+            });
         } else {
             res.sendFile(path.resolve("./cache/streamcache.json"));
         }

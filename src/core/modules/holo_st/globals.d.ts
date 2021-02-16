@@ -44,18 +44,18 @@ export interface YoutubeVideoItems {
 }
 
 export interface YoutubeThumbnails {
-    default?: {
-        url?: string;
-        width?: number;
-        height?: number;
+    default: {
+        url: string;
+        width: number;
+        height: number;
     };
-    medium?: {
-        url?: string;
-        width?: number;
-        height?: number;
+    medium: {
+        url: string;
+        width: number;
+        height: number;
     };
-    high?: ThumbnailObject;
-    maxres?: ThumbnailObject;
+    high: ThumbnailObject;
+    maxres: ThumbnailObject;
 }
 
 export interface ThumbnailObject {
@@ -71,7 +71,7 @@ export interface Stream {
     description: string;
     publishedAt: string;
     tags?: string[];
-    thumbnail?: YoutubeThumbnails;
+    thumbnail: YoutubeThumbnails;
 
     channelName: string;
     channelId: string;
