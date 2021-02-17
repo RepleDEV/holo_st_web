@@ -1,10 +1,11 @@
 import { MomentObjectOutput } from "moment";
+import { Cache } from "./modules/cache";
 import { UpcomingStream, OngoingStream, YoutubeThumbnails } from "./modules/holo_st/globals";
 
-export interface StreamCache {
+export interface Streams {
     ongoingStreams: OngoingStream[];
     upcomingStreams: UpcomingStream[];
-    writtenAt: number;
+    lastUpdated: number;
 }
 
 export interface MinimizedStream {
@@ -26,10 +27,10 @@ export interface MinimizedOngoingStream extends MinimizedStream {
     concurrentViewers: number;
 }
 
-export interface MinimizedStreamCache {
+export interface MinimizedStreams {
     ongoingStreams: MinimizedOngoingStream[];
     upcomingStreams: MinimizedUpcomingStream[];
-    writtenAt: number;
+    lastUpdated: number;
 }
 
 export interface Channel {
@@ -41,4 +42,10 @@ export interface Channel {
         id: string;
     }
     icon: string;
+}
+
+export interface StreamListener {
+    id: string;
+    callback: (id: string, cache: Cache) => void;
+    time: MomentObjectOutput;
 }

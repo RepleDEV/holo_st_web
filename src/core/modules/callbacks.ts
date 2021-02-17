@@ -1,20 +1,17 @@
 import express from "express";
 import path from "path";
-
-import { Cache } from "./cache";
+import { StreamList } from "./stream_list";
 
 export function redirect(req: express.Request, res: express.Response): void {
     res.redirect("/");
 }
 
-export function streams(cache: Cache): (req: express.Request, res: express.Response) => void {
+export function streams(cache: StreamList): (req: express.Request, res: express.Response) => void {
     return function(req: express.Request, res: express.Response): void {
         if (req.query.minimize === "true" || req.query.minimize === "1") {
-            cache.readFile("minimizedstreamcache.json").then((data) => {
-                res.json(JSON.parse(data));
-            });
+            res.json(cache.exportMinimized());
         } else {
-            res.sendFile(path.resolve("./cache/streamcache.json"));
+            res.json(cache.export());
         }
     }
 }

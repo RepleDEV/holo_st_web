@@ -5,19 +5,15 @@
     "main": "./out/server.js",
     "scripts": {
         "prettier": "prettier --write .",
-        "dev": "npm-run-all -p serve:browser serve:server watch",
-        "dev:once": "npm-run-all -p serve:browser serve:server start",
         "serve:server": "webpack --mode=development --env.TARGET=SERVER --watch",
         "serve:browser": "webpack --mode=development --env.TARGET=BROWSER --watch",
         "serve": "webpack --mode=development --watch",
-        "build:server": "webpack --mode=development",
+        "build:server": "webpack --mode=development --env.TARGET=SERVER",
         "build:browser": "webpack --mode=development --env.TARGET=BROWSER",
         "build:dev": "webpack --mode=development",
         "build:prod": "webpack --mode=production",
         "build": "npm run build:prod",
-        "start": "node .",
-        "watch": "nodemon .",
-        "postinstall": "cd ./src/core/modules/holo_st && npm i"
+        "start": "node ."
     },
     "keywords": [],
     "author": "",

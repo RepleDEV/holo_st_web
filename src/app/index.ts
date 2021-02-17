@@ -2,7 +2,7 @@ import "../../public/scss/base.scss";
 
 import $ from "jquery";
 
-import { MinimizedStreamCache, Channel } from "../core/globals";
+import { MinimizedStreams, Channel } from "../core/globals";
 
 async function get_stream_layout(): Promise<string> {
     return await $.get("./public/layouts/stream_layout.html");
@@ -50,15 +50,18 @@ function add_stream(channelId: string, streamTitle: string, streamId: string, st
 }
 
 (async () => {
-    const { ongoingStreams, upcomingStreams }: MinimizedStreamCache = await $.getJSON("streams?minimized=1");
+    const { ongoingStreams, upcomingStreams }: MinimizedStreams = await $.getJSON("streams?minimized=1");
     stream_layout = await get_stream_layout();
     channels = await $.getJSON("public/files/channels.json");
+
     for (let i = 0;i < ongoingStreams.length;i++) {
         const { channelId, title, streamId, thumbnail } = ongoingStreams[i];
         add_stream(channelId, title, streamId, thumbnail.maxres.url, true);
     }
     for (let i = 0;i < upcomingStreams.length;i++) {
         const { channelId, title, streamId, thumbnail } = upcomingStreams[i];
-        add_stream(channelId, title, streamId, thumbnail.maxres.url, false);
+
+        // Sometimes the maxres version (1280x720) doesn't exist, if so, then switch to medium res ()
+        add_stream(channelId, title, streamId, (thumbnail.maxres || thumbnail.medium).url, false);
     }
 })()

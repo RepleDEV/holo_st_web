@@ -401,7 +401,7 @@
     },
     {
         "name": "Watson Amelia",
-        "alias": ["Tako"],
+        "alias": [],
         "generation": ["EN", 1],
         "channel": {
             "name": "Watson Amelia Ch. hololive-EN",
