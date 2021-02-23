@@ -14,19 +14,8 @@ export class StreamList {
     constructor() {}
     // These two functions make sure that no duplicate is made on either of the arrays.
     addUpcomingStream(stream: UpcomingStream): void {
-        // Index to add to
-        let index = -1;
-
         for (let i = 0; i < this.upcomingStreams.length; i++) {
             const upcomingStream = this.upcomingStreams[i];
-
-            if (
-                +moment(upcomingStream.scheduledStartTime) <=
-                    +moment(stream.scheduledStartTime) &&
-                index != -1
-            ) {
-                index = i;
-            }
 
             if (upcomingStream.streamId === stream.streamId) {
                 // If stream already exists in the list, don't add it.
@@ -42,23 +31,16 @@ export class StreamList {
             }
         }
 
-        this.upcomingStreams.splice(index, 0, stream);
+        this.upcomingStreams.push(stream);
+        
+        this.upcomingStreams.sort((a, b) => 
+            +moment(a.scheduledStartTime) - +moment(b.scheduledStartTime)
+        );
     }
     addOngoingStream(stream: OngoingStream): void {
-        // Index to add to
-        let index = -1;
 
         for (let i = 0; i < this.ongoingStreams.length; i++) {
             const ongoingStream = this.ongoingStreams[i];
-
-            if (
-                +moment(ongoingStream.scheduledStartTime) <=
-                    +moment(stream.scheduledStartTime) &&
-                index != -1
-            ) {
-                index = i;
-            }
-
             // If stream already exists in the list, don't add it.
             if (ongoingStream.streamId === stream.streamId) {
                 return;
@@ -75,8 +57,17 @@ export class StreamList {
             }
         }
 
-        this.ongoingStreams.splice(index, 0, stream);
+        this.ongoingStreams.push(stream);
+
+        // Sort the stream
+        this.ongoingStreams.sort((a, b) => 
+            +moment(a.scheduledStartTime) - +moment(b.scheduledStartTime)
+        );
     }
+    // If you know a better way to dynamically sort the array
+    // Please do me a favor
+    // Thanks
+    // <3
     removeOngoingStream(streamId: string): void {
         for (let i = 0; i < this.ongoingStreams.length; i++) {
             const ongoingStream = this.ongoingStreams[i];
@@ -144,5 +135,9 @@ export class StreamList {
             ),
             lastUpdated: Date.now(),
         };
+    }
+    importStreams(stream: Streams): void {
+        stream.ongoingStreams.forEach((x) => this.addOngoingStream(x));
+        stream.upcomingStreams.forEach((x) => this.addUpcomingStream(x));
     }
 }

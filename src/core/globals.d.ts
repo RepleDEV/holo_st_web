@@ -46,6 +46,5 @@ export interface Channel {
 
 export interface StreamListener {
     id: string;
-    callback: (id: string, cache: Cache) => void;
     time: MomentObjectOutput;
 }
