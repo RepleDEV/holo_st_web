@@ -126,6 +126,15 @@
         }
     },
     {
+        "name": "Ookami Mio",
+        "alias": ["Mion", "Mio-mama", "Mio-sha"],
+        "generation": "GAMERS",
+        "channel": {
+            "name": "Mio Channel 大神ミオ",
+            "id": "UCp-5t9SrOQwXMU7iIjQfARg"
+        }
+    },
+    {
         "name": "Inugami Korone",
         "alias": ["Koro-san"],
         "generation": "GAMERS",

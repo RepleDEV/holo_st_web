@@ -140,6 +140,16 @@
         "icon": "https://yt3.ggpht.com/ytc/AAUvwnh0dIB3uStuGrUZGGrubOATPiVSFDiweFCK-0cr=s{size}-c-k-c0x00ffffff-no-rj"
     },
     {
+        "name": "Ookami Mio",
+        "alias": ["Mion", "Mio-mama", "Mio-sha"],
+        "generation": "GAMERS",
+        "channel": {
+            "name": "Mio Channel 大神ミオ",
+            "id": "UCp-5t9SrOQwXMU7iIjQfARg"
+        },
+        "icon": "https://yt3.ggpht.com/ytc/AAUvwng30Wmfu39r1PLrF05pvAafn2a2Ex90ok2C6CTBmg=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
         "name": "Inugami Korone",
         "alias": ["Koro-san"],
         "generation": "GAMERS",

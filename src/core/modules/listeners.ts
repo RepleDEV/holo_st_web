@@ -20,8 +20,6 @@ async function ongoingStreamCallback(id: string, cache: StreamList): Promise<voi
         isStreaming = false;
     }
 
-    console.log(isStreaming, id);
-
     if (!isStreaming) {
         cache.removeOngoingStream(id);
 
