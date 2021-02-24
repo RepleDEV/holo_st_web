@@ -55,7 +55,7 @@ export interface YoutubeThumbnails {
         height: number;
     };
     high: ThumbnailObject;
-    maxres: ThumbnailObject;
+    maxres?: ThumbnailObject;
 }
 
 export interface ThumbnailObject {

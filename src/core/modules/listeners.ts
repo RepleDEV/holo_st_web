@@ -1,7 +1,7 @@
 import moment from "moment";
 
 import { StreamListener } from "../globals";
-import { convert_to_ongoing_stream, convert_to_upcoming_stream } from "./convert_streams";
+import { convert_to_ongoing_stream } from "./convert_streams";
 import { get_next_minute } from "./get_next_minute";
 import { OngoingStream, UpcomingStream } from "./holo_st/globals";
 import { get_stream_info } from "./holo_st/modules/get_stream_info";
@@ -20,8 +20,10 @@ async function ongoingStreamCallback(id: string, cache: StreamList): Promise<voi
         isStreaming = false;
     }
 
+    console.log(id, isStreaming);
+
     if (!isStreaming) {
-        cache.removeOngoingStream(id);
+        console.log(cache.removeOngoingStream(id));
 
         // Remove the listener from the listeners array;
         listeners.filter((x) => x.id === id);
@@ -162,11 +164,6 @@ export function init(cache: StreamList): void {
 
     add_ongoing_streams_listeners(ongoingStreams, cache);
     add_upcoming_streams_listeners(upcomingStreams, cache);
-    
-    listeners.forEach((listener) => {
-        const { id, time } = listener;
-        console.log(`Listener for id: ${id} at: ${moment(time).format("MMMM Do, HH:mm:ss")}.`);
-    });
 
     setTimeout(stream_refresh_callback(cache), get_next_minute(60) - Date.now());
 } 

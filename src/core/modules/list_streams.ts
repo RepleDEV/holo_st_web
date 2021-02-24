@@ -8,7 +8,18 @@ import { Streams } from "../globals";
 export async function list_streams(streamList: StreamList): Promise<Streams> {
     console.log("Checking for ongoing streams...");
 
-    const ongoingStreams = await holo_st.get_all_ongoing_streams((s, i) => {
+    const streams = streamList.exportMinimized();
+
+    // Optimization purposes :)
+
+    let filter: string[] = [];
+    for (let i = 0;i < streams.ongoingStreams.length;i++) {
+        const ongoingStream = streams.ongoingStreams[i];
+
+        filter.push(ongoingStream.channelId);
+    }
+
+    const ongoingStreams = await holo_st.get_all_ongoing_streams(filter, (s, i) => {
         logUpdate(`Checked ${i + 1}.`);
     });
     ongoingStreams.forEach((x) => streamList.addOngoingStream(x));
@@ -17,7 +28,7 @@ export async function list_streams(streamList: StreamList): Promise<Streams> {
     console.log("Finished checking for ongoing streams.")
     console.log("Checking for upcoming streams...");
 
-    const upcomingStreams = await holo_st.get_all_upcoming_streams((s, i) => {
+    const upcomingStreams = await holo_st.get_all_upcoming_streams([], (s, i) => {
         logUpdate(`Checked ${i+1}.`);
     });
     upcomingStreams.forEach((x) => streamList.addUpcomingStream(x));

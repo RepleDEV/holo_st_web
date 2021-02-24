@@ -68,13 +68,12 @@ export class StreamList {
     // Please do me a favor
     // Thanks
     // <3
-    removeOngoingStream(streamId: string): void {
+    removeOngoingStream(streamId: string): OngoingStream[] | undefined  {
         for (let i = 0; i < this.ongoingStreams.length; i++) {
             const ongoingStream = this.ongoingStreams[i];
 
             if (ongoingStream.streamId === streamId) {
-                this.ongoingStreams.splice(i, 1);
-                return;
+                return this.ongoingStreams.splice(i, 1);
             }
         }
     }

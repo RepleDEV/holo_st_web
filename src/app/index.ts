@@ -1,8 +1,10 @@
 import "../../public/scss/base.scss";
 
 import $ from "jquery";
+import moment from "moment";
 
 import { MinimizedStreams, Channel } from "../core/globals";
+import { get_next_minute } from "../core/modules/get_next_minute";
 
 async function get_stream_layout(): Promise<string> {
     return await $.get("./public/layouts/stream_layout.html");
@@ -56,12 +58,19 @@ function add_stream(channelId: string, streamTitle: string, streamId: string, st
 
     for (let i = 0;i < ongoingStreams.length;i++) {
         const { channelId, title, streamId, thumbnail } = ongoingStreams[i];
-        add_stream(channelId, title, streamId, thumbnail.maxres.url, true);
+        add_stream(channelId, title, streamId, (thumbnail.maxres || thumbnail.medium).url, true);
     }
     for (let i = 0;i < upcomingStreams.length;i++) {
-        const { channelId, title, streamId, thumbnail } = upcomingStreams[i];
+        const { channelId, title, streamId, thumbnail, scheduledStartTime } = upcomingStreams[i];
 
-        // Sometimes the maxres version (1280x720) doesn't exist, if so, then switch to medium res ()
-        add_stream(channelId, title, streamId, (thumbnail.maxres || thumbnail.medium).url, false);
+        // This checks whether or not the stream is scheduled within the next day.
+        // I'm not sorry that this is a 1 liner.
+        const startOfNextDay = new Date(new Date().setHours(0,0,0,0)).setDate(new Date().getDate() + 1);
+        const twentyFourHours = (1000 * 60 * 60 * 24);
+
+        if (+moment(scheduledStartTime) <= startOfNextDay + twentyFourHours) {
+            // Sometimes the maxres version (1280x720) doesn't exist, if so, then switch to medium res ()
+            add_stream(channelId, title, streamId, (thumbnail.maxres || thumbnail.medium).url, false);
+        }
     }
-})()
+})();
