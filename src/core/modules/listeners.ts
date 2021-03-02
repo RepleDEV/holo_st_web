@@ -20,13 +20,18 @@ async function ongoingStreamCallback(id: string, cache: StreamList): Promise<voi
         isStreaming = false;
     }
 
-    console.log(id, isStreaming);
+    // Remove the listener from the listeners array;
+    for (let i = 0;i < listeners.length;i++) {
+        const listener = listeners[i];
+
+        if (listener.id === id) {
+            listeners.splice(i, 1);
+            break;
+        }
+    }
 
     if (!isStreaming) {
-        console.log(cache.removeOngoingStream(id));
-
-        // Remove the listener from the listeners array;
-        listeners.filter((x) => x.id === id);
+        cache.removeOngoingStream(id)
     } else {
         add_ongoing_stream_listener(convert_to_ongoing_stream(stream_info), cache);
     }
@@ -41,6 +46,8 @@ async function upcomingStreamCallback(id: string, cache: StreamList, cycle: numb
         const ongoingStream = convert_to_ongoing_stream(stream_info);
 
         cache.addOngoingStream(ongoingStream);
+
+        add_ongoing_stream_listener(ongoingStream, cache);
     } else {
         let time = moment();
 

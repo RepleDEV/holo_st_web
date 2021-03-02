@@ -6,6 +6,7 @@ import { get_ongoing_streams } from "./modules/get_ongoing_streams";
 import { get_channels } from "./modules/get_channels";
 
 export async function get_all_upcoming_streams(filter: string[] = [], check_callback?: (upcoming_streams: UpcomingStream[], i: number) => void): Promise<UpcomingStream[]> {
+    filter = [...new Set(filter)];
 
     const channels = await get_channels();
 
@@ -32,6 +33,8 @@ export async function get_all_upcoming_streams(filter: string[] = [], check_call
 }
 
 export async function get_all_ongoing_streams(filter: string[] = [], check_callback?: (ongoing_streams: OngoingStream[], i: number) => void): Promise<OngoingStream[]> {
+    filter = [...new Set(filter)];
+
     const channels = await get_channels();
 
     const browser = await puppeteer.launch();

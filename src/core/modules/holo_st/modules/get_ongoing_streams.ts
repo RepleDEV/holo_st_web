@@ -27,7 +27,7 @@ export async function get_ongoing_streams(
     $("ytd-app div#content ytd-page-manager ytd-browse div#primary div#items")
         .children()
         .each((i, e) => {
-            const meta = $(e).find("div#dismissable > div#details > div#meta");
+            const meta = $(e).find("div#dismissible > div#details > div#meta");
             const streamPath = meta
             .children(":first")
             .children(":last")
