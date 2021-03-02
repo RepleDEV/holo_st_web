@@ -91,10 +91,12 @@ export interface OngoingStream extends Stream {
     concurrentViewers: number;
 }
 
+type Generation = ["JP" | "ID" | "EN", number] | "GAMERS";
+
 export interface Channel {
     name: string;
     alias: string[];
-    generation: [string, number] | "GAMERS";
+    generation: Generation;
     channel: {
         name: string;
         id: string;

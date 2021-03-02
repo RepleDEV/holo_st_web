@@ -1,76 +1,131 @@
 import "../../public/scss/base.scss";
 
 import $ from "jquery";
-import moment from "moment";
 
-import { MinimizedStreams, Channel } from "../core/globals";
-import { get_next_minute } from "../core/modules/get_next_minute";
+import { MinimizedStreams } from "../core/globals";
+import add_streams from "./modules/add_streams";
+import { Generation } from "../core/modules/holo_st/globals";
 
-async function get_stream_layout(): Promise<string> {
-    return await $.get("./public/layouts/stream_layout.html");
+type Dropdowns = "GenerationSelect";
+
+let minimized_streams: MinimizedStreams | null = null;
+
+let is_default = true;
+let current_navbar_dropdown: Dropdowns | null = null;
+
+function toggle_generation_select_dropdown(): void {
+    if (current_navbar_dropdown === "GenerationSelect") {
+        $(".gen-select-dropdown>.dropdown-content").addClass("hidden");
+        current_navbar_dropdown = null;
+    } else {
+        $(".gen-select-dropdown>.dropdown-content").removeClass("hidden");
+        current_navbar_dropdown = "GenerationSelect";
+    }
 }
 
-let channels: Channel[] | null = null;
-let stream_layout: string | null = null;
+async function gen_checkbox_callback(e: JQuery.TriggeredEvent): Promise<void> {
+    const container = $(".dropdown-content");
 
-function get_channel_info(id: string): Channel | undefined {
-    if (channels !== null) {
-        for (let i = 0;i < channels.length;i++) {
-            const channel = channels[i];
-            if (channel.channel.id === id) {
-                return channel;
+    let filter: Generation[] = [];
+
+    const children = container.children().toArray();
+    for (let i = 0; i < children.length; i++) {
+        const child = children[i];
+
+        const checkbox = $(child).find(".gen-checkbox");
+        const value = checkbox.attr("value");
+
+        if (checkbox.is(":checked")) {
+            switch (value) {
+                case "1st":
+                    filter.push(["JP", 1]);
+                    break;
+                case "2nd":
+                    filter.push(["JP", 2]);
+                    break;
+                case "GAMERS":
+                    filter.push("GAMERS");
+                    break;
+                case "3rd":
+                    filter.push(["JP", 3]);
+                    break;
+                case "4th":
+                    filter.push(["JP", 4]);
+                    break;
+                case "5th":
+                    filter.push(["JP", 5]);
+                    break;
+                case "ID 1st":
+                    filter.push(["ID", 1]);
+                    break;
+                case "ID 2nd":
+                    filter.push(["ID", 2]);
+                    break;
+                case "EN 1st":
+                    filter.push(["EN", 1]);
+                    break;
+                case "select_all":
+                    break;
+                default:
+                    break;
             }
         }
     }
-    return;
-}
 
-function add_stream(channelId: string, streamTitle: string, streamId: string, streamThumbnailUrl: string, streaming: boolean): void {
-    if (stream_layout !== null) {
-        $("main > div.stream-container").append(stream_layout);
-        const stream_card = $("main > div.stream-container").children(":last-child");
-        stream_card.find(".thumbnail-container a").attr("href", `https://youtu.be/${streamId}`);
-        stream_card.find("#stream_thumbnail").attr("src", streamThumbnailUrl);
-        stream_card.find(".stream-title").text(streamTitle);
+    if (filter.length === 9) {
+        $(".stream-container").html("");
+        filter = [];
+    }
 
-        // Dirty workaround pls fix
-        const channel = get_channel_info(channelId);
-        let channel_name = "Unknown";
-        let channel_icon_src = "";
-        if (channel) {
-            channel_name = channel.name;
-            channel_icon_src = channel.icon.replace("{size}", "128");
-        }
-
-        stream_card.find(".channel-icon-container a").attr("href", `https://youtube.com/channel/${channelId}`);
-        stream_card.find(".channel-icon-container img").attr("src", channel_icon_src);
-        stream_card.find(".streamer-name").text(channel_name)
-        if (streaming) {
-            stream_card.addClass("streaming");
-        }
+    if (minimized_streams !== null) {
+        await add_streams(minimized_streams.ongoingStreams, minimized_streams.upcomingStreams, "", filter);
     }
 }
 
 (async () => {
-    const { ongoingStreams, upcomingStreams }: MinimizedStreams = await $.getJSON("streams?minimized=1");
-    stream_layout = await get_stream_layout();
-    channels = await $.getJSON("public/files/channels.json");
+    minimized_streams = await $.getJSON("streams?minimized=1");
 
-    for (let i = 0;i < ongoingStreams.length;i++) {
-        const { channelId, title, streamId, thumbnail } = ongoingStreams[i];
-        add_stream(channelId, title, streamId, (thumbnail.maxres || thumbnail.medium).url, true);
-    }
-    for (let i = 0;i < upcomingStreams.length;i++) {
-        const { channelId, title, streamId, thumbnail, scheduledStartTime } = upcomingStreams[i];
+    const { ongoingStreams, upcomingStreams } = minimized_streams;
 
-        // This checks whether or not the stream is scheduled within the next day.
-        // I'm not sorry that this is a 1 liner.
-        const startOfNextDay = new Date(new Date().setHours(0,0,0,0)).setDate(new Date().getDate() + 1);
-        const twentyFourHours = (1000 * 60 * 60 * 24);
+    await add_streams(ongoingStreams, upcomingStreams);
 
-        if (+moment(scheduledStartTime) <= startOfNextDay + twentyFourHours) {
-            // Sometimes the maxres version (1280x720) doesn't exist, if so, then switch to medium res ()
-            add_stream(channelId, title, streamId, (thumbnail.maxres || thumbnail.medium).url, false);
+    $(document).on("click", (e) => {
+        switch (current_navbar_dropdown) {
+            case "GenerationSelect":
+                if (
+                    !$(e.target).hasClass("dropdown-content") &&
+                    !$(e.target).hasClass("gen-select-dropdown") &&
+                    !$(e.target).hasClass("gen-checkbox") &&
+                    $(e.target).attr("id") !== "gen_select_option"
+                ) {
+                    toggle_generation_select_dropdown();
+                }
+                break;
         }
-    }
+    });
+
+    $("input#search_input").on("keypress", async (e) => {
+        const val = ($(e.target).val() || "").toString().toLowerCase();
+
+        if (e.key === "Enter") {
+            await add_streams(ongoingStreams, upcomingStreams, val);
+            is_default = false;
+        }
+    });
+    $("input#search_input").on("input", async (e) => {
+        const val = ($(e.target).val() || "").toString().toLowerCase();
+
+        if (!val.length && !is_default) {
+            await add_streams(ongoingStreams, upcomingStreams);
+            is_default = true;
+        }
+    });
+
+    $(".dropdown-button").on("click", (e) => {
+        const { target } = e;
+        if ($(target).hasClass("gen-select-dropdown")) {
+            toggle_generation_select_dropdown();
+        }
+    });
+    $(".gen-checkbox").on("input", gen_checkbox_callback);
 })();
