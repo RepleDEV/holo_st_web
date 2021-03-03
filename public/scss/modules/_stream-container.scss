@@ -1,0 +1,14 @@
+.stream-container {
+    position: relative;
+    
+    display: grid;
+    
+    // grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+
+    column-gap: 2rem;
+    row-gap: 2rem;
+
+    margin: 4rem 2rem;
+    margin-bottom: 4rem;
+}

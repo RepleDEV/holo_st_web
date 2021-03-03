@@ -1,0 +1,6 @@
+@media only screen and (max-device-width: 480px) {
+    .stream-container {
+        // Fixes margin errors :shrug:
+        grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)) !important;
+    }
+}
