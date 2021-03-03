@@ -7,7 +7,7 @@ function config_factory(target, port) {
         entry: path.join(rootPath, "./src/app/index.ts"),
         output: {
             filename: "webpack.js",
-            path: path.join(rootPath, "./public/webpack")
+            path: path.join(rootPath, "./public/webpack"),
         },
         resolve: {
             extensions: [".ts", ".js"],
@@ -18,21 +18,21 @@ function config_factory(target, port) {
             rules: [
                 {
                     test: /\.scss$/,
-                    use: ["style-loader", "css-loader", "sass-loader"]
+                    use: ["style-loader", "css-loader", "sass-loader"],
                 },
                 {
                     test: /\.ts$/,
-                    use: ["ts-loader"]
+                    use: ["ts-loader"],
                 },
             ],
-        }
+        },
     };
-    
+
     const SERVER = {
         entry: path.join(rootPath, "./src/core/index.ts"),
         output: {
             filename: "server.js",
-            path: path.join(rootPath, "./out/")
+            path: path.join(rootPath, "./out/"),
         },
         resolve: {
             extensions: [".ts", ".js"],
@@ -43,11 +43,13 @@ function config_factory(target, port) {
             rules: [
                 {
                     test: /\.ts$/,
-                    use: ["ts-loader"]
+                    use: ["ts-loader"],
                 },
             ],
         },
-        externals: [require("webpack-node-externals")({ allowlist: ["jquery", "fs"] })]
+        externals: [
+            require("webpack-node-externals")({ allowlist: ["jquery", "fs"] }),
+        ],
     };
 
     if (target === "BROWSER") {
@@ -62,7 +64,7 @@ function config_factory(target, port) {
 function webpack_config(env) {
     env = env || {};
 
-    return config_factory(env.TARGET, env.PORT || 9107)
+    return config_factory(env.TARGET, env.PORT || 9107);
 }
 
 module.exports = webpack_config;

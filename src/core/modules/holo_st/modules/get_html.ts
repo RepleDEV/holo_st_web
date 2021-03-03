@@ -12,8 +12,9 @@ export async function get_html(
     );
     await page.goto(url, { waitUntil: "networkidle0" });
     const data =
-        (await page.evaluate(() => (document.querySelector("*") || {}).outerHTML)) ||
-        "";
+        (await page.evaluate(
+            () => (document.querySelector("*") || {}).outerHTML
+        )) || "";
 
     // Don't close the browser if it's imported but close the page.
     if (browser_p) {

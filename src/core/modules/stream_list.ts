@@ -32,13 +32,13 @@ export class StreamList {
         }
 
         this.upcomingStreams.push(stream);
-        
-        this.upcomingStreams.sort((a, b) => 
-            +moment(a.scheduledStartTime) - +moment(b.scheduledStartTime)
+
+        this.upcomingStreams.sort(
+            (a, b) =>
+                +moment(a.scheduledStartTime) - +moment(b.scheduledStartTime)
         );
     }
     addOngoingStream(stream: OngoingStream): void {
-
         for (let i = 0; i < this.ongoingStreams.length; i++) {
             const ongoingStream = this.ongoingStreams[i];
             // If stream already exists in the list, don't add it.
@@ -60,15 +60,16 @@ export class StreamList {
         this.ongoingStreams.push(stream);
 
         // Sort the stream
-        this.ongoingStreams.sort((a, b) => 
-            +moment(a.scheduledStartTime) - +moment(b.scheduledStartTime)
+        this.ongoingStreams.sort(
+            (a, b) =>
+                +moment(a.scheduledStartTime) - +moment(b.scheduledStartTime)
         );
     }
     // If you know a better way to dynamically sort the array
     // Please do me a favor
     // Thanks
     // <3
-    removeOngoingStream(streamId: string): OngoingStream[] | undefined  {
+    removeOngoingStream(streamId: string): OngoingStream[] | undefined {
         for (let i = 0; i < this.ongoingStreams.length; i++) {
             const ongoingStream = this.ongoingStreams[i];
 

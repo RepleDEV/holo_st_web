@@ -2,7 +2,11 @@ import $ from "jquery";
 import moment from "moment";
 import _ from "lodash";
 
-import { Channel, MinimizedOngoingStream, MinimizedUpcomingStream } from "../../core/globals";
+import {
+    Channel,
+    MinimizedOngoingStream,
+    MinimizedUpcomingStream,
+} from "../../core/globals";
 import { Generation } from "../../core/modules/holo_st/globals";
 import add_stream from "./add_stream";
 import get_channel_info from "./get_channel_info";
@@ -22,11 +26,14 @@ export default async function add_streams(
 
     $("main > .stream-container").html("");
 
-    const includeChannels = search_channels(query.toLowerCase(), channels || []);
+    const includeChannels = search_channels(
+        query.toLowerCase(),
+        channels || []
+    );
 
     if (includeChannels.length) {
         ongoingStreams = ongoingStreams.filter((x) => {
-            for (let i = 0;i < includeChannels.length;i++) {
+            for (let i = 0; i < includeChannels.length; i++) {
                 const channel = includeChannels[i];
                 if (channel.channel.id === x.channelId) {
                     return true;
@@ -35,7 +42,7 @@ export default async function add_streams(
             return false;
         });
         upcomingStreams = upcomingStreams.filter((x) => {
-            for (let i = 0;i < includeChannels.length;i++) {
+            for (let i = 0; i < includeChannels.length; i++) {
                 const channel = includeChannels[i];
                 if (channel.channel.id === x.channelId) {
                     return true;
@@ -58,7 +65,7 @@ export default async function add_streams(
 
             const ch_gen = channel.generation || "";
 
-            for (let i = 0;i < gen_filter.length;i++) {
+            for (let i = 0; i < gen_filter.length; i++) {
                 const gen = gen_filter[i];
 
                 if (_.isEqual(ch_gen, gen)) {
@@ -73,7 +80,7 @@ export default async function add_streams(
 
             const ch_gen = channel.generation || "";
 
-            for (let i = 0;i < gen_filter.length;i++) {
+            for (let i = 0; i < gen_filter.length; i++) {
                 const gen = gen_filter[i];
 
                 if (_.isEqual(ch_gen, gen)) {

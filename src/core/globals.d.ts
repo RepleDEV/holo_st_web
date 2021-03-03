@@ -1,5 +1,10 @@
 import { MomentObjectOutput } from "moment";
-import { UpcomingStream, OngoingStream, YoutubeThumbnails, Channel } from "./modules/holo_st/globals";
+import {
+    UpcomingStream,
+    OngoingStream,
+    YoutubeThumbnails,
+    Channel,
+} from "./modules/holo_st/globals";
 
 export interface Streams {
     ongoingStreams: OngoingStream[];
@@ -11,7 +16,7 @@ export interface MinimizedStream {
     streamId: string;
 
     title: string;
-    thumbnail: YoutubeThumbnails,
+    thumbnail: YoutubeThumbnails;
 
     channelName: string;
     channelId: string;
@@ -19,7 +24,7 @@ export interface MinimizedStream {
     scheduledStartTime: MomentObjectOutput;
 }
 
-export interface MinimizedUpcomingStream extends MinimizedStream {};
+export interface MinimizedUpcomingStream extends MinimizedStream {}
 
 export interface MinimizedOngoingStream extends MinimizedStream {
     actualStartTime: MomentObjectOutput;

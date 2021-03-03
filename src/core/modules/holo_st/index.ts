@@ -5,7 +5,10 @@ import { get_upcoming_streams } from "./modules/get_upcoming_streams";
 import { get_ongoing_streams } from "./modules/get_ongoing_streams";
 import { get_channels } from "./modules/get_channels";
 
-export async function get_all_upcoming_streams(filter: string[] = [], check_callback?: (upcoming_streams: UpcomingStream[], i: number) => void): Promise<UpcomingStream[]> {
+export async function get_all_upcoming_streams(
+    filter: string[] = [],
+    check_callback?: (upcoming_streams: UpcomingStream[], i: number) => void
+): Promise<UpcomingStream[]> {
     filter = [...new Set(filter)];
 
     const channels = await get_channels();
@@ -14,7 +17,7 @@ export async function get_all_upcoming_streams(filter: string[] = [], check_call
 
     const res: UpcomingStream[] = [];
 
-    if (filter.length)channels.filter((x) => filter.includes(x.channel.id));
+    if (filter.length) channels.filter((x) => filter.includes(x.channel.id));
 
     for (let i = 0; i < channels.length; i++) {
         const channelId = channels[i].channel.id;
@@ -32,7 +35,10 @@ export async function get_all_upcoming_streams(filter: string[] = [], check_call
     return res;
 }
 
-export async function get_all_ongoing_streams(filter: string[] = [], check_callback?: (ongoing_streams: OngoingStream[], i: number) => void): Promise<OngoingStream[]> {
+export async function get_all_ongoing_streams(
+    filter: string[] = [],
+    check_callback?: (ongoing_streams: OngoingStream[], i: number) => void
+): Promise<OngoingStream[]> {
     filter = [...new Set(filter)];
 
     const channels = await get_channels();
@@ -41,7 +47,7 @@ export async function get_all_ongoing_streams(filter: string[] = [], check_callb
 
     const res: OngoingStream[] = [];
 
-    if (filter.length)channels.filter((x) => filter.includes(x.channel.id));
+    if (filter.length) channels.filter((x) => filter.includes(x.channel.id));
 
     for (let i = 0; i < channels.length; i++) {
         const channelId = channels[i].channel.id;

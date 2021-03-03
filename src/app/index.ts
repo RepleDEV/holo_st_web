@@ -78,7 +78,12 @@ async function gen_checkbox_callback(e: JQuery.TriggeredEvent): Promise<void> {
     }
 
     if (minimized_streams !== null) {
-        await add_streams(minimized_streams.ongoingStreams, minimized_streams.upcomingStreams, "", filter);
+        await add_streams(
+            minimized_streams.ongoingStreams,
+            minimized_streams.upcomingStreams,
+            "",
+            filter
+        );
     }
 }
 

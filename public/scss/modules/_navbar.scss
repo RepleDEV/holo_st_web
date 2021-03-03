@@ -43,8 +43,8 @@
     border: none;
     border-bottom: 2px solid $color_secondary;
     outline: none;
-    color: #FFF;
-    caret-color: #FFF;
+    color: #fff;
+    caret-color: #fff;
     font-family: inherit;
     font-size: 0.9rem;
     font-weight: 400;
@@ -52,7 +52,7 @@
 
     &::placeholder {
         // PLACEHOLDER APPEARANCE
-        color: #AAA;
+        color: #aaa;
         font-size: 0.8rem;
     }
     &:focus {
@@ -81,8 +81,8 @@
         display: table-cell;
         vertical-align: middle;
 
-        color: #FFF;
-        
+        color: #fff;
+
         font-weight: 500;
         text-transform: capitalize;
 

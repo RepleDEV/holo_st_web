@@ -5,7 +5,7 @@ import * as callbacks from "./modules/callbacks";
 import { StreamList } from "./modules/stream_list";
 import { list_streams } from "./modules/list_streams";
 import { Streams } from "./globals";
-import { init } from "./modules/listeners"
+import { init } from "./modules/listeners";
 
 import { promises as fs } from "fs";
 

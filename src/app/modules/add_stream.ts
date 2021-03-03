@@ -23,12 +23,10 @@ export default async function add_stream(
         ":last-child"
     );
     const stream_link = `https://youtu.be/${streamId}`;
-    stream_card
-        .find(".thumbnail-container a")
-        .attr("href", stream_link);
+    stream_card.find(".thumbnail-container a").attr("href", stream_link);
     stream_card.find("#stream_thumbnail").attr("src", streamThumbnailUrl);
     stream_card.find(".stream-title > a").text(streamTitle);
-    stream_card.find(".stream-title > a").attr("ref", stream_link)
+    stream_card.find(".stream-title > a").attr("ref", stream_link);
 
     // Dirty workaround pls fix
     const channel = get_channel_info(channelId, channels);
