@@ -59,16 +59,17 @@ export class StreamList {
 
         this.ongoingStreams.push(stream);
 
+        // If you know a better way to dynamically sort the array
+        // Please do me a favor
+        // Thanks
+        // <3
+
         // Sort the stream
         this.ongoingStreams.sort(
             (a, b) =>
-                +moment(a.scheduledStartTime) - +moment(b.scheduledStartTime)
+                a.scheduledStartTime - b.scheduledStartTime
         );
     }
-    // If you know a better way to dynamically sort the array
-    // Please do me a favor
-    // Thanks
-    // <3
     removeOngoingStream(streamId: string): OngoingStream[] | undefined {
         for (let i = 0; i < this.ongoingStreams.length; i++) {
             const ongoingStream = this.ongoingStreams[i];

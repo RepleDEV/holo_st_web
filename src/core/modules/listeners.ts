@@ -128,16 +128,16 @@ function add_ongoing_stream_listener(
         }
     }
 
-    const time = moment(get_next_minute(15));
+    const time = get_next_minute(15);
 
     listeners.push({
         id: ongoingStream.streamId,
-        time: time.toObject(),
+        time: time,
     });
 
     setTimeout(async () => {
         await ongoingStreamCallback(ongoingStream.streamId, cache);
-    }, +time - Date.now());
+    }, time - Date.now());
 }
 
 function add_upcoming_streams_listeners(
@@ -172,14 +172,14 @@ function add_upcoming_stream_listener(
         }
     }
 
-    const time = moment(upcomingStream.scheduledStartTime).add(2, "minutes");
-    const ms = +time - Date.now();
+    const time = +moment(upcomingStream.scheduledStartTime).add(2, "minutes");
+    const ms = time - Date.now();
     // If ms (time between right now and the scheduled start time [time variable] in milliseconds)
     // is below or equals to 2 hours in milliseconds (1000 * 60 * [60 * 2])
     if (ms <= 1000 * 60 * (60 * 2)) {
         listeners.push({
             id: upcomingStream.streamId,
-            time: time.toObject(),
+            time: time,
         });
 
         setTimeout(async () => {

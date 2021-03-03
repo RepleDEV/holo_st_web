@@ -5,6 +5,7 @@ import { UpcomingStream } from "../globals";
 import { parse_time } from "./parse_time";
 import { get_stream_info } from "./get_stream_info";
 import { get_html } from "./get_html";
+import moment from "moment";
 
 export async function get_upcoming_streams(
     id: string,
@@ -62,7 +63,7 @@ export async function get_upcoming_streams(
 
             title: title,
             description: description,
-            publishedAt: publishedAt,
+            publishedAt: +moment(publishedAt),
             tags: tags,
             thumbnail: thumbnails,
 
@@ -71,7 +72,7 @@ export async function get_upcoming_streams(
 
             defaultAudioLanguage: defaultAudioLanguage,
 
-            scheduledStartTime: parse_time(scheduledStartTime),
+            scheduledStartTime: +moment(scheduledStartTime),
             activeLiveChatId: activeLiveChatId,
         });
     }

@@ -69,7 +69,7 @@ export interface Stream {
 
     title: string;
     description: string;
-    publishedAt: string;
+    publishedAt: number;
     tags?: string[];
     thumbnail: YoutubeThumbnails;
 
@@ -78,7 +78,7 @@ export interface Stream {
 
     defaultAudioLanguage?: string;
 
-    scheduledStartTime: MomentObjectOutput;
+    scheduledStartTime: number;
     activeLiveChatId?: string;
 }
 
@@ -87,7 +87,7 @@ export interface UpcomingStream extends Stream {
 }
 
 export interface OngoingStream extends Stream {
-    actualStartTime: MomentObjectOutput;
+    actualStartTime: number;
     concurrentViewers: number;
 }
 

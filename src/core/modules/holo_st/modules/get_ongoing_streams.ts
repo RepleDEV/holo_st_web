@@ -1,4 +1,5 @@
 import cheerio from "cheerio";
+import moment from "moment";
 
 import { Browser } from "puppeteer";
 import { OngoingStream } from "../globals";
@@ -66,7 +67,7 @@ export async function get_ongoing_streams(
 
             title: title,
             description: description,
-            publishedAt: publishedAt,
+            publishedAt: +moment(publishedAt),
             tags: tags,
             thumbnail: thumbnails,
 
@@ -75,8 +76,8 @@ export async function get_ongoing_streams(
 
             defaultAudioLanguage: defaultAudioLanguage,
 
-            scheduledStartTime: parse_time(scheduledStartTime),
-            actualStartTime: parse_time(actualStartTime),
+            scheduledStartTime: +moment(scheduledStartTime),
+            actualStartTime: +moment(actualStartTime),
             concurrentViewers: +concurrentViewers,
             activeLiveChatId: activeLiveChatId,
         });

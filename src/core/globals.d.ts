@@ -21,13 +21,13 @@ export interface MinimizedStream {
     channelName: string;
     channelId: string;
 
-    scheduledStartTime: MomentObjectOutput;
+    scheduledStartTime: number;
 }
 
 export interface MinimizedUpcomingStream extends MinimizedStream {}
 
 export interface MinimizedOngoingStream extends MinimizedStream {
-    actualStartTime: MomentObjectOutput;
+    actualStartTime: number;
     concurrentViewers: number;
 }
 
@@ -43,5 +43,5 @@ export interface Channel extends Channel {
 
 export interface StreamListener {
     id: string;
-    time: MomentObjectOutput;
+    time: number;
 }
