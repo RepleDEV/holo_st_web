@@ -1,5 +1,5 @@
 import { MomentObjectOutput } from "moment";
-import { UpcomingStream, OngoingStream, YoutubeThumbnails } from "./modules/holo_st/globals";
+import { UpcomingStream, OngoingStream, YoutubeThumbnails, Channel } from "./modules/holo_st/globals";
 
 export interface Streams {
     ongoingStreams: OngoingStream[];
@@ -32,7 +32,10 @@ export interface MinimizedStreams {
     lastUpdated: number;
 }
 
-export { Channel } from "./modules/holo_st/globals";
+export interface Channel extends Channel {
+    icon: string;
+}
+
 export interface StreamListener {
     id: string;
     time: MomentObjectOutput;

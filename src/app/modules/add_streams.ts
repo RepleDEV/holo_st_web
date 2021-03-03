@@ -56,10 +56,12 @@ export default async function add_streams(
         ongoingStreams = ongoingStreams.filter((x) => {
             const channel = get_channel_info(x.channelId, channels || []);
 
+            const ch_gen = channel.generation || "";
+
             for (let i = 0;i < gen_filter.length;i++) {
                 const gen = gen_filter[i];
 
-                if (_.isEqual(channel.generation, gen)) {
+                if (_.isEqual(ch_gen, gen)) {
                     return true;
                 }
             }
@@ -69,10 +71,12 @@ export default async function add_streams(
         upcomingStreams = upcomingStreams.filter((x) => {
             const channel = get_channel_info(x.channelId, channels || []);
 
+            const ch_gen = channel.generation || "";
+
             for (let i = 0;i < gen_filter.length;i++) {
                 const gen = gen_filter[i];
 
-                if (_.isEqual(channel.generation, gen)) {
+                if (_.isEqual(ch_gen, gen)) {
                     return true;
                 }
             }

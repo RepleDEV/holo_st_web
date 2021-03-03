@@ -92,6 +92,7 @@ async function gen_checkbox_callback(e: JQuery.TriggeredEvent): Promise<void> {
     $(document).on("click", (e) => {
         switch (current_navbar_dropdown) {
             case "GenerationSelect":
+                // Filter targets
                 if (
                     !$(e.target).hasClass("dropdown-content") &&
                     !$(e.target).hasClass("gen-select-dropdown") &&
