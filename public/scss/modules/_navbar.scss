@@ -2,13 +2,12 @@
 
 .navbar-container {
     // NAVBAR SIZE
-    width: 80%;
+    width: 100%;
     min-width: 50%;
-    height: 3.5rem;
+    height: 8vh;
 
     // NAVBAR POSITION
     margin: 0 auto;
-    padding: 0 2rem;
     position: sticky;
     top: 0;
     z-index: 2;
@@ -19,14 +18,31 @@
 
     // NAVBAR APPEARANCE
     background-color: $color_primary;
-    border-radius: 0 0 0.8rem 0.8rem;
+    // border-radius: 0 0 0.8rem 0.8rem;
+}
+
+.nav-panel-toggle-button {
+    width: 2.2rem;
+    height: 2.2rem;
+
+    margin: 0 0.65rem;
+
+    background-color: #FFF;
+    border-radius: 4px;
+
+    &:hover {
+        cursor: pointer;
+    }
 }
 
 .search-input-container {
     // SEARCH INPUT CONTAINER SIZE
-    width: 32%;
+    width: 22%;
     min-width: 20%;
-    height: 1.8rem;
+    height: 58%;
+
+    position: relative;
+    margin: 0 auto;
 }
 
 .search-input-container #search_input {
