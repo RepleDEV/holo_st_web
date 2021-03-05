@@ -76,8 +76,19 @@ async function upcomingStreamCallback(
         } else if (cycle <= 5) {
             // 10 => 15 * 2 | 60
             time.add(15, "minutes");
-        } else if (cycle > 5) {
-            // 15 => 30 | > 60
+        } else if (cycle <= 6) {
+            // Add a slight delay because streamers
+            // Will most likely not start
+            // Exactly on hourly intervals
+            // So, this SHOULD adjust itself for that.
+            // So it (theoretically) won't be checking a stream 29 minutes
+            // after it has already started
+            // :/
+            // This is just me overthinking a problem that I don't even know
+            // If it is actually a problem. Gomennasorry
+            time.add(3, "minutes");
+        } else if (cycle > 6) {
+            // 15 => 30 | > 63
             time.add(30, "minutes");
         }
 
