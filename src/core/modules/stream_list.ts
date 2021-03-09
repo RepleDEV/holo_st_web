@@ -106,8 +106,7 @@ export class StreamList {
                         title: x.title,
                         thumbnail: x.thumbnail,
 
-                        channelName: x.channelName,
-                        channelId: x.channelId,
+                        channels: x.channels,
 
                         scheduledStartTime: x.scheduledStartTime,
 
@@ -125,8 +124,7 @@ export class StreamList {
                         title: x.title,
                         thumbnail: x.thumbnail,
 
-                        channelName: x.channelName,
-                        channelId: x.channelId,
+                        channels: x.channels,
 
                         scheduledStartTime: x.scheduledStartTime,
                     };

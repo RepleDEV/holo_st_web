@@ -1,13 +1,15 @@
+import _ from "lodash";
 import moment from "moment";
+import { Channel } from "../globals";
 import {
     OngoingStream,
     UpcomingStream,
     YoutubeVideoListResponse,
 } from "./holo_st/globals";
-import { parse_time } from "./holo_st/modules/parse_time";
 
 export function convert_to_ongoing_stream(
-    list: YoutubeVideoListResponse
+    list: YoutubeVideoListResponse,
+    channels: Channel[]
 ): OngoingStream {
     const { snippet, liveStreamingDetails, id } = list.items[0];
     const {
@@ -37,8 +39,7 @@ export function convert_to_ongoing_stream(
         tags: tags,
         thumbnail: thumbnails,
 
-        channelName: channelTitle,
-        channelId: channelId,
+        channels: [_.find(channels, (x) => x.channel.id === channelId)],
 
         defaultAudioLanguage: defaultAudioLanguage,
 
@@ -50,7 +51,8 @@ export function convert_to_ongoing_stream(
 }
 
 export function convert_to_upcoming_stream(
-    list: YoutubeVideoListResponse
+    list: YoutubeVideoListResponse,
+    channels: Channel[]
 ): UpcomingStream {
     const { snippet, liveStreamingDetails, id } = list.items[0];
     const {
@@ -75,8 +77,7 @@ export function convert_to_upcoming_stream(
         tags: tags,
         thumbnail: thumbnails,
 
-        channelName: channelTitle,
-        channelId: channelId,
+        channels: [_.find(channels, (x) => x.channel.id === channelId)],
 
         defaultAudioLanguage: defaultAudioLanguage,
 

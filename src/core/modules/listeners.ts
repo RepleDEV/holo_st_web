@@ -3,12 +3,15 @@ import moment from "moment";
 import { StreamListener } from "../globals";
 import { convert_to_ongoing_stream } from "./convert_streams";
 import { get_next_minute } from "./get_next_minute";
-import { OngoingStream, UpcomingStream } from "./holo_st/globals";
+import { Channel, OngoingStream, UpcomingStream } from "./holo_st/globals";
+import { get_channels } from "./holo_st/modules/get_channels";
 import { get_stream_info } from "./holo_st/modules/get_stream_info";
 import { list_streams } from "./list_streams";
 import { StreamList } from "./stream_list";
 
 const listeners: StreamListener[] = [];
+
+let channels: Channel[] | null = null;
 
 async function ongoingStreamCallback(
     id: string,
@@ -38,7 +41,7 @@ async function ongoingStreamCallback(
         cache.removeOngoingStream(id);
     } else {
         add_ongoing_stream_listener(
-            convert_to_ongoing_stream(stream_info),
+            convert_to_ongoing_stream(stream_info, channels || []),
             cache
         );
     }
@@ -55,7 +58,7 @@ async function upcomingStreamCallback(
         stream_info.items[0].snippet.liveBroadcastContent === "live";
 
     if (isStreaming) {
-        const ongoingStream = convert_to_ongoing_stream(stream_info);
+        const ongoingStream = convert_to_ongoing_stream(stream_info, channels || []);
 
         cache.addOngoingStream(ongoingStream);
 
@@ -167,19 +170,12 @@ function add_upcoming_stream_listener(
     upcomingStream: UpcomingStream,
     cache: StreamList
 ): void {
-    let duplicate = -1;
-
     for (let i = 0; i < listeners.length; i++) {
         const { id, time } = listeners[i];
 
         // If there's already a listener for the stream then return
         if (id === upcomingStream.streamId) {
-            if (time === upcomingStream.scheduledStartTime) {
-                duplicate = i;
-                break;
-            } else {
-                return;
-            }
+            return;
         }
     }
 
@@ -199,8 +195,10 @@ function add_upcoming_stream_listener(
     }
 }
 
-export function init(cache: StreamList): void {
+export async function init(cache: StreamList): Promise<void> {
     const { ongoingStreams, upcomingStreams } = cache.export();
+
+    channels = await get_channels();
 
     add_ongoing_streams_listeners(ongoingStreams, cache);
     add_upcoming_streams_listeners(upcomingStreams, cache);

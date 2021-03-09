@@ -43,7 +43,7 @@ export async function list_streams(streamList: StreamList): Promise<Streams> {
 
         const oneHour = 1000 * 60 * 60;
         if (Date.now() - +moment(upcomingStream.scheduledStartTime) < oneHour) {
-            filter.push(upcomingStream.channelId);
+            filter.push(upcomingStream.channels[0].channel.id);
         }
     }
 

@@ -73,8 +73,7 @@ export interface Stream {
     tags?: string[];
     thumbnail: YoutubeThumbnails;
 
-    channelName: string;
-    channelId: string;
+    channels: Channel[]
 
     defaultAudioLanguage?: string;
 
@@ -101,6 +100,7 @@ export interface Channel {
         name: string;
         id: string;
     };
+    icon: string;
 }
 
 export type Channels = Channel[];

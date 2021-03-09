@@ -2,10 +2,11 @@ import cheerio from "cheerio";
 
 import { Browser } from "puppeteer";
 import { UpcomingStream } from "../globals";
-import { parse_time } from "./parse_time";
 import { get_stream_info } from "./get_stream_info";
 import { get_html } from "./get_html";
 import moment from "moment";
+import _ from "lodash";
+import { get_channels } from "./get_channels";
 
 export async function get_upcoming_streams(
     id: string,
@@ -40,6 +41,8 @@ export async function get_upcoming_streams(
 
     const upcomingStreams: UpcomingStream[] = [];
 
+    const channels = await get_channels();
+
     for (let i = 0; i < streamIds.length; i++) {
         const streamId = streamIds[i];
         const stream_info = await get_stream_info(streamId);
@@ -67,8 +70,7 @@ export async function get_upcoming_streams(
             tags: tags,
             thumbnail: thumbnails,
 
-            channelName: channelTitle,
-            channelId: channelId,
+            channels: [_.find(channels, (x) => x.channel.id === channelId)],
 
             defaultAudioLanguage: defaultAudioLanguage,
 

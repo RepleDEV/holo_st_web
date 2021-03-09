@@ -18,8 +18,7 @@ export interface MinimizedStream {
     title: string;
     thumbnail: YoutubeThumbnails;
 
-    channelName: string;
-    channelId: string;
+    channels: Channel[]
 
     scheduledStartTime: number;
 }
@@ -37,9 +36,7 @@ export interface MinimizedStreams {
     lastUpdated: number;
 }
 
-export interface Channel extends Channel {
-    icon: string;
-}
+export { Channel } from "./modules/holo_st/globals";
 
 export interface StreamListener {
     id: string;

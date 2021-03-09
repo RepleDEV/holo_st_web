@@ -14,7 +14,7 @@ import search_channels from "./search_channels";
 
 let channels: Channel[] | null = null;
 
-export default async function add_streams(
+export default async function get_streams(
     ongoingStreams: MinimizedOngoingStream[],
     upcomingStreams: MinimizedUpcomingStream[],
     query: string = "",

@@ -1,8 +1,10 @@
 import cheerio from "cheerio";
+import _ from "lodash";
 import moment from "moment";
 
 import { Browser } from "puppeteer";
 import { OngoingStream } from "../globals";
+import { get_channels } from "./get_channels";
 import { get_html } from "./get_html";
 import { get_stream_info } from "./get_stream_info";
 import { parse_time } from "./parse_time";
@@ -38,6 +40,7 @@ export async function get_ongoing_streams(
         });
 
     const ongoingStreams: OngoingStream[] = [];
+    const channels = await get_channels();
 
     for (let i = 0; i < streamIds.length; i++) {
         const streamId = streamIds[i];
@@ -71,8 +74,7 @@ export async function get_ongoing_streams(
             tags: tags,
             thumbnail: thumbnails,
 
-            channelName: channelTitle,
-            channelId: channelId,
+            channels: [_.find(channels, (x) => x.channel.id === channelId)],
 
             defaultAudioLanguage: defaultAudioLanguage,
 
