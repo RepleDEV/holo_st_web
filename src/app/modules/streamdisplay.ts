@@ -1,6 +1,6 @@
 import _ from "lodash";
 import $ from "jquery";
-import { Channel, MinimizedStreams } from "../../core/globals";
+import { MinimizedStreams } from "../../core/globals";
 import { Generation } from "../../core/modules/holo_st/globals";
 
 import streamCardCreator from "./streamcardcreator";
@@ -14,8 +14,6 @@ export default class StreamDisplay {
         this.streams = streams;
 
         for (let i = 0;i < this.streams.ongoingStreams.length;i++) {
-            console.log("yes");
-
             const stream = this.streams.ongoingStreams[i];
 
             const streamCardPromise = streamCardCreator(
@@ -32,7 +30,6 @@ export default class StreamDisplay {
             });
 
             const card = await streamCardPromise;
-            console.log(card);
             this.cards.push(card);
         }
 

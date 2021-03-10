@@ -1,0 +1,45 @@
+@import "globals";
+
+.side-navbar {
+    width: 22vw;
+    height: 100vh;
+
+    position: fixed;
+
+    left: 0;
+    top: 0;
+
+    z-index: 10;
+
+    background-color: $color_primary;
+
+    .exit-button {
+        width: 3rem;
+        height: 3rem;
+
+        background-color: #FFF;
+
+        position: absolute;
+
+        top: 1.2rem;
+        right: 1.2rem;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}
+
+.side-navbar-overlay {
+    width: 100vw;
+    height: 100vh;
+
+    position: fixed;
+    left: 0;
+    top: 0;
+
+    z-index: 8;
+
+    background-color: rgba(0,0,0,0.3);
+    backdrop-filter: blur(2px);
+}

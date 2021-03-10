@@ -112,6 +112,16 @@ async function gen_checkbox_callback(e: JQuery.TriggeredEvent): Promise<void> {
         }
     });
 
+    $(".nav-panel-toggle-container > button").on("click", () => {
+        $("nav.side-navbar").toggleClass("hidden");
+        $(".side-navbar-overlay").toggleClass("hidden");
+    });
+
+    $("nav.side-navbar > .exit-button").on("click", () => {
+        $("nav.side-navbar").toggleClass("hidden");
+        $(".side-navbar-overlay").toggleClass("hidden");
+    });
+
     // $("input#search_input").on("keypress", async (e) => {
     //     const val = ($(e.target).val() || "").toString().toLowerCase();
 

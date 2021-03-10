@@ -35,6 +35,9 @@ export default async function streamCardCreator(
     $(".streamer-name").text(name);
     $(".streamer-name").attr("href", channelLink)
 
+    // When the card is clicked, it should open a new window to the stream. 
+    $(".stream-layout").attr("onclick", `window.open('${streamLink}', '_blank').focus()`)
+
     if (streaming) {
         $(".stream-layout").addClass("streaming");
     }
