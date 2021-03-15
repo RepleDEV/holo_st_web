@@ -32,6 +32,10 @@
 
     background-color: #ddd;
 
+    a {
+        display: block;
+    }
+
     img {
         max-width: 100%;
         width: 100%;
@@ -44,7 +48,11 @@
 }
 
 .channel-icon-container {
-    width: 5rem;
+    width: fit-content;
+
+    a {
+        display: block;
+    }
 }
 
 .meta-container {
@@ -91,13 +99,10 @@
 }
 
 .streamers {
-    width: 100%;
+    width: fit-content;
 
     .streamer-name {
         color: $color_secondary;
-    }
-
-    .streamer-name {
         font-size: 0.85rem;
     }
 }
