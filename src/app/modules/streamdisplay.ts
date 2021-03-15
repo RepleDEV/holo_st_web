@@ -1,13 +1,24 @@
 import _ from "lodash";
 import $ from "jquery";
-import { MinimizedStreams } from "../../core/globals";
+import { MinimizedOngoingStream, MinimizedStreams, MinimizedUpcomingStream } from "../../core/globals";
 import { Generation } from "../../core/modules/holo_st/globals";
 
 import streamCardCreator from "./streamcardcreator";
 import moment from "moment";
 
+interface OngoingStreamCard {
+    card: string;
+    stream: MinimizedOngoingStream;
+}
+
+interface UpcomingStreamCard {
+    card: string;
+    stream: MinimizedUpcomingStream;
+}
+
 export default class StreamDisplay {
-    cards: string[] = [];
+    ongoingStreamCards: OngoingStreamCard[] = []
+    upcomingStreamCards: UpcomingStreamCard[] = [];
     streams: MinimizedStreams;
 
     constructor() {}
@@ -31,7 +42,10 @@ export default class StreamDisplay {
             });
 
             const card = await streamCardPromise;
-            this.cards.push(card);
+            this.ongoingStreamCards.push({
+                card: card,
+                stream: stream
+            });
         }
 
         for (let i = 0;i < this.streams.upcomingStreams.length;i++) {
@@ -64,14 +78,85 @@ export default class StreamDisplay {
             });
 
             const card = await streamCardPromise;
-            this.cards.push(card);
+            this.upcomingStreamCards.push({
+                card: card,
+                stream: stream
+            });
         }
     }
     display(query: string = "", gen_filter?: Generation) {
-        if (this.cards.length) {
-            $(".stream-container").html(this.cards.join(""));
-        } else {
-            console.error("No stream card found!. Do the init() method first!");
-        }
+        const q = query.toLowerCase();
+
+        let cards = "";
+
+        this.ongoingStreamCards.forEach((c) => {
+            let add = true;
+
+            if (q.length)add = c.stream.title.toLowerCase().includes(q);
+            if (gen_filter)add = c.stream.channels.some((x) => _.isEqual(x.generation, gen_filter));
+
+            if (add)cards += c.card;
+        });
+        this.upcomingStreamCards.forEach((c) => {
+            cards += c.card;
+        });
+
+        $(".stream-container").html(cards);
+
+        $(".stream-layout").on("click", (e) => {
+            const card = $(e.target);
+            const id = card.attr("data-id");
+
+            if (id)window.open(`https://youtu.be/${id}`, "_blank").focus();
+        });
+    }
+    updateQuery(query: string, gen_filter?: Generation) {
+        const q = query.toLowerCase();
+
+        let filterIds: string[] = [];
+
+        this.ongoingStreamCards.forEach((c) => {
+            let filter = false;
+
+            // If a title matches the query, show that card.
+            // OR, if the name of AT LEAST ONE of the streamers matches the query
+            // Show the card.
+            if (q.length)
+                filter = 
+                    // This checks the title
+                    !c.stream.title.toLowerCase().includes(q) &&
+                    // This checks the name of the streamer(s) (hence the .some function)
+                    !c.stream.channels.some((x) => x.name.toLowerCase().includes(q));
+            if (gen_filter)filter = !c.stream.channels.some((x) => _.isEqual(x.generation, gen_filter));
+
+            if (filter)filterIds.push(c.stream.streamId);
+        });
+        this.upcomingStreamCards.forEach((c) => {
+            let filter = false;
+
+            if (q.length)
+                filter = 
+                    !c.stream.title.toLowerCase().includes(q) &&
+                    !c.stream.channels.some((x) => x.name.toLowerCase().includes(q));
+            if (gen_filter)filter = !c.stream.channels.some((x) => _.isEqual(x.generation, gen_filter));
+
+            if (filter)filterIds.push(c.stream.streamId);
+        });
+
+        $(".stream-layout").each((i, e) => {
+            const card = $(e);
+            const streamId = card.attr("data-id");
+
+            if (filterIds.includes(streamId)) {
+                card.addClass("hidden");
+            }
+        });
+    }
+    clearQuery() {
+        $(".stream-layout").each((i, e) => {
+            const card = $(e);
+
+            card.removeClass("hidden");
+        });
     }
 }

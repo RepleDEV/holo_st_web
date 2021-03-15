@@ -3,7 +3,6 @@ import "../../public/scss/base.scss";
 import $ from "jquery";
 
 import { MinimizedStreams } from "../core/globals";
-import get_streams from "./modules/get_streams";
 import { Generation } from "../core/modules/holo_st/globals";
 import StreamDisplay from "./modules/streamdisplay";
 
@@ -79,22 +78,22 @@ async function gen_checkbox_callback(e: JQuery.TriggeredEvent): Promise<void> {
     }
 
     if (minimized_streams !== null) {
-        await get_streams(
-            minimized_streams.ongoingStreams,
-            minimized_streams.upcomingStreams,
-            "",
-            filter
-        );
+        // await get_streams(
+        //     minimized_streams.ongoingStreams,
+        //     minimized_streams.upcomingStreams,
+        //     "",
+        //     filter
+        // );
     }
 }
 
 (async () => {
     minimized_streams = await $.getJSON("streams?minimized=1");
 
-    const streamdisplay = new StreamDisplay();
+    const streamDisplay = new StreamDisplay();
 
-    await streamdisplay.init(minimized_streams);
-    streamdisplay.display();
+    await streamDisplay.init(minimized_streams);
+    streamDisplay.display();
 
     $(document).on("click", (e) => {
         switch (current_navbar_dropdown) {
@@ -122,22 +121,22 @@ async function gen_checkbox_callback(e: JQuery.TriggeredEvent): Promise<void> {
         $(".side-navbar-overlay").toggleClass("hidden");
     });
 
-    // $("input#search_input").on("keypress", async (e) => {
-    //     const val = ($(e.target).val() || "").toString().toLowerCase();
+    $("input#search_input").on("keypress", async (e) => {
+        const val = ($(e.target).val() || "").toString();
 
-    //     if (e.key === "Enter") {
-    //         await get_streams(ongoingStreams, upcomingStreams, val);
-    //         is_default = false;
-    //     }
-    // });
-    // $("input#search_input").on("input", async (e) => {
-    //     const val = ($(e.target).val() || "").toString().toLowerCase();
+        if (e.key === "Enter") {
+            streamDisplay.updateQuery(val);
+            is_default = false;
+        }
+    });
+    $("input#search_input").on("input", async (e) => {
+        const val = ($(e.target).val() || "").toString().toLowerCase();
 
-    //     if (!val.length && !is_default) {
-    //         await get_streams(ongoingStreams, upcomingStreams);
-    //         is_default = true;
-    //     }
-    // });
+        if (!val.length && !is_default) {
+            streamDisplay.clearQuery();
+            is_default = true;
+        }
+    });
 
     // $(".dropdown-button").on("click", (e) => {
     //     const { target } = e;
