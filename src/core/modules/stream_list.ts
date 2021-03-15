@@ -66,8 +66,7 @@ export class StreamList {
 
         // Sort the stream
         this.ongoingStreams.sort(
-            (a, b) =>
-                a.scheduledStartTime - b.scheduledStartTime
+            (a, b) => a.scheduledStartTime - b.scheduledStartTime
         );
     }
     removeOngoingStream(streamId: string): OngoingStream[] | undefined {

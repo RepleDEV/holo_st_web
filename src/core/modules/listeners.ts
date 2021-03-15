@@ -58,7 +58,10 @@ async function upcomingStreamCallback(
         stream_info.items[0].snippet.liveBroadcastContent === "live";
 
     if (isStreaming) {
-        const ongoingStream = convert_to_ongoing_stream(stream_info, channels || []);
+        const ongoingStream = convert_to_ongoing_stream(
+            stream_info,
+            channels || []
+        );
 
         cache.addOngoingStream(ongoingStream);
 

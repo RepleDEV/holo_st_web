@@ -33,7 +33,7 @@ export default async function streamCardCreator(
     $(".stream-title").text(streamTitle);
 
     $(".streamer-name").text(name);
-    $(".streamer-name").attr("href", channelLink)
+    $(".streamer-name").attr("href", channelLink);
 
     if (streaming) {
         $(".stream-layout").addClass("streaming");

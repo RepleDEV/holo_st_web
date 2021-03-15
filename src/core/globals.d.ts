@@ -18,7 +18,7 @@ export interface MinimizedStream {
     title: string;
     thumbnail: YoutubeThumbnails;
 
-    channels: Channel[]
+    channels: Channel[];
 
     scheduledStartTime: number;
 }

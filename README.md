@@ -1,4 +1,5 @@
 # Holo ST Website Source
+
 [Express](https://www.expressjs.com) based website used for tracking [Hololive](https://www.hololive.tv) stream schedules  
 using a modified version of the [Holo ST Module/CLI](https://www.github.com/repledev/holo_st).
 
@@ -9,6 +10,7 @@ This project also provides other additional features like search and filter, amo
 Yes, this project is planned to be hosted. (On [Heroku](www.heroku.com). Sorry)
 
 ## Project Status
+
 Current status: **Unfinished**.
 
 This project is being developed by me, and me only, development will be slow.
