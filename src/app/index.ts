@@ -138,4 +138,6 @@ async function load_icons(): Promise<void> {
     });
 
     $(".gen-select > .content .gen-checkbox").on("input", gen_checkbox_callback);
+
+    $("body").removeAttr("style");
 })();
