@@ -23,7 +23,10 @@ export default async function streamCardCreator(
     const { name } = channel;
     const streamLink = `https://youtu.be/${streamId}`;
 
-    $("#stream_thumbnail").attr("src", streamThumbnailUrl);
+    // Remove _live from *_live.jpg because somehow there could be
+    // 2 different thumbnails???
+    // YouTube what?
+    $("#stream_thumbnail").attr("src", streamThumbnailUrl.replace("_live", ""));
     $(".thumbnail-container a").attr("href", streamLink);
 
     $(".channel-icon-container a").attr("href", channelLink);

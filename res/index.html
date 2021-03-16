@@ -7,13 +7,94 @@
     </head>
     <body>
         <nav class="side-navbar hidden">
-            <div class="exit-button"></div>
+            <div class="main-container">
+                <div class="dropdown-container gen-select">
+                    <div class="button">
+                        Generation
+                    </div>
+                    <div class="content hidden">
+                        <div id="gen_select_option">
+                            Select All
+                            <input
+                                type="checkbox"
+                                class="gen-checkbox"
+                                value="select_all"
+                                checked
+                            />
+                        </div>
+                        <div id="gen_select_option">
+                            0th Generation
+                            <input type="checkbox" class="gen-checkbox" value="0th" checked />
+                        </div>
+                        <div id="gen_select_option">
+                            1st Generation
+                            <input type="checkbox" class="gen-checkbox" value="1st" checked />
+                        </div>
+                        <div id="gen_select_option">
+                            2nd Generation
+                            <input type="checkbox" class="gen-checkbox" value="2nd" checked />
+                        </div>
+                        <div id="gen_select_option">
+                            Hololive GAMERS
+                            <input
+                                type="checkbox"
+                                class="gen-checkbox"
+                                value="GAMERS"
+                                checked
+                            />
+                        </div>
+                        <div id="gen_select_option">
+                            3rd Generation
+                            <input type="checkbox" class="gen-checkbox" value="3rd" checked />
+                        </div>
+                        <div id="gen_select_option">
+                            4th Generation
+                            <input type="checkbox" class="gen-checkbox" value="4th" checked />
+                        </div>
+                        <div id="gen_select_option">
+                            5th Generation
+                            <input type="checkbox" class="gen-checkbox" value="5th" checked />
+                        </div>
+                        <div id="gen_select_option">
+                            ID 1st Generation
+                            <input
+                                type="checkbox"
+                                class="gen-checkbox"
+                                value="ID 1st"
+                                checked
+                            />
+                        </div>
+                        <div id="gen_select_option">
+                            ID 2nd Generation
+                            <input
+                                type="checkbox"
+                                class="gen-checkbox"
+                                value="ID 2nd"
+                                checked
+                            />
+                        </div>
+                        <div id="gen_select_option">
+                            EN 1st Generation
+                            <input
+                                type="checkbox"
+                                class="gen-checkbox"
+                                value="EN 1st"
+                                checked
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
         </nav>
-        <div class="side-navbar-overlay hidden"></div>
+        <div class="side-navbar-overlay hidden">
+            <div class="exit-button-container">
+                <i id="load-icon" data-icon="times-solid"></i>
+            </div>
+        </div>
         <main>
             <div class="navbar-container">
                 <div class="nav-panel-toggle-container">
-                    <button></button>
+                    <i id="load-icon" data-icon="bars-solid"></i>
                 </div>
                 <div class="search-input-container">
                     <input type="text" id="search_input" placeholder="Search" />

@@ -95,19 +95,11 @@ export default class StreamDisplay {
             });
         }
     }
-    display(query: string = "", gen_filter?: Generation) {
-        const q = query.toLowerCase();
-
+    display() {
         let cards = "";
 
         this.ongoingStreamCards.forEach((c) => {
             let add = true;
-
-            if (q.length) add = c.stream.title.toLowerCase().includes(q);
-            if (gen_filter)
-                add = c.stream.channels.some((x) =>
-                    _.isEqual(x.generation, gen_filter)
-                );
 
             if (add) cards += c.card;
         });
@@ -124,12 +116,14 @@ export default class StreamDisplay {
             if (id) window.open(`https://youtu.be/${id}`, "_blank").focus();
         });
     }
-    updateQuery(query: string, gen_filter?: Generation) {
+    // TODO: Optimize query algorithm. Reduce looping! Current amount of loops: 10.
+    // TODO: If it is unable to optimize this any further, move the query algorithm to back-end.
+    updateQuery(query: string, gen_filter?: Generation[]) {
         const q = query.toLowerCase();
 
         let filterIds: string[] = [];
 
-        this.ongoingStreamCards.forEach((c) => {
+        function searchQuery(c: UpcomingStreamCard | OngoingStreamCard) {
             let filter = false;
 
             // If a title matches the query, show that card.
@@ -140,32 +134,25 @@ export default class StreamDisplay {
                     // This checks the title
                     !c.stream.title.toLowerCase().includes(q) &&
                     // This checks the name of the streamer(s) (hence the .some function)
-                    !c.stream.channels.some((x) =>
-                        x.name.toLowerCase().includes(q)
-                    );
+                    !c.stream.channels.some((x) => {
+                        return x.name.toLowerCase().includes(q) ||
+                            // Check for nicknames e.g: Senchou (Marine), FBK (Fubuki), etc.
+                            x.alias.some((y) => {
+                                return y.toLowerCase().includes(q);
+                            });
+                    });
             if (gen_filter)
-                filter = !c.stream.channels.some((x) =>
-                    _.isEqual(x.generation, gen_filter)
-                );
+                filter = c.stream.channels.some((x) => {
+                    return gen_filter.some((y) => {
+                        return _.isEqual(x.generation, y);
+                    });
+                });
 
             if (filter) filterIds.push(c.stream.streamId);
-        });
-        this.upcomingStreamCards.forEach((c) => {
-            let filter = false;
+        }
 
-            if (q.length)
-                filter =
-                    !c.stream.title.toLowerCase().includes(q) &&
-                    !c.stream.channels.some((x) =>
-                        x.name.toLowerCase().includes(q)
-                    );
-            if (gen_filter)
-                filter = !c.stream.channels.some((x) =>
-                    _.isEqual(x.generation, gen_filter)
-                );
-
-            if (filter) filterIds.push(c.stream.streamId);
-        });
+        this.ongoingStreamCards.forEach(searchQuery);
+        this.upcomingStreamCards.forEach(searchQuery);
 
         $(".stream-layout").each((i, e) => {
             const card = $(e);
@@ -173,6 +160,8 @@ export default class StreamDisplay {
 
             if (filterIds.includes(streamId)) {
                 card.addClass("hidden");
+            } else {
+                card.removeClass("hidden");
             }
         });
     }

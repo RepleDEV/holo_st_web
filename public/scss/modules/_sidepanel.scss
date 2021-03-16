@@ -12,20 +12,54 @@
     z-index: 10;
 
     background-color: $color_primary;
+}
 
-    .exit-button {
-        width: 3rem;
-        height: 3rem;
+.side-navbar .main-container .dropdown-container {
+    .button {
+        width: 100%;
+        height: 3.2rem;
+        line-height: 3.4rem;
+        box-sizing: border-box;
 
-        background-color: #fff;
+        padding: 0 0.5rem;
 
-        position: absolute;
+        background-color: #FFF;
+        font-size: 1.4rem;
 
-        top: 1.2rem;
-        right: 1.2rem;
+        user-select: none;
+
+        color: $color_primary;
 
         &:hover {
             cursor: pointer;
+        }
+    }
+
+    .content {
+        box-sizing: border-box;
+        padding-left: 0.5rem;
+    }
+}
+
+.side-navbar .gen-select .content {
+    color: #FFF;
+
+    user-select: none;
+
+    #gen_select_option {
+        height: fit-content;
+
+        margin: 0.5rem 0;
+
+        font-size: 1.2rem;
+
+        .gen-checkbox {
+            float: right;
+            margin-right: 0.5rem;
+        }
+
+        input {
+            
         }
     }
 }
@@ -37,9 +71,27 @@
     position: fixed;
     left: 0;
     top: 0;
-
     z-index: 8;
+    padding-left: 22vw;
 
-    background-color: rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(2px);
+    background-color: rgba(0, 0, 0, 0.5);
+
+    .exit-button-container {
+        width: 3.4rem;
+        height: 3.4rem;
+
+        fill: #fff;
+
+        svg {
+            max-height: 100%;
+
+            margin: 0;
+    
+            fill: #fff;
+        }
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
 }

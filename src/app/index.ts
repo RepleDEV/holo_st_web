@@ -6,37 +6,38 @@ import { MinimizedStreams } from "../core/globals";
 import { Generation } from "../core/modules/holo_st/globals";
 import StreamDisplay from "./modules/streamdisplay";
 
-type Dropdowns = "GenerationSelect";
-
-let minimized_streams: MinimizedStreams | null = null;
-
 let is_default = true;
-let current_navbar_dropdown: Dropdowns | null = null;
 
-function toggle_generation_select_dropdown(): void {
-    if (current_navbar_dropdown === "GenerationSelect") {
-        $(".gen-select-dropdown>.dropdown-content").addClass("hidden");
-        current_navbar_dropdown = null;
-    } else {
-        $(".gen-select-dropdown>.dropdown-content").removeClass("hidden");
-        current_navbar_dropdown = "GenerationSelect";
-    }
-}
+let streamDisplay: StreamDisplay | null = null;
 
 async function gen_checkbox_callback(e: JQuery.TriggeredEvent): Promise<void> {
-    const container = $(".dropdown-content");
+    const target = $(e.target);
+    const checkboxes = $(".gen-select > .content").children(":not(:first-child)");
+
+    // Check if the select all checkbox is clicked
+    if (target.attr("value") === "select_all") {
+        const checked = target.is(":checked");
+
+        // Un-check / check all of the checkboxes
+        checkboxes.each((i, e) => {
+            $(e).find(".gen-checkbox").prop("checked", checked);
+        });
+    }
 
     let filter: Generation[] = [];
 
-    const children = container.children().toArray();
+    const children = checkboxes.toArray();
     for (let i = 0; i < children.length; i++) {
         const child = children[i];
 
         const checkbox = $(child).find(".gen-checkbox");
         const value = checkbox.attr("value");
 
-        if (checkbox.is(":checked")) {
+        if (!checkbox.is(":checked")) {
             switch (value) {
+                case "0th": 
+                    filter.push(["JP", 0]);
+                    break;
                 case "1st":
                     filter.push(["JP", 1]);
                     break;
@@ -64,61 +65,59 @@ async function gen_checkbox_callback(e: JQuery.TriggeredEvent): Promise<void> {
                 case "EN 1st":
                     filter.push(["EN", 1]);
                     break;
-                case "select_all":
-                    break;
                 default:
                     break;
             }
         }
     }
 
-    if (filter.length === 9) {
-        $(".stream-container").html("");
-        filter = [];
+    if (streamDisplay !== null) {
+        streamDisplay.updateQuery("", filter);
     }
+}
 
-    if (minimized_streams !== null) {
-        // await get_streams(
-        //     minimized_streams.ongoingStreams,
-        //     minimized_streams.upcomingStreams,
-        //     "",
-        //     filter
-        // );
+async function load_icons(): Promise<void> {
+    const elements = $("i[id*='load-icon']").toArray();
+
+    for (let i = 0; i < elements.length; i++) {
+        const e = $(elements[i]);
+        const icon_name = e.attr("data-icon") || "";
+
+        if (icon_name.length) {
+            const icon = await $.get({
+                url: `/public/icons/${icon_name}.svg`,
+                dataType: "text",
+            });
+
+            e.replaceWith(icon);
+        }
     }
 }
 
 (async () => {
-    minimized_streams = await $.getJSON("streams?minimized=1");
+    await load_icons();
 
-    const streamDisplay = new StreamDisplay();
+    const minimized_streams = await $.getJSON("streams?minimized=1");
+
+    streamDisplay = new StreamDisplay();
 
     await streamDisplay.init(minimized_streams);
     streamDisplay.display();
 
-    $(document).on("click", (e) => {
-        switch (current_navbar_dropdown) {
-            case "GenerationSelect":
-                // Filter targets
-                if (
-                    !$(e.target).hasClass("dropdown-content") &&
-                    !$(e.target).hasClass("gen-select-dropdown") &&
-                    !$(e.target).hasClass("gen-checkbox") &&
-                    $(e.target).attr("id") !== "gen_select_option"
-                ) {
-                    toggle_generation_select_dropdown();
-                }
-                break;
-        }
-    });
-
-    $(".nav-panel-toggle-container > button").on("click", () => {
+    $(".nav-panel-toggle-container").on("click", () => {
         $("nav.side-navbar").toggleClass("hidden");
         $(".side-navbar-overlay").toggleClass("hidden");
     });
 
-    $("nav.side-navbar > .exit-button").on("click", () => {
+    $(".side-navbar-overlay > .exit-button-container").on("click", () => {
         $("nav.side-navbar").toggleClass("hidden");
         $(".side-navbar-overlay").toggleClass("hidden");
+    });
+
+    $(".side-navbar .dropdown-container > .button").on("click", (e) => {
+        const element = $(e.target);
+
+        element.next().toggleClass("hidden");
     });
 
     $("input#search_input").on("keypress", async (e) => {
@@ -138,11 +137,5 @@ async function gen_checkbox_callback(e: JQuery.TriggeredEvent): Promise<void> {
         }
     });
 
-    // $(".dropdown-button").on("click", (e) => {
-    //     const { target } = e;
-    //     if ($(target).hasClass("gen-select-dropdown")) {
-    //         toggle_generation_select_dropdown();
-    //     }
-    // });
-    // $(".gen-checkbox").on("input", gen_checkbox_callback);
+    $(".gen-select > .content .gen-checkbox").on("input", gen_checkbox_callback);
 })();
