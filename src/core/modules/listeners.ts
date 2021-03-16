@@ -20,11 +20,11 @@ async function ongoingStreamCallback(
     const stream_info = await get_stream_info(id);
 
     let isStreaming = true;
-    if (stream_info.items.length > 0) {
+    if (!stream_info.items.length) {
+        isStreaming = false;
+    } else {
         isStreaming =
             stream_info.items[0].snippet.liveBroadcastContent === "live";
-    } else {
-        isStreaming = false;
     }
 
     // Remove the listener from the listeners array;
