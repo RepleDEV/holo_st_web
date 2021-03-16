@@ -94,7 +94,7 @@ async function load_icons(): Promise<void> {
     }
 }
 
-(async () => {
+$(async () => {
     await load_icons();
 
     const minimized_streams = await $.getJSON("streams?minimized=1");
@@ -139,5 +139,5 @@ async function load_icons(): Promise<void> {
 
     $(".gen-select > .content .gen-checkbox").on("input", gen_checkbox_callback);
 
-    $("body").removeAttr("style");
-})();
+    $("body > main").removeClass("hidden");
+});

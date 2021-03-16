@@ -4,10 +4,10 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>HS</title>
+
+        <script src="./public/webpack/webpack.js"></script>
     </head>
-    <!-- Hide body before loading script. Inline styles is used because script is loaded after
-        the DOM has -->
-    <body style="display: none;">
+    <body>
         <nav class="side-navbar hidden">
             <div class="main-container">
                 <div class="dropdown-container gen-select">
@@ -93,7 +93,7 @@
                 <i id="load-icon" data-icon="times-solid"></i>
             </div>
         </div>
-        <main>
+        <main class="hidden">
             <div class="navbar-container">
                 <div class="nav-panel-toggle-container">
                     <i id="load-icon" data-icon="bars-solid"></i>
@@ -105,5 +105,4 @@
             <div class="stream-container"></div>
         </main>
     </body>
-    <script src="./public/webpack/webpack.js"></script>
 </html>
