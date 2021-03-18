@@ -1,9 +1,6 @@
 .stream-container {
-    position: relative;
-
     display: grid;
 
-    // grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
 
     column-gap: 2rem;
@@ -11,4 +8,10 @@
 
     margin: 4rem 2rem;
     margin-bottom: 4rem;
+}
+
+@media only screen and (min-device-width: 1920px) {
+    .stream-container {
+        grid-template-columns: repeat(4, minmax(20rem, 1fr)) !important;
+    }
 }
