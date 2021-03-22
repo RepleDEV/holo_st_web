@@ -2,7 +2,6 @@ import "../../public/scss/base.scss";
 
 import $ from "jquery";
 
-import { MinimizedStreams } from "../core/globals";
 import { Generation } from "../core/modules/holo_st/globals";
 import StreamDisplay from "./modules/streamdisplay";
 
@@ -24,7 +23,7 @@ async function gen_checkbox_callback(e: JQuery.TriggeredEvent): Promise<void> {
         });
     }
 
-    let filter: Generation[] = [];
+    const filter: Generation[] = [];
 
     const children = checkboxes.toArray();
     for (let i = 0; i < children.length; i++) {

@@ -95,13 +95,11 @@ export default class StreamDisplay {
             });
         }
     }
-    display() {
+    display(): void {
         let cards = "";
 
         this.ongoingStreamCards.forEach((c) => {
-            let add = true;
-
-            if (add) cards += c.card;
+            cards += c.card;
         });
         this.upcomingStreamCards.forEach((c) => {
             cards += c.card;
@@ -118,10 +116,10 @@ export default class StreamDisplay {
     }
     // TODO: Optimize query algorithm. Reduce looping! Current amount of loops: 10.
     // TODO: If it is unable to optimize this any further, move the query algorithm to back-end.
-    updateQuery(query: string, gen_filter?: Generation[]) {
+    updateQuery(query: string, gen_filter?: Generation[]): void {
         const q = query.toLowerCase();
 
-        let filterIds: string[] = [];
+        const filterIds: string[] = [];
 
         function searchQuery(c: UpcomingStreamCard | OngoingStreamCard) {
             let filter = false;
@@ -165,7 +163,7 @@ export default class StreamDisplay {
             }
         });
     }
-    clearQuery() {
+    clearQuery(): void {
         $(".stream-layout").each((i, e) => {
             const card = $(e);
 
