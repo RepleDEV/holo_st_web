@@ -5,6 +5,7 @@ import moment from "moment";
 import { Browser } from "puppeteer";
 import { OngoingStream } from "../globals";
 import { get_channels } from "./get_channels";
+import get_collaborators from "./get_collabolators";
 import { get_html } from "./get_html";
 import { get_stream_info } from "./get_stream_info";
 import { parse_time } from "./parse_time";
@@ -83,6 +84,9 @@ export async function get_ongoing_streams(
             concurrentViewers: +concurrentViewers,
             activeLiveChatId: activeLiveChatId,
         });
+
+        const s = ongoingStreams[ongoingStreams.length - 1];
+        s.channels.push(...get_collaborators(s, channels))
     }
 
     return ongoingStreams;

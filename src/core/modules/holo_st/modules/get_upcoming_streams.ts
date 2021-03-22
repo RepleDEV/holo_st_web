@@ -7,6 +7,7 @@ import { get_html } from "./get_html";
 import moment from "moment";
 import _ from "lodash";
 import { get_channels } from "./get_channels";
+import get_collaborators from "./get_collabolators";
 
 export async function get_upcoming_streams(
     id: string,
@@ -77,6 +78,9 @@ export async function get_upcoming_streams(
             scheduledStartTime: +moment(scheduledStartTime),
             activeLiveChatId: activeLiveChatId,
         });
+
+        const s = upcomingStreams[upcomingStreams.length - 1];
+        s.channels.push(...get_collaborators(s, channels))
     }
 
     return upcomingStreams;
