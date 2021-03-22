@@ -18,9 +18,7 @@ export function convert_to_ongoing_stream(
         title,
         description,
         thumbnails,
-        channelTitle,
         tags,
-        categoryId,
         defaultAudioLanguage,
     } = snippet;
     const {
@@ -61,9 +59,7 @@ export function convert_to_upcoming_stream(
         title,
         description,
         thumbnails,
-        channelTitle,
         tags,
-        categoryId,
         defaultAudioLanguage,
     } = snippet;
     const { scheduledStartTime, activeLiveChatId } = liveStreamingDetails;

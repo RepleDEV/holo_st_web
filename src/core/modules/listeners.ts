@@ -67,7 +67,7 @@ async function upcomingStreamCallback(
 
         add_ongoing_stream_listener(ongoingStream, cache);
     } else {
-        let time = moment();
+        const time = moment();
 
         // Let's hope this all will be in-sync
         if (cycle == 0) {
@@ -174,7 +174,7 @@ function add_upcoming_stream_listener(
     cache: StreamList
 ): void {
     for (let i = 0; i < listeners.length; i++) {
-        const { id, time } = listeners[i];
+        const { id } = listeners[i];
 
         // If there's already a listener for the stream then return
         if (id === upcomingStream.streamId) {
