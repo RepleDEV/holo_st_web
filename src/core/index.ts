@@ -1,7 +1,7 @@
 import express from "express";
 import path from "path";
 
-import * as callbacks from "./modules/callbacks";
+import * as routes from "./modules/routes";
 import { StreamList } from "./modules/stream_list";
 import { list_streams } from "./modules/list_streams";
 import { init } from "./modules/listeners";
@@ -28,9 +28,9 @@ const streamList = new StreamList();
 
     // Routes
     app.use("/public", express.static(path.resolve("./public")));
-    app.get("/", callbacks.home);
-    app.get("/streams", callbacks.streams(streamList));
+    app.get("/", routes.home);
+    app.get("/streams", routes.streams(streamList));
 
     // 404 redirect. ALWAYS KEEP THIS AT THE BACK. (things will go wrong~)
-    app.use(callbacks.redirect);
+    app.use(routes.redirect);
 })();
