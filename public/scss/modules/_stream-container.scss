@@ -1,18 +1,13 @@
 .stream-container {
-    max-height: 100%;
-
     display: grid;
-    box-sizing: border-box;
-    padding: 0 3.2rem;
-    padding-top: 4rem;
-    padding-bottom: 0.2rem;
 
     grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
 
     column-gap: 2rem;
     row-gap: 2rem;
 
-    overflow-y: scroll;
+    margin: 4rem 2rem;
+    margin-bottom: 4rem;
 }
 
 @media only screen and (min-device-width: 1920px) {
