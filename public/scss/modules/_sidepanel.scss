@@ -1,13 +1,14 @@
 @import "globals";
 
 .side-navbar {
-    width: 22vw;
+    width: 20rem;
     height: 100vh;
 
     position: fixed;
 
     left: 0;
     top: 0;
+    transform: translateX(-20rem);
 
     z-index: 10;
 
@@ -72,9 +73,11 @@
     left: 0;
     top: 0;
     z-index: 8;
-    padding-left: 22vw;
+    padding-left: 20rem;
 
     background-color: rgba(0, 0, 0, 0.5);
+
+    opacity: 0;
 
     .exit-button-container {
         width: 3.4rem;
