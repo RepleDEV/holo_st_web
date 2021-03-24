@@ -101,7 +101,7 @@ function toggle_sidepanel(): void {
 
     const translateX = [`-${width}px`, 0];
     const easing = "cubicBezier(0.650, 0.115, 0.375, 0.900)";
-    const duration = 300;
+    const duration = 200;
 
     if (isHidden) {
         sidePanel.removeClass("hidden");
@@ -163,8 +163,30 @@ $(async () => {
 
     $(".side-navbar .dropdown-container > .button").on("click", (e) => {
         const element = $(e.target);
+        const content = element.next();
+        const isHidden = content.hasClass("hidden");
 
-        element.next().toggleClass("hidden");
+        const opacity = [0, 1];
+        const easing = "easeInOutSine";
+        const duration = 160;
+
+        if (isHidden) {
+            anime({
+                targets: content[0],
+                opacity: opacity,
+                easing: easing,
+                duration: duration
+            });
+    
+            content.removeClass("hidden");
+        } else {
+            anime({
+                targets: content[0],
+                opacity: opacity.reverse(),
+                easing: easing,
+                duration: duration
+            }).finished.then(() => content.addClass("hidden"));
+        }
     });
 
     $("input#search_input").on("keypress", async (e) => {

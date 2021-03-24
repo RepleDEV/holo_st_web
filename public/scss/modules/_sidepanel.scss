@@ -37,6 +37,8 @@
     }
 
     .content {
+        overflow-y: hidden;
+
         box-sizing: border-box;
         padding-left: 0.5rem;
     }
@@ -46,6 +48,9 @@
     color: #FFF;
 
     user-select: none;
+
+    box-sizing: border-box;
+    border-bottom: 0.6rem solid #FFF;
 
     #gen_select_option {
         height: fit-content;
@@ -57,10 +62,6 @@
         .gen-checkbox {
             float: right;
             margin-right: 0.5rem;
-        }
-
-        input {
-            
         }
     }
 }
