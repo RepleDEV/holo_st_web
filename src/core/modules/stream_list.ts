@@ -88,6 +88,26 @@ export class StreamList {
             }
         }
     }
+    getUpcomingStream(streamId: string): UpcomingStream | undefined {
+        for (let i = 0;i < this.upcomingStreams.length;i++) {
+            const upcomingStream = this.upcomingStreams[i];
+
+            if (upcomingStream.streamId === streamId) {
+                return upcomingStream;
+            }
+        }
+        return;
+    }
+    getOngoingStream(streamId: string): OngoingStream | undefined {
+        for (let i = 0;i < this.ongoingStreams.length;i++) {
+            const ongoingStream = this.ongoingStreams[i];
+
+            if (ongoingStream.streamId === streamId) {
+                return ongoingStream;
+            }
+        }
+        return;
+    }
     export(): Streams {
         return {
             ongoingStreams: this.ongoingStreams,

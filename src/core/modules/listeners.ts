@@ -1,7 +1,7 @@
 import moment from "moment";
 
 import { StreamListener } from "../globals";
-import { convert_to_ongoing_stream } from "./convert_streams";
+import { convert_to_ongoing_stream, convert_to_upcoming_stream } from "./convert_streams";
 import { get_next_minute } from "./get_next_minute";
 import { Channel, OngoingStream, UpcomingStream } from "./holo_st/globals";
 import { get_channels } from "./holo_st/modules/get_channels";
@@ -39,6 +39,7 @@ async function ongoingStreamCallback(
 
     if (!isStreaming) {
         cache.removeOngoingStream(id);
+        console.log(`Removed stream: ${id}`);
     } else {
         add_ongoing_stream_listener(
             convert_to_ongoing_stream(stream_info, channels || []),
@@ -53,6 +54,18 @@ async function upcomingStreamCallback(
     cycle: number
 ): Promise<void> {
     const stream_info = await get_stream_info(id);
+    const o_stream = cache.getUpcomingStream(id);
+    const n_stream = convert_to_upcoming_stream(stream_info, channels || []);
+
+    // If stream is rescheduled, reinitialize listener
+    if (o_stream.scheduledStartTime !== n_stream.scheduledStartTime) {
+        cache.removeUpcomingStream(id);
+
+        listeners.splice(listeners.findIndex((x) => x.id === id), 1);
+
+        add_upcoming_stream_listener(n_stream, cache);
+        return;
+    }
 
     const isStreaming =
         stream_info.items[0].snippet.liveBroadcastContent === "live";
