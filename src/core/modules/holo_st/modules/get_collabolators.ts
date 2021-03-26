@@ -7,12 +7,18 @@ export default function get_collaborators(stream: UpcomingStream | OngoingStream
     const { description } = stream;
 
     let links = description.match(REGEX);
+    let ids: string[] = [];
 
     if (links === null) {
-        links = [];
-    }
+        for (let i = 0;i < channels.length;i++) {
+            const { channel } = channels[i];
 
-    const ids = links.map((x) => x.replace("https://", "").split("/")[2]);
+            // Fixes where channels are linked using @ (@ChannelName, @Tom Scott, etc.)
+            if (description.includes(`@${channel.name}`))ids.push(`https://${channel.id}`);
+        }
+    } else {
+        ids.push(...links.map((x) => x.replace("https://", "").replace("?sub_confirmation=1", "").split("/")[2]));
+    }
 
     return channels.filter((x) => ids.includes(x.channel.id));
 }
