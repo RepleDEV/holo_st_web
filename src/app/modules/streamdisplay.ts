@@ -5,7 +5,7 @@ import {
     MinimizedStreams,
     MinimizedUpcomingStream,
 } from "../../core/globals";
-import { Generation } from "../../core/modules/holo_st/globals";
+import { Generation, UpcomingStream } from "../../core/modules/holo_st/globals";
 
 import streamCardCreator from "./streamcardcreator";
 import moment from "moment";
@@ -95,14 +95,46 @@ export default class StreamDisplay {
             });
         }
     }
-    display(): void {
+    async display(): Promise<void> {
         let cards = "";
 
-        this.ongoingStreamCards.forEach((c) => {
-            cards += c.card;
+        const splitOngoingStreams: OngoingStreamCard[][] = [];
+        const splitUpcomingStreams: UpcomingStreamCard[][] = [];
+
+        this.ongoingStreamCards.forEach((x) => {
+            if (splitOngoingStreams.length == 0 || splitOngoingStreams[splitOngoingStreams.length - 1][0].stream.scheduledStartTime !== x.stream.scheduledStartTime) {
+                splitOngoingStreams.push([x]);
+            } else {
+                splitOngoingStreams[splitOngoingStreams.length - 1].push(x);
+            }
         });
-        this.upcomingStreamCards.forEach((c) => {
-            cards += c.card;
+        this.upcomingStreamCards.forEach((x) => {
+            if (splitUpcomingStreams.length == 0 || splitUpcomingStreams[splitUpcomingStreams.length - 1][0].stream.scheduledStartTime !== x.stream.scheduledStartTime) {
+                splitUpcomingStreams.push([x]);
+            } else {
+                splitUpcomingStreams[splitUpcomingStreams.length - 1].push(x);
+            }
+        });
+
+        const time_section = await $.get("./public/layouts/time_section.html");
+
+        splitOngoingStreams.forEach((x) => {
+            const time_section_element = $(time_section);
+            time_section_element.find(".time-text-container").html(moment(x[0].stream.scheduledStartTime).format("HH:mm<br>D/M/YYYY"))
+            cards += `<div class="row">${time_section_element[0].outerHTML}<div class="stream-grid-container">`;
+            x.forEach((y) => {
+                cards += y.card;
+            });
+            cards += "</div></div>";
+        });
+        splitUpcomingStreams.forEach((x) => {
+            const time_section_element = $(time_section);
+            time_section_element.find(".time-text-container").html(moment(x[0].stream.scheduledStartTime).format("HH:mm<br>D/M/YYYY"))
+            cards += `<div class="row">${time_section_element[0].outerHTML}<div class="stream-grid-container">`;
+            x.forEach((y) => {
+                cards += y.card;
+            });
+            cards += "</div></div>";
         });
 
         $(".stream-container").html(cards);

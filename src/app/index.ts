@@ -149,14 +149,14 @@ function toggle_sidepanel(): void {
 
 $(async () => {
     await load_icons();
-
+    
+    
     const minimized_streams = await $.getJSON("streams?minimized=1");
 
     streamDisplay = new StreamDisplay();
 
     await streamDisplay.init(minimized_streams);
-    streamDisplay.display();
-
+    await streamDisplay.display();
     $(".nav-panel-toggle-container").on("click", toggle_sidepanel);
 
     $(".side-navbar-overlay > .exit-button-container").on("click", toggle_sidepanel);
