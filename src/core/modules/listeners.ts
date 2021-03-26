@@ -57,14 +57,21 @@ async function upcomingStreamCallback(
     const o_stream = cache.getUpcomingStream(id);
     const n_stream = convert_to_upcoming_stream(stream_info, channels || []);
 
-    // If stream is rescheduled, reinitialize listener
-    if (o_stream.scheduledStartTime !== n_stream.scheduledStartTime) {
-        cache.removeUpcomingStream(id);
+    try {
+        // If stream is rescheduled, reinitialize listener
+        if (o_stream.scheduledStartTime !== n_stream.scheduledStartTime) {
+            cache.removeUpcomingStream(id);
 
-        listeners.splice(listeners.findIndex((x) => x.id === id), 1);
+            listeners.splice(listeners.findIndex((x) => x.id === id), 1);
 
-        add_upcoming_stream_listener(n_stream, cache);
-        return;
+            add_upcoming_stream_listener(n_stream, cache);
+            return;
+        }
+    } catch (err) {
+        console.log("An error occurred whilst trying to reinitialize listener.");
+        console.log("Error message: ");
+        console.log(err);
+        console.log(`Var dump: Typeof o_stream: ${typeof o_stream}, Typeof n_stream: ${typeof o_stream}, id: ${id}`);
     }
 
     const isStreaming =
