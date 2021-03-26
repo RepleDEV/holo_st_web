@@ -1,3 +1,5 @@
+@import "globals";
+
 .stream-container {
     display: grid;
 
@@ -8,6 +10,52 @@
 
     margin: 4rem 2rem;
     margin-bottom: 4rem;
+}
+
+.time-section-container {
+    width: 100%;
+    height: 20rem;
+
+    display: grid;
+
+    grid-template-columns: auto 1.5rem;
+    color: #777;
+
+    .stab, .border, .main-axis {
+        background-color: #BCBCBC;
+    }
+
+    .time-signature-container {
+        display: grid;
+        grid-template-columns: auto 1.5rem;
+    }
+    .time-text-container {
+        display:flex;
+        justify-content:flex-end;
+        align-items:center;
+        text-align: right;
+    }
+    .stab {
+        width: 1.5rem;
+        height: 0.2rem;
+
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .border {
+        width: 1.5rem;
+        height: 0.2rem;
+
+        position: absolute;
+        z-index: 1;
+    }
+
+    .main-axis {
+        width: 0.2rem;
+        height: 100%;
+    }
 }
 
 @media only screen and (min-device-width: 1920px) {
