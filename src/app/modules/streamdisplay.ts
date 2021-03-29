@@ -95,17 +95,49 @@ export default class StreamDisplay {
             });
         }
     }
-    display(): void {
-        let cards = "";
+    async display(): Promise<void> {
+        let rows = "";
 
-        this.ongoingStreamCards.forEach((c) => {
-            cards += c.card;
+        const splitOngoingStreams: OngoingStreamCard[][] = [];
+        const splitUpcomingStreams: UpcomingStreamCard[][] = [];
+
+        this.ongoingStreamCards.forEach((x) => {
+            if (splitOngoingStreams.length == 0 || splitOngoingStreams[splitOngoingStreams.length - 1][0].stream.scheduledStartTime !== x.stream.scheduledStartTime) {
+                splitOngoingStreams.push([x]);
+            } else {
+                splitOngoingStreams[splitOngoingStreams.length - 1].push(x);
+            }
         });
-        this.upcomingStreamCards.forEach((c) => {
-            cards += c.card;
+        this.upcomingStreamCards.forEach((x) => {
+            if (splitUpcomingStreams.length == 0 || splitUpcomingStreams[splitUpcomingStreams.length - 1][0].stream.scheduledStartTime !== x.stream.scheduledStartTime) {
+                splitUpcomingStreams.push([x]);
+            } else {
+                splitUpcomingStreams[splitUpcomingStreams.length - 1].push(x);
+            }
         });
 
-        $(".stream-container").html(cards);
+        const stream_row = await $.get("./public/layouts/stream_row.html");
+
+        splitOngoingStreams.forEach((x) => {
+            const time_section_element = $(stream_row);
+            time_section_element.find(".time-text-container").html(moment(x[0].stream.scheduledStartTime).format("HH:mm, D/M/YYYY"))
+            x.forEach((y) => {
+                time_section_element.find(".streams").append(y.card);
+            });
+
+            rows += time_section_element[0].outerHTML;
+        });
+        splitUpcomingStreams.forEach((x) => {
+            const time_section_element = $(stream_row);
+            time_section_element.find(".time-text-container").html(moment(x[0].stream.scheduledStartTime).format("HH:mm, D/M/YYYY"))
+            x.forEach((y) => {
+                time_section_element.find(".streams").html(y.card);
+            });
+
+            rows += time_section_element[0].outerHTML;
+        });
+
+        $(".stream-container").html(rows);
 
         $(".stream-layout").on("click", (e) => {
             const card = $(e.target);
