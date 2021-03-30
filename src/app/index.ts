@@ -155,7 +155,7 @@ $(async () => {
     streamDisplay = new StreamDisplay();
 
     await streamDisplay.init(minimized_streams);
-    streamDisplay.display();
+    await streamDisplay.display();
 
     $(".nav-panel-toggle-container").on("click", toggle_sidepanel);
 

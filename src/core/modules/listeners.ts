@@ -71,7 +71,7 @@ async function upcomingStreamCallback(
         console.log("An error occurred whilst trying to reinitialize listener.");
         console.log("Error message: ");
         console.log(err);
-        console.log(`Var dump: Typeof o_stream: ${typeof o_stream}, Typeof n_stream: ${typeof o_stream}, id: ${id}`);
+        console.log(`Var dump: Typeof o_stream: ${typeof o_stream}, Typeof n_stream: ${typeof n_stream}, id: ${id}`);
     }
 
     const isStreaming =
