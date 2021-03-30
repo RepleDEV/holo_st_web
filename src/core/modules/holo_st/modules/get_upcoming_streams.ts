@@ -80,7 +80,7 @@ export async function get_upcoming_streams(
         });
 
         const s = upcomingStreams[upcomingStreams.length - 1];
-        s.channels.push(...get_collaborators(s, channels))
+        s.channels.push(...get_collaborators(s, channels));
     }
 
     return upcomingStreams;

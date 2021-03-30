@@ -12,7 +12,9 @@ let streamDisplay: StreamDisplay | null = null;
 
 async function gen_checkbox_callback(e: JQuery.TriggeredEvent): Promise<void> {
     const target = $(e.target);
-    const checkboxes = $(".gen-select > .content").children(":not(:first-child)");
+    const checkboxes = $(".gen-select > .content").children(
+        ":not(:first-child)"
+    );
 
     // Check if the select all checkbox is clicked
     if (target.attr("value") === "select_all") {
@@ -35,7 +37,7 @@ async function gen_checkbox_callback(e: JQuery.TriggeredEvent): Promise<void> {
 
         if (!checkbox.is(":checked")) {
             switch (value) {
-                case "0th": 
+                case "0th":
                     filter.push(["JP", 0]);
                     break;
                 case "1st":
@@ -113,23 +115,23 @@ function toggle_sidepanel(): void {
             targets: "nav.side-navbar",
             translateX: translateX,
             duration: duration,
-            easing: easing
+            easing: easing,
         });
-        
+
         $(".side-navbar-overlay").removeClass("hidden");
 
         anime({
             targets: ".side-navbar-overlay",
             opacity: 1,
             duration: duration,
-            easing: easing
+            easing: easing,
         });
     } else {
         anime({
             targets: "nav.side-navbar",
             translateX: translateX.reverse(),
             duration: duration,
-            easing: easing
+            easing: easing,
         }).finished.then(() => {
             // Re-enable toggle button
             $(".nav-panel-toggle-container").prop("disable", false);
@@ -140,7 +142,7 @@ function toggle_sidepanel(): void {
             targets: ".side-navbar-overlay",
             opacity: 0,
             duration: duration,
-            easing: easing
+            easing: easing,
         }).finished.then(() => {
             $(".side-navbar-overlay").addClass("hidden");
         });
@@ -159,7 +161,10 @@ $(async () => {
 
     $(".nav-panel-toggle-container").on("click", toggle_sidepanel);
 
-    $(".side-navbar-overlay > .exit-button-container").on("click", toggle_sidepanel);
+    $(".side-navbar-overlay > .exit-button-container").on(
+        "click",
+        toggle_sidepanel
+    );
 
     $(".side-navbar .dropdown-container > .button").on("click", (e) => {
         const element = $(e.target);
@@ -175,16 +180,16 @@ $(async () => {
                 targets: content[0],
                 opacity: opacity,
                 easing: easing,
-                duration: duration
+                duration: duration,
             });
-    
+
             content.removeClass("hidden");
         } else {
             anime({
                 targets: content[0],
                 opacity: opacity.reverse(),
                 easing: easing,
-                duration: duration
+                duration: duration,
             }).finished.then(() => content.addClass("hidden"));
         }
     });
@@ -206,7 +211,10 @@ $(async () => {
         }
     });
 
-    $(".gen-select > .content .gen-checkbox").on("input", gen_checkbox_callback);
+    $(".gen-select > .content .gen-checkbox").on(
+        "input",
+        gen_checkbox_callback
+    );
 
     $("body > main").removeClass("hidden");
 });

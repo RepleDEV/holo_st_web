@@ -1,7 +1,10 @@
 import moment from "moment";
 
 import { StreamListener } from "../globals";
-import { convert_to_ongoing_stream, convert_to_upcoming_stream } from "./convert_streams";
+import {
+    convert_to_ongoing_stream,
+    convert_to_upcoming_stream,
+} from "./convert_streams";
 import { get_next_minute } from "./get_next_minute";
 import { Channel, OngoingStream, UpcomingStream } from "./holo_st/globals";
 import { get_channels } from "./holo_st/modules/get_channels";
@@ -62,16 +65,23 @@ async function upcomingStreamCallback(
         if (o_stream.scheduledStartTime !== n_stream.scheduledStartTime) {
             cache.removeUpcomingStream(id);
 
-            listeners.splice(listeners.findIndex((x) => x.id === id), 1);
+            listeners.splice(
+                listeners.findIndex((x) => x.id === id),
+                1
+            );
 
             add_upcoming_stream_listener(n_stream, cache);
             return;
         }
     } catch (err) {
-        console.log("An error occurred whilst trying to reinitialize listener.");
+        console.log(
+            "An error occurred whilst trying to reinitialize listener."
+        );
         console.log("Error message: ");
         console.log(err);
-        console.log(`Var dump: Typeof o_stream: ${typeof o_stream}, Typeof n_stream: ${typeof n_stream}, id: ${id}`);
+        console.log(
+            `Var dump: Typeof o_stream: ${typeof o_stream}, Typeof n_stream: ${typeof n_stream}, id: ${id}`
+        );
     }
 
     const isStreaming =

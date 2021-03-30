@@ -89,7 +89,7 @@ export class StreamList {
         }
     }
     getUpcomingStream(streamId: string): UpcomingStream | undefined {
-        for (let i = 0;i < this.upcomingStreams.length;i++) {
+        for (let i = 0; i < this.upcomingStreams.length; i++) {
             const upcomingStream = this.upcomingStreams[i];
 
             if (upcomingStream.streamId === streamId) {
@@ -99,7 +99,7 @@ export class StreamList {
         return;
     }
     getOngoingStream(streamId: string): OngoingStream | undefined {
-        for (let i = 0;i < this.ongoingStreams.length;i++) {
+        for (let i = 0; i < this.ongoingStreams.length; i++) {
             const ongoingStream = this.ongoingStreams[i];
 
             if (ongoingStream.streamId === streamId) {

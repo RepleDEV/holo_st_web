@@ -102,14 +102,22 @@ export default class StreamDisplay {
         const splitUpcomingStreams: UpcomingStreamCard[][] = [];
 
         this.ongoingStreamCards.forEach((x) => {
-            if (splitOngoingStreams.length == 0 || splitOngoingStreams[splitOngoingStreams.length - 1][0].stream.scheduledStartTime !== x.stream.scheduledStartTime) {
+            if (
+                splitOngoingStreams.length == 0 ||
+                splitOngoingStreams[splitOngoingStreams.length - 1][0].stream
+                    .scheduledStartTime !== x.stream.scheduledStartTime
+            ) {
                 splitOngoingStreams.push([x]);
             } else {
                 splitOngoingStreams[splitOngoingStreams.length - 1].push(x);
             }
         });
         this.upcomingStreamCards.forEach((x) => {
-            if (splitUpcomingStreams.length == 0 || splitUpcomingStreams[splitUpcomingStreams.length - 1][0].stream.scheduledStartTime !== x.stream.scheduledStartTime) {
+            if (
+                splitUpcomingStreams.length == 0 ||
+                splitUpcomingStreams[splitUpcomingStreams.length - 1][0].stream
+                    .scheduledStartTime !== x.stream.scheduledStartTime
+            ) {
                 splitUpcomingStreams.push([x]);
             } else {
                 splitUpcomingStreams[splitUpcomingStreams.length - 1].push(x);
@@ -120,7 +128,13 @@ export default class StreamDisplay {
 
         splitOngoingStreams.forEach((x) => {
             const time_section_element = $(stream_row);
-            time_section_element.find(".time-text-container").html(moment(x[0].stream.scheduledStartTime).format("HH:mm, D/M/YYYY"))
+            time_section_element
+                .find(".time-text-container")
+                .html(
+                    moment(x[0].stream.scheduledStartTime).format(
+                        "HH:mm, D/M/YYYY"
+                    )
+                );
             x.forEach((y) => {
                 time_section_element.find(".streams").append(y.card);
             });
@@ -129,7 +143,13 @@ export default class StreamDisplay {
         });
         splitUpcomingStreams.forEach((x) => {
             const time_section_element = $(stream_row);
-            time_section_element.find(".time-text-container").html(moment(x[0].stream.scheduledStartTime).format("HH:mm, D/M/YYYY"))
+            time_section_element
+                .find(".time-text-container")
+                .html(
+                    moment(x[0].stream.scheduledStartTime).format(
+                        "HH:mm, D/M/YYYY"
+                    )
+                );
             x.forEach((y) => {
                 time_section_element.find(".streams").html(y.card);
             });
@@ -165,11 +185,13 @@ export default class StreamDisplay {
                     !c.stream.title.toLowerCase().includes(q) &&
                     // This checks the name of the streamer(s) (hence the .some function)
                     !c.stream.channels.some((x) => {
-                        return x.name.toLowerCase().includes(q) ||
+                        return (
+                            x.name.toLowerCase().includes(q) ||
                             // Check for nicknames e.g: Senchou (Marine), FBK (Fubuki), etc.
                             x.alias.some((y) => {
                                 return y.toLowerCase().includes(q);
-                            });
+                            })
+                        );
                     });
             if (gen_filter)
                 filter = c.stream.channels.some((x) => {
@@ -193,7 +215,10 @@ export default class StreamDisplay {
 
                 const time_section_element = card.parent().prev();
 
-                if (!time_section_element.hasClass("hidden") && time_section_element.attr("data-hide") !== "false") {
+                if (
+                    !time_section_element.hasClass("hidden") &&
+                    time_section_element.attr("data-hide") !== "false"
+                ) {
                     time_section_element.addClass("hidden");
                 }
             } else {

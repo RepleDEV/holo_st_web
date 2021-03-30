@@ -18,7 +18,7 @@
 
 .stream-container .streams {
     display: grid;
-    
+
     grid-template-columns: repeat(auto-fit, 25rem);
     column-gap: 2rem;
 }
@@ -32,6 +32,6 @@
 
         margin-top: 0.2rem;
 
-        background-color: #CACACA;
+        background-color: #cacaca;
     }
 }
