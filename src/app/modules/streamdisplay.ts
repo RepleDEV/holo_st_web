@@ -190,8 +190,21 @@ export default class StreamDisplay {
 
             if (filterIds.includes(streamId)) {
                 card.addClass("hidden");
+
+                const time_section_element = card.parent().prev();
+
+                if (!time_section_element.hasClass("hidden") && time_section_element.attr("data-hide") !== "false") {
+                    time_section_element.addClass("hidden");
+                }
             } else {
                 card.removeClass("hidden");
+
+                const time_section_element = card.parent().prev();
+                time_section_element.attr("data-hide", "false");
+
+                if (time_section_element.hasClass("hidden")) {
+                    time_section_element.removeClass("hidden");
+                }
             }
         });
     }
@@ -200,6 +213,14 @@ export default class StreamDisplay {
             const card = $(e);
 
             card.removeClass("hidden");
+
+            const time_section_element = card.parent().prev();
+
+            if (time_section_element.hasClass("hidden")) {
+                time_section_element.removeClass("hidden");
+            } else {
+                time_section_element.removeAttr("data-hide");
+            }
         });
     }
 }
