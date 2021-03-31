@@ -60,28 +60,23 @@ async function upcomingStreamCallback(
     const o_stream = cache.getUpcomingStream(id);
     const n_stream = convert_to_upcoming_stream(stream_info, channels || []);
 
-    try {
-        // If stream is rescheduled, reinitialize listener
-        if (o_stream.scheduledStartTime !== n_stream.scheduledStartTime) {
-            cache.removeUpcomingStream(id);
+    // Check if o_stream is undefined. If it's undefined then it's already in the upcomingStream array.
+    // This is a dirty workaround but at least it works
+    if (o_stream === undefined) {
+        return;
+    }
 
-            listeners.splice(
-                listeners.findIndex((x) => x.id === id),
-                1
-            );
+    // If stream is rescheduled, reinitialize listener
+    if (o_stream.scheduledStartTime !== n_stream.scheduledStartTime) {
+        cache.removeUpcomingStream(id);
 
-            add_upcoming_stream_listener(n_stream, cache);
-            return;
-        }
-    } catch (err) {
-        console.log(
-            "An error occurred whilst trying to reinitialize listener."
+        listeners.splice(
+            listeners.findIndex((x) => x.id === id),
+            1
         );
-        console.log("Error message: ");
-        console.log(err);
-        console.log(
-            `Var dump: Typeof o_stream: ${typeof o_stream}, Typeof n_stream: ${typeof n_stream}, id: ${id}`
-        );
+
+        add_upcoming_stream_listener(n_stream, cache);
+        return;
     }
 
     const isStreaming =
@@ -141,7 +136,6 @@ function stream_refresh_callback(cache: StreamList): () => void {
         console.log("Finished refreshing streams.");
 
         add_upcoming_streams_listeners(streams.upcomingStreams, cache);
-        add_ongoing_streams_listeners(streams.ongoingStreams, cache);
 
         setTimeout(
             stream_refresh_callback(cache),
