@@ -89,6 +89,7 @@ export default class StreamDisplay {
             });
 
             const card = await streamCardPromise;
+
             this.upcomingStreamCards.push({
                 card: card,
                 stream: stream,
@@ -151,7 +152,7 @@ export default class StreamDisplay {
                     )
                 );
             x.forEach((y) => {
-                time_section_element.find(".streams").html(y.card);
+                time_section_element.find(".streams").append(y.card);
             });
 
             rows += time_section_element[0].outerHTML;
