@@ -212,25 +212,26 @@ export default class StreamDisplay {
 
             if (filterIds.includes(streamId)) {
                 card.addClass("hidden");
-
-                const time_section_element = card.parent().prev();
-
-                if (
-                    !time_section_element.hasClass("hidden") &&
-                    time_section_element.attr("data-hide") !== "false"
-                ) {
-                    time_section_element.addClass("hidden");
-                }
             } else {
                 card.removeClass("hidden");
+            }
+        });
 
-                const time_section_element = card.parent().prev();
-                time_section_element.attr("data-hide", "false");
+        $(".stream-container").children().each((i,e) => {
+            const child = $(e);
+            const streams = child.find(".streams").children().toArray();
+            const time_section_element = child.find(".time-section-container");
+            for (let i = 0;i < streams.length;i++) {
+                const stream = $(streams[i]);
 
-                if (time_section_element.hasClass("hidden")) {
-                    time_section_element.removeClass("hidden");
+                if (!stream.hasClass("hidden")) {
+                    if (time_section_element.hasClass("hidden")) {
+                        time_section_element.removeClass("hidden");
+                    }
+                    return;
                 }
             }
+            time_section_element.addClass("hidden");
         });
     }
     clearQuery(): void {
@@ -238,14 +239,12 @@ export default class StreamDisplay {
             const card = $(e);
 
             card.removeClass("hidden");
+        });
 
-            const time_section_element = card.parent().prev();
-
-            if (time_section_element.hasClass("hidden")) {
-                time_section_element.removeClass("hidden");
-            } else {
-                time_section_element.removeAttr("data-hide");
-            }
+        $(".stream-container").children().each((i,e) => {
+            const child = $(e);
+            const time_section_element = child.find(".time-section-container");
+            time_section_element.removeClass("hidden");
         });
     }
 }
