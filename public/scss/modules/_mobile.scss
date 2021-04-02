@@ -1,9 +1,12 @@
 @media only screen and (max-width: 800px) {
     .stream-container .streams {
-        grid-template-columns: auto !important;
+        grid-template-columns: auto;
 
         .stream-layout {
-            margin: 1rem auto !important;
+            margin: 1rem auto;
         }
+    }
+    .search-input-container {
+        width: 58%;
     }
 }
