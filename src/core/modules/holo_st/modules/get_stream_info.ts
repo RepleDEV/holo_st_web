@@ -3,7 +3,7 @@ import axios from "axios";
 import { YoutubeVideoListResponse } from "../globals";
 import { config } from "dotenv";
 
-config();
+if (typeof process.env.API_KEY !== "string" || !process.env.API_KEY.length)config();
 
 export async function get_stream_info(
     id: string
