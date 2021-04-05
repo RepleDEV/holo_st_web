@@ -11,8 +11,12 @@ export async function get_html(
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36"
     );
     await page.goto(url, { waitUntil: "networkidle0", timeout: 0 });
-    await page.click("div.VfPpkd-RLmnJb");
-    await page.waitForNavigation();
+
+    const pageURL = page.url();
+    if (pageURL !== url && pageURL.includes("consent.youtube.com")) {
+        await page.click("div.VfPpkd-RLmnJb");
+        await page.waitForNavigation();
+    }
 
     const data =
         (await page.evaluate(
