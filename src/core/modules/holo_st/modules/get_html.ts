@@ -11,18 +11,10 @@ export async function get_html(
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36"
     );
     await page.goto(url, { waitUntil: "networkidle0", timeout: 0 });
+    await page.click("div.VfPpkd-RLmnJb");
 
-    async function checkUrl() {
-        let currentURL = (await page.evaluate(() => window.location.href));
-
-        if (currentURL !== url && currentURL.includes("consent.youtube.com")) {
-            await page.click("div.VfPpkd-RLmnJb");
-            console.log(currentURL);
-            setTimeout(async () => { await checkUrl() }, 250);
-        }
-    }
-
-    await checkUrl();
+    const currentURL = (await page.evaluate(() => window.location.href));
+    console.log(currentURL);
 
     const data =
         (await page.evaluate(
