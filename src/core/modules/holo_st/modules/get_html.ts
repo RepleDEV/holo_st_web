@@ -7,8 +7,6 @@ export async function get_html(
     const browser = browser_p || (await puppeteer.launch());
     const page = await browser.newPage();
 
-    await page.setRequestInterception(true);
-
     await page.setUserAgent(
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36"
     );
