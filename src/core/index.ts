@@ -38,6 +38,7 @@ const streamList = new StreamList();
             "--disable-setuid-sandbox"
         ]
     });
+    console.log("Browser started!");
     const TESTHTML = await get_html("https://www.youtube.com/channel/UCAWSyEs_Io8MtpY3m-zqILA", browser);
     await browser.close();
     app.get("/", (req, res) => {

@@ -15,7 +15,8 @@ export async function get_html(
         (await page.evaluate(
             () => (document.querySelector("*") || {}).outerHTML
         )) || "";
-
+    const currentURL = (await page.evaluate(() => window.location.href))
+    console.log(currentURL);
     // Don't close the browser if it's imported but close the page.
     if (browser_p) {
         await page.close();
