@@ -152,7 +152,7 @@ function toggle_sidepanel(): void {
 $(async () => {
     await load_icons();
 
-    const minimized_streams = await $.getJSON("streams?minimized=1");
+    const minimized_streams = await $.getJSON("streams?minimize=1");
 
     streamDisplay = new StreamDisplay();
 
