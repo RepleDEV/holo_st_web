@@ -12,9 +12,7 @@ export async function get_html(
     );
     await page.goto(url, { waitUntil: "networkidle0", timeout: 0 });
     await page.click("div.VfPpkd-RLmnJb");
-
-    const currentURL = (await page.evaluate(() => window.location.href));
-    console.log(currentURL);
+    await page.waitForNavigation();
 
     const data =
         (await page.evaluate(
