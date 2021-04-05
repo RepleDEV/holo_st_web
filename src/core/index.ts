@@ -7,7 +7,7 @@ import { list_streams } from "./modules/list_streams";
 import { init } from "./modules/listeners";
 
 const app = express();
-const PORT = 9106;
+const PORT = process.env.PORT || 9106;
 
 const streamList = new StreamList();
 
