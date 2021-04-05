@@ -32,7 +32,12 @@ const streamList = new StreamList();
     // app.use("/public", express.static(path.resolve("./public")));
 
     // TESTING
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+        args: [
+            "--no-sandbox",
+            "--disable-setuid-sandbox"
+        ]
+    });
     console.log("Browser started!");
     const TESTHTML = await get_html("https://youtube.com/channel/UCAWSyEs_Io8MtpY3m-zqILA/videos", browser);
     await browser.close();
