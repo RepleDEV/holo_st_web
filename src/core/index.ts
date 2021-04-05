@@ -1,14 +1,15 @@
 import express from "express";
 import path from "path";
-import puppeteer from "puppeteer";
+import compression from "compression";
 
 import * as routes from "./modules/routes";
 import { StreamList } from "./modules/stream_list";
 import { list_streams } from "./modules/list_streams";
 import { init } from "./modules/listeners";
-import { get_html } from "./modules/holo_st/modules/get_html";
 
 const app = express();
+app.use(compression())
+
 const PORT = process.env.PORT || 9106;
 
 const streamList = new StreamList();
