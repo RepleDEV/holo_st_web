@@ -47,13 +47,19 @@ export async function get_all_ongoing_streams(
     filter = [...new Set(filter)];
 
     const channels = await get_channels();
-
-    const browser = await puppeteer.launch({
-        args: [
-            "--no-sandbox",
-            "--disable-setuid-sandbox"
-        ]
-    });
+    // If the environment is production, pass no argument to puppeteer.
+    const browser = await puppeteer.launch(
+        (
+            process.env.NODE_ENV === "production" ? 
+            {
+                args: [
+                    "--no-sandbox",
+                    "--disable-setuid-sandbox"
+                ]
+            } :
+            undefined
+        )
+    );
 
     const res: OngoingStream[] = [];
 
