@@ -11,11 +11,17 @@ export async function get_html(
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36"
     );
     await page.goto(url, { waitUntil: "networkidle0", timeout: 0 });
+
+    const pageURL = page.url();
+    if (pageURL !== url && pageURL.includes("consent.youtube.com")) {
+        await page.click("div.VfPpkd-RLmnJb");
+        await page.waitForNavigation();
+    }
+
     const data =
         (await page.evaluate(
             () => (document.querySelector("*") || {}).outerHTML
         )) || "";
-
     // Don't close the browser if it's imported but close the page.
     if (browser_p) {
         await page.close();

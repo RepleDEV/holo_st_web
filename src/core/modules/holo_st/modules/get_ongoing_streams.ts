@@ -34,7 +34,6 @@ export async function get_ongoing_streams(
             const meta = $(e).find("div#dismissible > div#details > div#meta");
             const streamPath =
                 meta.children(":first").children(":last").attr("href") || "";
-
             const streamId = streamPath.substring("/watch?v=".length);
 
             if (streamId) streamIds.push(streamId);

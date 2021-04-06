@@ -3,12 +3,18 @@ import axios from "axios";
 import { YoutubeVideoListResponse } from "../globals";
 import { config } from "dotenv";
 
-if (typeof process.env.API_KEY !== "string" || !process.env.API_KEY.length)config();
+try {
+    config();
+} catch (err) {
+    console.log("Error whilst trying to load .env variables using dotenv.config().")
+}
 
 export async function get_stream_info(
     id: string
 ): Promise<YoutubeVideoListResponse> {
-    const key = process.env.API_KEY || "";
+    const key = process.env.API_KEY;
+
+    if (typeof key !== "string" || !key.length)throw "NO API KEY AVAILABLE."
 
     const res = await axios.get(
         `https://youtube.googleapis.com/youtube/v3/videos`,

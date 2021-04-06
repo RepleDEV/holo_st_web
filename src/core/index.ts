@@ -1,5 +1,6 @@
 import express from "express";
 import path from "path";
+import compression from "compression";
 
 import * as routes from "./modules/routes";
 import { StreamList } from "./modules/stream_list";
@@ -7,7 +8,9 @@ import { list_streams } from "./modules/list_streams";
 import { init } from "./modules/listeners";
 
 const app = express();
-const PORT = 9106;
+app.use(compression())
+
+const PORT = process.env.PORT || 9106;
 
 const streamList = new StreamList();
 

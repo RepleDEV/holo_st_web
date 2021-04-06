@@ -13,7 +13,12 @@ export async function get_all_upcoming_streams(
 
     const channels = await get_channels();
 
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+        args: [
+            "--no-sandbox",
+            "--disable-setuid-sandbox"
+        ]
+    });
 
     const res: UpcomingStream[] = [];
 
@@ -43,7 +48,12 @@ export async function get_all_ongoing_streams(
 
     const channels = await get_channels();
 
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+        args: [
+            "--no-sandbox",
+            "--disable-setuid-sandbox"
+        ]
+    });
 
     const res: OngoingStream[] = [];
 
