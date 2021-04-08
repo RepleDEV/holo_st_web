@@ -16,9 +16,6 @@ const streamList = new StreamList();
 
 (async () => {
     console.log("Starting server.");
-    app.listen(PORT, () => {
-        console.log("App Started!");
-    });
 
     console.log("Caching streams...");
 
@@ -36,4 +33,8 @@ const streamList = new StreamList();
 
     // 404 redirect. ALWAYS KEEP THIS AT THE BACK. (things will go wrong~)
     app.use(routes.redirect);
+
+    app.listen(PORT, () => {
+        console.log("App Started!");
+    });
 })();
