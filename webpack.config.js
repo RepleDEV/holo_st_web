@@ -1,8 +1,9 @@
-const path = require("path");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
+const path = require("path");
 const rootPath = path.resolve();
 
-function config_factory(target, port) {
+function config_factory(target) {
     const BROWSER = {
         entry: path.join(rootPath, "./src/app/index.ts"),
         output: {
@@ -18,7 +19,11 @@ function config_factory(target, port) {
             rules: [
                 {
                     test: /\.scss$/,
-                    use: ["style-loader", "css-loader", "sass-loader"],
+                    use: [
+                        process.env.NODE_ENV === "production" ? MiniCssExtractPlugin.loader : "style-loader",
+                        "css-loader", 
+                        "sass-loader"
+                    ],
                 },
                 {
                     test: /\.ts$/,
@@ -26,6 +31,9 @@ function config_factory(target, port) {
                 },
             ],
         },
+        plugins: [new MiniCssExtractPlugin({
+            filename: "[name].css"
+        })]
     };
 
     const SERVER = {
@@ -64,7 +72,7 @@ function config_factory(target, port) {
 function webpack_config(env) {
     env = env || {};
 
-    return config_factory(env.TARGET, env.PORT || 9107);
+    return config_factory(env.TARGET);
 }
 
 module.exports = webpack_config;
