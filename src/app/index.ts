@@ -16,15 +16,9 @@ async function gen_checkbox_callback(e: JQuery.TriggeredEvent): Promise<void> {
         ":not(:first-child)"
     );
 
-    // Check if the select all checkbox is clicked
-    if (target.attr("value") === "select_all") {
-        const checked = target.is(":checked");
-
-        // Un-check / check all of the checkboxes
-        checkboxes.each((i, e) => {
-            $(e).find(".gen-checkbox").prop("checked", checked);
-        });
-    }
+    // One liner for: if target value is select_all, set variable as target's checked status
+    // Else set variable as null;
+    const selectAll: boolean | null = target.val() === "select_all" ? target.is(":checked") : null;
 
     const filter: Generation[] = [];
 
@@ -33,43 +27,25 @@ async function gen_checkbox_callback(e: JQuery.TriggeredEvent): Promise<void> {
         const child = children[i];
 
         const checkbox = $(child).find(".gen-checkbox");
-        const value = checkbox.attr("value");
+        
+        if (selectAll !== null)checkbox.prop("checked", selectAll);
 
-        if (!checkbox.is(":checked")) {
-            switch (value) {
-                case "0th":
-                    filter.push(["JP", 0]);
-                    break;
-                case "1st":
-                    filter.push(["JP", 1]);
-                    break;
-                case "2nd":
-                    filter.push(["JP", 2]);
-                    break;
-                case "GAMERS":
-                    filter.push("GAMERS");
-                    break;
-                case "3rd":
-                    filter.push(["JP", 3]);
-                    break;
-                case "4th":
-                    filter.push(["JP", 4]);
-                    break;
-                case "5th":
-                    filter.push(["JP", 5]);
-                    break;
-                case "ID 1st":
-                    filter.push(["ID", 1]);
-                    break;
-                case "ID 2nd":
-                    filter.push(["ID", 2]);
-                    break;
-                case "EN 1st":
-                    filter.push(["EN", 1]);
-                    break;
-                default:
-                    break;
-            }
+        const valRaw = checkbox.attr("value");
+        const value = checkbox.attr("value").replace(/(st|nd|rd|th|id|en)/gi, "");
+        const checked = checkbox.is(":checked");
+
+        const ID = valRaw.includes("ID");
+        const EN = valRaw.includes("EN");
+        const GAMERS = valRaw === "GAMERS";
+
+        if (!checked) {
+            let div: "JP" | "EN" | "ID" = "JP";
+            if (ID)div = "ID";
+            else if (EN)div = "EN";
+
+            // Short for: If GAMERS is true, return as "GAMERS." Else, return [div, +value]
+            // +value = parseInt(value)
+            filter.push(GAMERS ? "GAMERS" : [div, +value]);
         }
     }
 
