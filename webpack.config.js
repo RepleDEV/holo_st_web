@@ -36,10 +36,10 @@ function config_factory(target) {
         })]
     };
 
-    const SERVER = {
+    const WEBPROCESS = {
         entry: path.join(rootPath, "./src/core/index.ts"),
         output: {
-            filename: "server.js",
+            filename: "webprocess.js",
             path: path.join(rootPath, "./out/"),
         },
         resolve: {
@@ -60,12 +60,38 @@ function config_factory(target) {
         ],
     };
 
+    const WORKER = {
+        entry: path.join(rootPath, "./src/core/worker.ts"),
+        output: {
+            filename: "worker.js",
+            path: path.join(rootPath, "./out/"),
+        },
+        resolve: {
+            extensions: [".ts", ".js"],
+            mainFields: ["main", "module", "browser"],
+        },
+        target: "node",
+        module: {
+            rules: [
+                {
+                    test: /\.ts$/,
+                    use: ["ts-loader"],
+                },
+            ],
+        },
+        externals: [
+            require("webpack-node-externals")({ allowlist: ["jquery", "fs"] }),
+        ],
+    }
+
     if (target === "BROWSER") {
         return BROWSER;
-    } else if (target === "SERVER") {
-        return SERVER;
+    } else if (target === "WEBPROCESS") {
+        return WEBPROCESS;
+    } else if (target === "WORKER") {
+        return WORKER;
     } else {
-        return [BROWSER, SERVER];
+        return [BROWSER, WEBPROCESS, WORKER];
     }
 }
 
