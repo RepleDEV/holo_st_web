@@ -192,5 +192,6 @@ $(async () => {
         gen_checkbox_callback
     );
 
+    $("body .main-loading").addClass("hidden");
     $("body > main").removeClass("hidden");
 });
