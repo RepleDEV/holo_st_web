@@ -1,2 +1,2 @@
-web: npm start:webprocess
-worker: npm start:worker
+web: npm run start:webprocess
+worker: npm run start:worker
