@@ -11,10 +11,12 @@ import { get_channels } from "./holo_st/modules/get_channels";
 import { get_stream_info } from "./holo_st/modules/get_stream_info";
 import { list_streams } from "./list_streams";
 import { StreamList } from "./stream_list";
+import Server from "./tcp/server";
 
 const listeners: StreamListener[] = [];
 
 let channels: Channel[] | null = null;
+let server: Server | null = null;
 
 async function ongoingStreamCallback(
     id: string,
@@ -89,6 +91,7 @@ async function upcomingStreamCallback(
         );
 
         cache.addOngoingStream(ongoingStream);
+        server.sendStream("ongoing", ongoingStream);
 
         add_ongoing_stream_listener(ongoingStream, cache);
     } else {
@@ -134,6 +137,7 @@ function stream_refresh_callback(cache: StreamList): () => void {
         console.log("Refreshing streams.");
         const streams = await list_streams(cache);
         console.log("Finished refreshing streams.");
+        server.sendStreams();
 
         add_upcoming_streams_listeners(streams.upcomingStreams, cache);
 
@@ -222,10 +226,11 @@ function add_upcoming_stream_listener(
     }
 }
 
-export async function init(cache: StreamList): Promise<void> {
+export async function init(cache: StreamList, server_i: Server): Promise<void> {
     const { ongoingStreams, upcomingStreams } = cache.export();
 
     channels = await get_channels();
+    server = server_i;
 
     add_ongoing_streams_listeners(ongoingStreams, cache);
     add_upcoming_streams_listeners(upcomingStreams, cache);

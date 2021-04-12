@@ -1,19 +1,21 @@
 import express from "express";
 import path from "path";
-import axios from "axios";
+import Client from "./tcp/client";
 
 export function redirect(req: express.Request, res: express.Response): void {
     res.redirect("/");
 }
 
-export function streams(req: express.Request, res: express.Response): void {
-    const minimize = (req.query.minimize === "true" || req.query.minimize === "1")
-    // Shorthand for: if minimize, add "minimize" to the parameters.
-    axios.get("http://localhost:9107", minimize ? { params: { minimize: 1 }} : undefined)
-        .then(({data}) => res.json(data))
-        .catch((err) => {
-            res.send("Worker has not started yet!").status(404);
-        });
+export function streams(client: Client): (req: express.Request, res: express.Response) => void {
+    return (req: express.Request, res: express.Response): void => {
+        const minimize = (req.query.minimize === "true" || req.query.minimize === "1")
+
+        if (client.streamList) {
+            res.json(minimize ? client.streamList.exportMinimized() : client.streamList.export());
+        } else {
+            res.status(404).json("Streams not found. Sorry.");
+        }
+    }
 }
 
 export function home(req: express.Request, res: express.Response): void {
