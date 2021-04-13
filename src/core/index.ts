@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 9106;
 (async () => {
     console.log("Starting app.");
     console.log("Connecting to server");
-    await client.connect();
+    await client.connect({ retryDelay: 250 });
     console.log("Connected to server");
 
     // Routes
