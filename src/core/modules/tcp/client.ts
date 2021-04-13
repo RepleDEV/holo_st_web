@@ -76,7 +76,7 @@ export default class Client {
             }
         });
     }
-    connect(options?: { maxRetries?: number, retryDelay: number }): Promise<void> {
+    connect(options?: { maxRetries?: number, retryDelay?: number }): Promise<void> {
         return new Promise((resolve, reject) => {
             let attempts = 0;
 
@@ -87,13 +87,15 @@ export default class Client {
                 attempts++;
             };
 
+            const { maxRetries, retryDelay } = options || {};
+
             this.socket.on("error", () => {
-                if (attempts == (options.maxRetries || 10)) {
-                    return reject(`Socket could not connect to server after ${options.maxRetries || 10} retries.`);
+                if (attempts == (maxRetries || 10)) {
+                    return reject(`Socket could not connect to server after ${maxRetries || 10} retries.`);
                 } else if (options.retryDelay) {
                     setTimeout(() => {
                         connect();
-                    }, options.retryDelay);
+                    }, retryDelay);
                 } else {
                     connect();
                 }
