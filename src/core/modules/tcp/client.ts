@@ -92,7 +92,7 @@ export default class Client {
             this.socket.on("error", () => {
                 if (attempts == (maxRetries || 10)) {
                     return reject(`Socket could not connect to server after ${maxRetries || 10} retries.`);
-                } else if (options.retryDelay) {
+                } else if (retryDelay) {
                     setTimeout(() => {
                         connect();
                     }, retryDelay);
