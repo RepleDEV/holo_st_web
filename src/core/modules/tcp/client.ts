@@ -1,7 +1,6 @@
 import net from "net";
 import { StreamList } from "../stream_list";
 import { Streams } from "../../globals";
-import { EndMarker } from "./server";
 import { OngoingStream, UpcomingStream } from "../holo_st/globals";
 
 export default class Client {
@@ -73,6 +72,9 @@ export default class Client {
                         }
                     }
                 }
+
+                // Clear packets
+                packets = "";
             }
         });
     }

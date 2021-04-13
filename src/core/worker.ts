@@ -3,6 +3,8 @@ import { list_streams } from "./modules/list_streams";
 import { StreamList } from "./modules/stream_list";
 
 import Server from "./modules/tcp/server";
+import axios from "axios";
+import { Streams } from "./globals";
 
 const streamList = new StreamList();
 const server = new Server();
@@ -14,6 +16,7 @@ const server = new Server();
 
     await list_streams(streamList);
     init(streamList, server);
+    server.streamList = streamList;
     server.sendStreams();
     console.log("Finished starting worker!");
 })();
