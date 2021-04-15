@@ -16,7 +16,7 @@ body {
     overflow-y: scroll;
 }
 
-.main-loading {
+.main-loading, .main-error {
     display: flex;
     flex-direction: column;
 
@@ -30,7 +30,7 @@ body {
         margin: 0;
     }
     h1 {
-        font-size: 3.2vw;
+        font-size: 3vw;
         font-weight: 400;
         text-align: center;
         color: #202020;

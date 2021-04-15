@@ -5,6 +5,7 @@ import anime from "animejs";
 
 import { Generation } from "../core/modules/holo_st/globals";
 import StreamDisplay from "./modules/streamdisplay";
+import { MinimizedStreams } from "../core/globals";
 
 let is_default = true;
 
@@ -125,15 +126,30 @@ function toggle_sidepanel(): void {
     }
 }
 
+async function getStreams(): Promise<MinimizedStreams | void> {
+    try {
+        const minimized_streams = await $.getJSON("streams?minimize=1");
+
+        return minimized_streams;
+    } catch (err) {
+        return;
+    }
+}
+
 $(async () => {
     await load_icons();
 
-    const minimized_streams = await $.getJSON("streams?minimize=1");
+    const minimized_streams = await getStreams();
 
     streamDisplay = new StreamDisplay();
 
-    await streamDisplay.init(minimized_streams);
-    await streamDisplay.display();
+    if (!minimized_streams) {
+        $("body .main-loading").addClass("hidden");
+        $("body .main-error").removeClass("hidden");
+    } else {
+        await streamDisplay.init(minimized_streams);
+        await streamDisplay.display();
+    }
 
     $(".nav-panel-toggle-container").on("click", toggle_sidepanel);
 
