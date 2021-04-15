@@ -80,6 +80,7 @@ export default class Client {
     }
     connect(options?: { maxRetries?: number, retryDelay?: number }): Promise<void> {
         return new Promise((resolve, reject) => {
+            const { maxRetries, retryDelay } = options || {};
             let attempts = 0;
 
             this.socket.on("connect", () => {
@@ -88,10 +89,8 @@ export default class Client {
 
             const connect = () => {
                 this.socket.connect(9107, "127.0.0.1");
-                attempts++;
+                if (maxRetries && maxRetries >= 0)attempts++;
             };
-
-            const { maxRetries, retryDelay } = options || {};
 
             this.socket.on("error", () => {
                 if (attempts == (maxRetries || 10)) {
