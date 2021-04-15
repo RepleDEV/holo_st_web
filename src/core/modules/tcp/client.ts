@@ -82,10 +82,12 @@ export default class Client {
         return new Promise((resolve, reject) => {
             let attempts = 0;
 
+            this.socket.on("connect", () => {
+                resolve();
+            });
+
             const connect = () => {
-                this.socket.connect(9107, "127.0.0.1", () => {
-                    resolve();
-                });
+                this.socket.connect(9107, "127.0.0.1");
                 attempts++;
             };
 
