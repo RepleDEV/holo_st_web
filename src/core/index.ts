@@ -3,25 +3,32 @@ import path from "path";
 import compression from "compression";
 
 import * as routes from "./modules/routes";
-import Client from "./modules/tcp/client";
+import { StreamList } from "./modules/stream_list";
+import { list_streams } from "./modules/list_streams";
+import { init } from "./modules/listeners";
 
 const app = express();
 app.use(compression())
 
-const client = new Client();
+let streamList: StreamList | null = null;
 
 const PORT = process.env.PORT || 9106;
 
 (async () => {
     console.log("Starting app.");
-    console.log("Connecting to server");
-    await client.connect({ retryDelay: 250, maxRetries: -1 });
-    console.log("Connected to server");
+
+    console.log("Checking streams.");
+    list_streams(streamList || undefined).then((streams) => {
+        streamList = new StreamList();
+        streamList.importStreams(streams);
+        init(streamList);
+        console.log("Finished checking streams!");
+    });
 
     // Routes
     app.use("/public", express.static(path.resolve("./public")));
     app.get("/", routes.home);
-    app.get("/streams", routes.streams(client));
+    app.get("/streams", routes.streams(streamList));
 
     // 404 redirect.
     app.use(routes.redirect); //! DO NOT MOVE

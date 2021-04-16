@@ -1,17 +1,17 @@
 import express from "express";
 import path from "path";
-import Client from "./tcp/client";
+import { StreamList } from "./stream_list";
 
 export function redirect(req: express.Request, res: express.Response): void {
     res.redirect("/");
 }
 
-export function streams(client: Client): (req: express.Request, res: express.Response) => void {
+export function streams(streamList: StreamList | null): (req: express.Request, res: express.Response) => void {
     return (req: express.Request, res: express.Response): void => {
         const minimize = (req.query.minimize === "true" || req.query.minimize === "1")
 
-        if (client.streamList) {
-            res.json(minimize ? client.streamList.exportMinimized() : client.streamList.export());
+        if (streamList) {
+            res.json(minimize ? streamList.exportMinimized() : streamList.export());
         } else {
             res.status(404).json("Streams not found. Sorry.");
         }

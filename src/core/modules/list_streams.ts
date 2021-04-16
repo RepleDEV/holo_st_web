@@ -6,14 +6,12 @@ import { StreamList } from "./stream_list";
 import { Streams } from "../globals";
 import moment from "moment";
 
-export async function list_streams(streamList: StreamList): Promise<Streams> {
-    const streams = streamList.exportMinimized();
-
+export async function list_streams(streamList = new StreamList()): Promise<Streams> {
     let t = Date.now();
 
     let filter: string[] = [];
 
-    if (!streams.ongoingStreams.length || !streams.upcomingStreams.length) {
+    if (!streamList.ongoingStreams.length || !streamList.upcomingStreams.length) {
         console.log("Checking for ongoing streams...");
 
         const ongoingStreams = await holo_st.get_all_ongoing_streams(
@@ -38,8 +36,8 @@ export async function list_streams(streamList: StreamList): Promise<Streams> {
     filter = [];
 
     // If an upcoming stream is starting in less than 1 hour, filter that channel.
-    for (let i = 0; i < streams.upcomingStreams.length; i++) {
-        const upcomingStream = streams.upcomingStreams[i];
+    for (let i = 0; i < streamList.upcomingStreams.length; i++) {
+        const upcomingStream = streamList.upcomingStreams[i];
 
         const oneHour = 1000 * 60 * 60;
         if (Date.now() - +moment(upcomingStream.scheduledStartTime) < oneHour) {
