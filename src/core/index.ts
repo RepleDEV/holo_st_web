@@ -23,12 +23,13 @@ const PORT = process.env.PORT || 9106;
         streamList.importStreams(streams);
         init(streamList);
         console.log("Finished checking streams!");
+        routes.setStreamList(streamList);
     });
 
     // Routes
     app.use("/public", express.static(path.resolve("./public")));
     app.get("/", routes.home);
-    app.get("/streams", routes.streams(streamList));
+    app.get("/streams", routes.streams);
 
     // 404 redirect.
     app.use(routes.redirect); //! DO NOT MOVE
