@@ -1,11 +1,13 @@
 import express from "express";
 import path from "path";
 import compression from "compression";
+import axios from "axios";
 
 import * as routes from "./modules/routes";
 import { StreamList } from "./modules/stream_list";
 import { list_streams } from "./modules/list_streams";
 import { init } from "./modules/listeners";
+import { Streams } from "./globals";
 
 const app = express();
 app.use(compression())
@@ -14,17 +16,38 @@ let streamList: StreamList | null = null;
 
 const PORT = process.env.PORT || 9106;
 
+function checkStreamsCallback(streams: Streams) {
+    streamList = new StreamList();
+    streamList.importStreams(streams);
+    init(streamList);
+    console.log("Finished checking streams!");
+    routes.setStreamList(streamList);
+}
+
+function checkStreamsProduction() {
+    list_streams(streamList || undefined).then(checkStreamsCallback);
+}
+function checkStreamsDev() {
+    axios.get("https://holo-st-dev.herokuapp.com/streams", { params: { minimize: 1 } })
+        .then(({data}) => {
+            checkStreamsCallback(data);
+        })
+        .catch(() => {
+            console.log("Unable to reach hosted server. Checking using production method.");
+            checkStreamsProduction();
+        });
+}
+
 (async () => {
     console.log("Starting app.");
 
     console.log("Checking streams.");
-    list_streams(streamList || undefined).then((streams) => {
-        streamList = new StreamList();
-        streamList.importStreams(streams);
-        init(streamList);
-        console.log("Finished checking streams!");
-        routes.setStreamList(streamList);
-    });
+    if (process.env.NODE_ENV === "production") {
+        checkStreamsProduction()
+    } else {
+        console.log("Development build detected. Using alternate method.");
+        checkStreamsDev();
+    }
 
     // Routes
     app.use("/public", express.static(path.resolve("./public")));
