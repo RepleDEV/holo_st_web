@@ -42,7 +42,10 @@ function checkStreamsDev() {
     console.log("Starting app.");
 
     console.log("Checking streams.");
-    if (process.env.NODE_ENV === "production") {
+    if (process.argv.includes("override")) {
+        console.log("Override argument detected. Using production method.");
+        checkStreamsProduction();
+    } else if (process.env.NODE_ENV === "production") {
         checkStreamsProduction()
     } else {
         console.log("Development build detected. Using alternate method.");
