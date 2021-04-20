@@ -1,7 +1,24 @@
+// Colors
 $color_primary: #CACACA;
 $color_secondary: #DDD;
 $color_tertiary: #3F3F3F;
 $color_box-shadow: #DFDFDF;
 $color_accent: #40ffb9;
 
+// Default properties
 $box-shadow-default: 0px 0px 1rem 0.5rem $color_box-shadow;
+
+// Individual Colors
+// -> Navbar
+$navbar_background_color: #FFF;
+$navbar_border_color: $color_primary;
+
+// -> Navbar -> Side Panel Icon
+$nav-panel_svg_color: $color_tertiary;
+$nav-panel_svg_hover_color: #555;
+
+// -> Navbar -> Search Input
+$search_input_bg_color: #EEE;
+$search_input_border_color: $color_primary;
+$search_input_border_focus_color: $color_accent;
+$search_input_color: $color_tertiary;

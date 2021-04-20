@@ -10,7 +10,6 @@
     position: sticky;
     top: 0;
     z-index: 2;
-    // transform: translateY(-4.8rem);
 
     // NAVBAR DISPLAY
     display: grid;
@@ -19,9 +18,8 @@
     
 
     // NAVBAR APPEARANCE
-    background-color: #FFF;
-    border-bottom: 2px solid #CACACA;
-    // box-shadow: 0 0 1rem 0.5rem #AAA;
+    background-color: $navbar_background_color;
+    border-bottom: 2px solid $navbar_border_color;
 }
 
 .nav-panel-toggle-container {
@@ -35,14 +33,14 @@
         max-height: 100%;
 
         transition: fill 120ms ease-out;
-        fill: $color_tertiary;
+        fill: $nav-panel_svg_color;
     }
 
     &:hover {
         cursor: pointer;
 
         svg {
-            fill: #555;
+            fill: $nav-panel_svg_hover_color;
         }
     }
 }
@@ -70,27 +68,32 @@
     margin: 0;
 
     // SEARCH INPUT APPEARANCE
-    background-color: #EEE;
+    background-color: $search_input_bg_color;
+    
     border-radius: 3.2rem;
-    border: none;
-    border: 2px solid $color_primary;
+    border: 2px solid $search_input_border_color;
+
     outline: none;
-    color: $color_tertiary;
-    caret-color: $color_tertiary;
+
+    color: $search_input_color;
+    caret-color: $search_input_color;
+
     font-family: inherit;
     font-size: 0.9rem;
     font-weight: 400;
+
     transition: border 85ms ease-out;
+
     text-indent: 0.6rem;
 
     &::placeholder {
         // PLACEHOLDER APPEARANCE
-        color: $color_tertiary;
+        color: $search_input_color;
         font-size: 0.8rem;
         text-indent: 0.6rem;
     }
     &:focus {
         // FOCUS APPEARANCE
-        border: 2px solid $color_accent;
+        border: 2px solid $search_input_border_focus_color;
     }
 }
