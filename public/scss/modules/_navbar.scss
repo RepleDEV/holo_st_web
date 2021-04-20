@@ -4,28 +4,29 @@
     // NAVBAR SIZE
     width: 100%;
     min-width: 50%;
-    height: 3.2rem;
+    height: 3.8rem;
 
     // NAVBAR POSITION
-    margin: 0 auto;
     position: sticky;
     top: 0;
     z-index: 2;
+    // transform: translateY(-4.8rem);
 
     // NAVBAR DISPLAY
-    display: flex;
-    align-items: center;
+    display: grid;
+    grid-template-columns: max-content auto repeat(2, max-content);
+    grid-template-rows: 100%;
+    
 
     // NAVBAR APPEARANCE
-    background-color: $color_primary;
-    box-shadow: 0 0 4px 4px #AAA;
+    background-color: #FFF;
+    border-bottom: 2px solid #CACACA;
+    // box-shadow: 0 0 1rem 0.5rem #AAA;
 }
 
 .nav-panel-toggle-container {
-    width: 3.4rem;
+    width: 4rem;
     height: 100%;
-
-    position: absolute;
 
     box-sizing: border-box;
     padding: 0.2rem;
@@ -34,56 +35,62 @@
         max-height: 100%;
 
         transition: fill 120ms ease-out;
-        fill: #fff;
+        fill: $color_tertiary;
     }
 
     &:hover {
         cursor: pointer;
 
         svg {
-            fill: #ddd;
+            fill: #555;
         }
     }
 }
 
 .search-input-container {
     // SEARCH INPUT CONTAINER SIZE
-    width: 22%;
-    min-width: 20%;
-    height: 58%;
+    width: 24rem;
+    height: 100%;
+    
+    padding: 0 2rem;
+    box-sizing: border-box;
 
-    position: relative;
-    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .search-input-container #search_input {
     // SEARCH INPUT SIZE
     width: 100%;
-    height: 100%;
+    height: 58%;
 
     // SEARCH INPUT POSITION
     padding: 0;
     margin: 0;
 
     // SEARCH INPUT APPEARANCE
-    background: none;
+    background-color: #EEE;
+    border-radius: 3.2rem;
     border: none;
-    border-bottom: 2px solid $color_secondary;
+    border: 2px solid $color_primary;
     outline: none;
-    color: #fff;
-    caret-color: #fff;
+    color: $color_tertiary;
+    caret-color: $color_tertiary;
     font-family: inherit;
     font-size: 0.9rem;
     font-weight: 400;
-    transition: border-bottom 85ms ease-out;
+    transition: border 85ms ease-out;
+    text-indent: 0.6rem;
 
     &::placeholder {
         // PLACEHOLDER APPEARANCE
-        color: #aaa;
+        color: $color_tertiary;
         font-size: 0.8rem;
+        text-indent: 0.6rem;
     }
     &:focus {
         // FOCUS APPEARANCE
-        border-bottom: 2px solid $color_accent;
+        border: 2px solid $color_accent;
     }
 }
