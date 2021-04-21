@@ -219,20 +219,21 @@ export default class StreamDisplay {
         });
 
         $(".stream-container").children().each((i,e) => {
-            const child = $(e);
-            const streams = child.find(".streams").children().toArray();
-            const time_section_element = child.find(".time-section-container");
+            const row = $(e);
+            const streams = row.find(".streams").children().toArray();
+            const time_section_element = row.find(".time-section-container");
             for (let i = 0;i < streams.length;i++) {
                 const stream = $(streams[i]);
 
                 if (!stream.hasClass("hidden")) {
-                    if (time_section_element.hasClass("hidden")) {
-                        time_section_element.removeClass("hidden");
-                    }
+                    row.removeClass("hidden");
+                    time_section_element.removeClass("hidden");
                     return;
                 }
             }
             time_section_element.addClass("hidden");
+            // Hide the container
+            row.addClass("hidden");
         });
     }
     clearQuery(): void {
@@ -243,9 +244,11 @@ export default class StreamDisplay {
         });
 
         $(".stream-container").children().each((i,e) => {
-            const child = $(e);
-            const time_section_element = child.find(".time-section-container");
+            const row = $(e);
+            const time_section_element = row.find(".time-section-container");
             time_section_element.removeClass("hidden");
+            // Show the container
+            row.removeClass("hidden");
         });
     }
 }
