@@ -158,13 +158,27 @@ export default class StreamDisplay {
             rows += time_section_element[0].outerHTML;
         });
 
-        $(".stream-container").html(rows);
-
-        $(".stream-layout").on("click", (e) => {
+        function clickHandler(e: JQuery.ClickEvent) {
             const card = $(e.target);
-            const id = card.attr("data-id");
+
+            let id = "";
+            if (card.hasClass("stream-info-container")) {
+                id = card.parent().parent().attr("data-id");
+            } else if (card.hasClass(".stream-layout")) {
+                id = card.attr("data-id");
+            }
 
             if (id) window.open(`https://youtu.be/${id}`, "_blank").focus();
+        }
+
+        $(".stream-container").html(rows);
+
+        $(".stream-layout").on("click", clickHandler);
+        $(".stream-info-container").on("click", (e) => {
+            // This prevents clickHandler to be called twice.
+            e.stopPropagation();
+
+            clickHandler(e);
         });
     }
     // TODO: Optimize query algorithm. Reduce looping! Current amount of loops: 10.
