@@ -67,9 +67,10 @@ async function upcomingStreamCallback(
         return;
     }
 
-    // If stream is rescheduled, reinitialize listener
+    // If stream is rescheduled, reinitialize listener & stream
     if (o_stream.scheduledStartTime !== n_stream.scheduledStartTime) {
         cache.removeUpcomingStream(id);
+        cache.addUpcomingStream(n_stream);
 
         listeners.splice(
             listeners.findIndex((x) => x.id === id),
