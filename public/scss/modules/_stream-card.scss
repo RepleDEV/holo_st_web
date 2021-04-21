@@ -19,8 +19,15 @@
         text-decoration: none;
     }
 
+    transition: transform 120ms ease-in-out;
+
     &:hover {
+        transform: translateY(-0.2rem) translateX(0.2rem);
         cursor: pointer;
+    }
+
+    &:active {
+        transform: translateY(-0.1rem) translateX(0.1rem);
     }
 }
 
