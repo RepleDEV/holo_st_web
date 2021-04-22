@@ -18,7 +18,7 @@ export function streams(req: express.Request, res: express.Response): void {
     if (streamList) {
         res.json(minimize ? streamList.exportMinimized() : streamList.export());
     } else {
-        res.send(404).json("Streams not found. Sorry.");
+        res.status(404).json("Streams not found. Sorry.");
     }
 }
 
