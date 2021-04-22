@@ -11,7 +11,6 @@ import { get_channels } from "./holo_st/modules/get_channels";
 import { get_stream_info } from "./holo_st/modules/get_stream_info";
 import { list_streams } from "./list_streams";
 import { StreamList } from "./stream_list";
-import Server from "./tcp/server";
 
 const listeners: StreamListener[] = [];
 
