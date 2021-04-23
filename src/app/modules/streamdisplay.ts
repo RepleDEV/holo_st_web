@@ -164,7 +164,7 @@ export default class StreamDisplay {
             let id = "";
             if (card.hasClass("stream-info-container")) {
                 id = card.parent().parent().attr("data-id");
-            } else if (card.hasClass(".stream-layout")) {
+            } else if (card.hasClass("stream-layout")) {
                 id = card.attr("data-id");
             }
 
@@ -173,7 +173,10 @@ export default class StreamDisplay {
 
         $(".stream-container").html(rows);
 
-        $(".stream-layout").on("click", clickHandler);
+        $(".stream-layout").on("click", (e) => {
+            console.log("Click");
+            clickHandler(e);
+        });
         $(".stream-info-container").on("click", (e) => {
             // This prevents clickHandler to be called twice.
             e.stopPropagation();
