@@ -18,7 +18,7 @@ export default function get_collaborators(
 
             // Fixes where channels are linked using @ (@ChannelName, @Tom Scott, etc.)
             if (description.includes(`@${channel.name}`))
-                ids.push(`https://${channel.id}`);
+                ids.push(`${channel.id}`);
         }
     } else {
         ids.push(
