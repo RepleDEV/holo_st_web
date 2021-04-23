@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { Channel, OngoingStream, UpcomingStream } from "../globals";
 
-const REGEX = /https:\/\/www.youtube.com\/channel\/.*(\/?)(?!join)/gi;
+const REGEX = /https:\/\/www\.youtube\.com\/channel\/.*(\/?)(?!join)/gi;
 
 export default function get_collaborators(
     stream: UpcomingStream | OngoingStream,
@@ -32,5 +32,5 @@ export default function get_collaborators(
         );
     }
 
-    return channels.filter((x) => ids.includes(x.channel.id));
+    return _.uniqBy(channels.filter((x) => ids.includes(x.channel.id)), (e) => e.channel.id);
 }
