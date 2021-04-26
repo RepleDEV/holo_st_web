@@ -2,6 +2,7 @@
 
 .stream-layout {
     max-width: 60vw;
+    height: fit-content;
 
     margin: 1rem 0;
     padding: 1.2rem;
@@ -48,16 +49,6 @@
     a {
         display: block;
     }
-
-    img {
-        max-width: 100%;
-        width: 100%;
-
-        display: block;
-        object-fit: contain;
-
-        font-size: 0.8rem;
-    }
 }
 
 .channel-icon-container {
@@ -83,7 +74,7 @@
 }
 
 .meta-container {
-    height: 4.5rem;
+    height: fit-content;
 
     display: grid;
     grid-template-columns: max-content auto;
@@ -107,10 +98,37 @@
 }
 
 .streamers {
-    width: fit-content;
+    width: 100%;
 
     .streamer-name {
         color: $color_tertiary;
         font-size: 0.85rem;
     }
+
+    .streamer-icons-container {
+        width: 100%;
+        display: grid;
+
+        grid-template-columns: repeat(auto-fill, minmax(1rem, 2rem));
+
+        column-gap: 0.2rem;
+        row-gap: 0.2rem;
+    }
+    .streamer-icon {
+        img {
+            box-sizing: border-box;
+            border-radius: 50%;
+            border: 2px solid $color_primary;
+        }
+    }
+}
+
+.thumbnail-container img, .streamer-icon img {
+    max-width: 100%;
+    width: 100%;
+
+    display: block;
+    object-fit: contain;
+
+    font-size: 0.8rem;
 }
