@@ -1,0 +1,56 @@
+$color_primary: #29292b;
+$color_secondary: #1f2021;
+$color_tertiary: #29292b;
+
+$color_box-shadow: #1C1C1C;
+
+$text-color: #DEDEDE;
+
+body.dark {
+    color: #DEDEDE;
+
+    background-color: $color_primary;
+
+    .main-error h1, #search_input, #search_input::placeholder {
+        color: #DEDEDE;
+        caret-color: #DEDEDE;
+    }
+
+    .navbar-container {
+        background-color: $color_secondary;
+    }
+    .nav-panel-toggle-container svg {
+        fill: #DEDEDE;
+
+        &:hover {
+            fill: #BBB
+        }
+    }
+    #search_input {
+        background-color: #29292b;
+    }
+    .stream-layout {
+        background-color: $color_tertiary;
+
+        box-shadow: 0px 0px 1rem 0.5rem $color_box-shadow;
+
+        border-width: 2px;
+
+        &:hover {
+            box-shadow: -0.2rem 0.2rem 1rem 0.5rem #1F1F1F;
+        }
+    }
+    #channel_icon {
+        box-shadow: none;
+    }
+    .stream-title {
+        color: inherit;
+    }
+    .streamer-name {
+        color: #CCC;
+    }
+    
+    .side-navbar {
+        background-color: $color_primary;
+    }
+}

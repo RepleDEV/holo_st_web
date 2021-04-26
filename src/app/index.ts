@@ -195,7 +195,16 @@ function initializeListeners() {
     );
 }
 
+function checkDarkTheme() {
+    // This checks dark theme. See https://stackoverflow.com/a/57795495/13160047
+    const DARK_THEME = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
+    if (DARK_THEME) {
+        $("body").addClass("dark");
+    }
+}
+
 $(async () => {
+    checkDarkTheme();
     await load_icons();
 
     const minimized_streams = await getStreams();
