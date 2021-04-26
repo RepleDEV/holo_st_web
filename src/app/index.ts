@@ -136,21 +136,7 @@ async function getStreams(): Promise<MinimizedStreams | void> {
     }
 }
 
-$(async () => {
-    await load_icons();
-
-    const minimized_streams = await getStreams();
-
-    streamDisplay = new StreamDisplay();
-
-    if (!minimized_streams) {
-        $("body .main-loading").addClass("hidden");
-        $("body .main-error").removeClass("hidden");
-    } else {
-        await streamDisplay.init(minimized_streams);
-        await streamDisplay.display();
-    }
-
+function initializeListeners() {
     $(".nav-panel-toggle-container").on("click", toggle_sidepanel);
 
     $(".side-navbar-overlay > .exit-button-container").on(
@@ -207,6 +193,24 @@ $(async () => {
         "input",
         gen_checkbox_callback
     );
+}
+
+$(async () => {
+    await load_icons();
+
+    const minimized_streams = await getStreams();
+
+    streamDisplay = new StreamDisplay();
+
+    if (!minimized_streams) {
+        $("body .main-loading").addClass("hidden");
+        $("body .main-error").removeClass("hidden");
+    } else {
+        await streamDisplay.init(minimized_streams);
+        await streamDisplay.display();
+    }
+
+    initializeListeners();
 
     $("body .main-loading").addClass("hidden");
     $("body > main").removeClass("hidden");
