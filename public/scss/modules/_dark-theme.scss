@@ -1,6 +1,6 @@
 $color_primary: #29292b;
 $color_secondary: #1f2021;
-$color_tertiary: #29292b;
+$color_tertiary: #444447;
 
 $color_box-shadow: #1C1C1C;
 
@@ -18,19 +18,29 @@ body.dark {
 
     .navbar-container {
         background-color: $color_secondary;
+
+        border-bottom: 2px solid $color_accent;
     }
     .nav-panel-toggle-container svg {
-        fill: #DEDEDE;
+        fill: #ECECEC;
 
         &:hover {
-            fill: #BBB
+            fill: #DDD;
         }
     }
     #search_input {
         background-color: #29292b;
+
+        border-color: $color_tertiary;
     }
-    .stream-layout {
+
+    .row .divider {
         background-color: $color_tertiary;
+        height: 0.1rem;
+    }
+
+    .stream-layout {
+        background-color: $color_primary;
 
         box-shadow: 0px 0px 1rem 0.5rem $color_box-shadow;
 
