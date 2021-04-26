@@ -40,6 +40,8 @@ async function ongoingStreamCallback(
         }
     }
 
+    console.log(`ongoingStreamCallback log: stream_info.items.length: ${stream_info.items.length}`)
+
     if (!isStreaming) {
         cache.removeOngoingStream(id);
         console.log(`Removed stream: ${id}`);
