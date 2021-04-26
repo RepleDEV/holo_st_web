@@ -85,7 +85,7 @@ export async function get_ongoing_streams(
         });
 
         const s = ongoingStreams[ongoingStreams.length - 1];
-        s.channels.push(...get_collaborators(s, channels));
+        s.channels.push(...get_collaborators(s, channelId, channels));
     }
 
     return ongoingStreams;

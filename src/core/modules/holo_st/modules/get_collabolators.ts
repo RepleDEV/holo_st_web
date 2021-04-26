@@ -5,6 +5,7 @@ const REGEX = /https:\/\/www\.youtube\.com\/channel\/.*(\/?)(?!join)/gi;
 
 export default function get_collaborators(
     stream: UpcomingStream | OngoingStream,
+    channelId: string,
     channels: Channel[]
 ): Channel[] {
     const { description } = stream;
@@ -32,5 +33,5 @@ export default function get_collaborators(
         );
     }
 
-    return _.uniqBy(channels.filter((x) => ids.includes(x.channel.id)), (e) => e.channel.id);
+    return channels.filter((x) => ids.includes(x.channel.id) && x.channel.id !== channelId);
 }
