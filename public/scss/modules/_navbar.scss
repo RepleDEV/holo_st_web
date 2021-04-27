@@ -45,6 +45,28 @@
     }
 }
 
+.theme-toggle {
+    display: flex;
+
+    justify-content: center;
+    flex-direction: column;
+
+    * {
+        pointer-events: none;
+    }
+
+    span {
+        text-transform: capitalize;
+
+        font-weight: 500;
+        user-select: none;
+    }
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
 .search-input-container {
     // SEARCH INPUT CONTAINER SIZE
     width: 24rem;

@@ -8,6 +8,7 @@ import StreamDisplay from "./modules/streamdisplay";
 import { MinimizedStreams } from "../core/globals";
 
 let is_default = true;
+let preferred_theme: "light" | "dark" = "light";
 
 let streamDisplay: StreamDisplay | null = null;
 
@@ -172,6 +173,26 @@ function initializeListeners() {
         }
     });
 
+    $(".theme-toggle").on("click", ({target}) => {
+        const e = $(target);
+        if (preferred_theme === "light") {
+            $("body").addClass("dark");
+            preferred_theme = "dark";
+        } else {
+            $("body").removeClass("dark");
+            preferred_theme = "light";
+        }
+        // Find span (text for light / dark) & iterate
+        e.find(" > * > span").each((i, e) => {
+            const elm = $(e);
+            if (elm.hasClass("hidden")) {
+                elm.removeClass("hidden");
+            } else {
+                elm.addClass("hidden");
+            }
+        });
+    });
+
     $("input#search_input").on("keypress", async (e) => {
         const val = ($(e.target).val() || "").toString();
 
@@ -200,6 +221,7 @@ function checkDarkTheme() {
     const DARK_THEME = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
     if (DARK_THEME) {
         $("body").addClass("dark");
+        preferred_theme = "dark";
     }
 }
 
