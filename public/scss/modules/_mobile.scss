@@ -3,17 +3,25 @@
         grid-template-columns: auto;
 
         .stream-layout {
-            margin: 1rem auto;
+            margin: 1rem 0;
         }
     }
+    .navbar-container {
+        grid-template-columns: max-content auto;
+    }
     .search-input-container {
-        width: 82vw;
+        width: 100%;
     }
     .side-navbar {
         width: 82vw;
     }
     .side-navbar-overlay {
         padding-left: 82vw;
+    }
+    // This makes sure the search bar is the largest, and the only element (except for the sidebar toggle)
+    // To be shown
+    .navbar-container .divider, .navbar-container .theme-toggle {
+        display: none;
     }
     .main-loading {
         margin-top: 50%;
