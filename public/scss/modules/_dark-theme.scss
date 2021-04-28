@@ -1,3 +1,5 @@
+@use "globals" as default;
+
 $color_primary: #29292b;
 $color_secondary: #1f2021;
 $color_tertiary: #444447;
@@ -19,7 +21,7 @@ body.dark {
     .navbar-container {
         background-color: $color_secondary;
 
-        border-bottom: 2px solid $color_accent;
+        border-bottom: 2px solid default.$color_accent;
     }
     .nav-panel-toggle-container svg {
         fill: #ECECEC;
