@@ -13,7 +13,7 @@ body.dark {
 
     background-color: $color_primary;
 
-    .main-error h1, #search_input, #search_input::placeholder {
+    .main-error h1, .main-loading h1, #search_input, #search_input::placeholder {
         color: #DEDEDE;
         caret-color: #DEDEDE;
     }
