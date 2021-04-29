@@ -174,7 +174,6 @@ export default class StreamDisplay {
         $(".stream-container").html(rows);
 
         $(".stream-layout").on("click", (e) => {
-            console.log("Click");
             clickHandler(e);
         });
         $(".stream-info-container").on("click", (e) => {
