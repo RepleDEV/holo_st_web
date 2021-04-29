@@ -4,61 +4,48 @@ import * as holo_st from "./holo_st";
 
 import { StreamList } from "./stream_list";
 import { Streams } from "../globals";
-import moment from "moment";
 
 export async function list_streams(streamList = new StreamList()): Promise<Streams> {
-    let t = Date.now();
+    const t = Date.now();
 
-    let filter: string[] = [];
+    console.log("Checking for streams...");
 
-    if (!streamList.ongoingStreams.length || !streamList.upcomingStreams.length) {
-        console.log("Checking for ongoing streams...");
-
-        const ongoingStreams = await holo_st.get_all_ongoing_streams(
-            filter,
-            (s, i) => {
-                logUpdate(`Checked ${i + 1}.`);
-            }
-        );
-        ongoingStreams.forEach((x) => streamList.addOngoingStream(x));
-
-        logUpdate.done();
-        console.log(
-            `Finished checking for ongoing streams. Time to finish: ${
-                Date.now() - t
-            }ms.`
-        );
-    }
-    console.log("Checking for upcoming streams...");
-
-    // Refresh time & filter
-    t = Date.now();
-    filter = [];
-
-    // If an upcoming stream is starting in less than 1 hour, filter that channel.
-    for (let i = 0; i < streamList.upcomingStreams.length; i++) {
-        const upcomingStream = streamList.upcomingStreams[i];
-
-        const oneHour = 1000 * 60 * 60;
-        if (Date.now() - +moment(upcomingStream.scheduledStartTime) < oneHour) {
-            filter.push(upcomingStream.channels[0].channel.id);
-        }
-    }
-
-    const upcomingStreams = await holo_st.get_all_upcoming_streams(
-        filter,
-        (s, i) => {
-            logUpdate(`Checked ${i + 1}.`);
-        }
-    );
-    upcomingStreams.forEach((x) => streamList.addUpcomingStream(x));
-
+    const [ongoingStreams, upcomingStreams] = await holo_st.get_all_streams((s, i) => {
+        logUpdate(`Checked ${i + 1}.`);
+    });
     logUpdate.done();
-    console.log(
-        `Finished checking for upcoming streams. Time to finish: ${
-            Date.now() - t
-        }ms`
-    );
+
+    // Check if the ongoingStreams property on the streamList already has contents inside.
+    if (streamList.ongoingStreams.length) {
+        // Check streamList ongoingStreams array if there are any streams that are not present
+        // in the ongoingStreams array from the get_all_streams function
+        
+        // This checks for mistakes when the stream listener fails to
+        // remove a stream that has already ended.
+        const delStreams = streamList.ongoingStreams.filter((stream) => {
+            for (let i = 0;i < ongoingStreams.length;i++) {
+                const ongoingStream = ongoingStreams[i];
+
+                // Check if the stream is in the ongoingStream array by checking their respective streamIds.
+                if (ongoingStream.streamId === stream.streamId)
+                    return false;
+            }
+            return true;
+        });
+
+        // Next, loop over all the faulty streams and remove them from the streamList ongoingStreams array
+        delStreams.forEach((stream) => {
+            streamList.removeOngoingStream(stream.streamId);
+        });
+    }
+
+    streamList.importStreams({
+        ongoingStreams: ongoingStreams,
+        upcomingStreams: upcomingStreams,
+        lastUpdated: Date.now()
+    });
+
+    console.log(`Finished checking for streams. Time to finish: ${Date.now() - t}ms.`);
 
     return streamList.export();
 }
