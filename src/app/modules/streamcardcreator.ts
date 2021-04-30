@@ -37,6 +37,29 @@ export default async function streamCardCreator(
     $(".streamer-name").text(name);
     $(".streamer-name").attr("href", channelLink);
 
+    if (channels.length > 1) {
+        const streamersElement = $(".streamers");
+        const streamerIconContainerElement = streamersElement.find(".streamer-icons-container");
+        streamersElement.find("hr").removeClass("hidden");
+        streamerIconContainerElement.removeClass("hidden");
+
+        const streamerIconElement = $(".streamers > .streamer-icons-container > .streamer-icon");
+        const streamerIconComponent = streamerIconElement.clone();
+        
+        streamerIconElement.remove();
+
+        // Variable i is 1 because the first element of the array is the live stream's host.
+        for (let i = 1;i < channels.length;i++) {
+            const channel = channels[i];
+
+            const streamerIconComponentClone = streamerIconComponent.clone();
+
+            streamerIconComponentClone.find("img").attr("src", channel.icon.replace("{size}", "64"));
+
+            streamerIconContainerElement.append(streamerIconComponentClone);
+        }
+    }
+
     if (streaming) {
         $(".stream-layout").addClass("streaming");
     }
