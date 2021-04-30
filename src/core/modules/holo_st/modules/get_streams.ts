@@ -249,6 +249,8 @@ export default async function get_streams(
     const url = `https://www.youtube.com/channel/${id}/videos`;
     await handle_redirect(page, url);
 
+    console.log(page.url());
+
     await page.goto(url);
     const streamTypes = await get_stream_types(page);
 
