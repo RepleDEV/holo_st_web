@@ -261,5 +261,7 @@ export default async function get_streams(
     // Same goes with hasUpcomingStreams.
     const upcomingStreams = hasUpcomingStreams ? await get_upcoming_streams(page, channels, streamTypes) : [];
 
+    await page.close();
+
     return [ongoingStreams, upcomingStreams];
 }
