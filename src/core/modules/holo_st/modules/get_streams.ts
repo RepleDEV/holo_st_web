@@ -247,9 +247,10 @@ export default async function get_streams(
     const page = await get_page(browser);
 
     const url = `https://www.youtube.com/channel/${id}/videos`;
+    await page.goto(url, { waitUntil: "networkidle0", timeout: 0 });
+
     await handle_redirect(page, url);
 
-    await page.goto(url, { waitUntil: "networkidle0", timeout: 0 });
     const streamTypes = await get_stream_types(page);
 
     const hasOngoingStreams = streamTypes.includes("Live now");
