@@ -6,16 +6,9 @@ import { get_stream_info } from "./get_stream_info";
 import dayjs from "dayjs";
 import _ from "lodash";
 
-import { promises as fs } from "fs";
-import path from "path";
-
 async function get_stream_types(page: Page): Promise<string[]> {
-    const url = page.url();
-
     // Get dropdown inner html from page. (The dropdown that allows you to select video types)
-    const dropdownInnerHTML = (
-        await page.evaluate(() => (document.querySelector("#menu") || {}).innerHTML)
-    ) || "";
+    const dropdownInnerHTML = await page.evaluate(() => (document.querySelector("#menu") || {}).innerHTML);
     if (dropdownInnerHTML) {
         const $ = cheerio.load(dropdownInnerHTML);
 
@@ -56,10 +49,10 @@ async function click_dropdown_button(page: Page, type: "ongoing" | "upcoming", s
     // Get selector from index
     const selector = `#menu > a:nth-child(${buttonIndex + 1})`;
 
-    // Get child amount of #contents #items (Number of videos displayed)
-    const previousAmount = await page.evaluate(() => 
-        document.querySelector("#contents #items").childElementCount
-    );
+    // // Get child amount of #contents #items (Number of videos displayed)
+    // const previousAmount = await page.evaluate(() => 
+    //     document.querySelector("#contents #items").childElementCount
+    // );
 
     await Promise.all([
         // Click the dropdown button
@@ -71,9 +64,23 @@ async function click_dropdown_button(page: Page, type: "ongoing" | "upcoming", s
         // TODO: This method of comparing states
         // TODO: might not work 100% of the time
         // TODO: and will probably need to be changed sometime soon.
-        page.waitForFunction((previousAmount) => 
-            document.querySelector("#contents #items").childElementCount !== previousAmount
-        , {}, previousAmount)
+        page.waitForFunction((type) => {
+            if (type === "upcoming") {
+                // This method checks the first video of the list. Checks its thumbnail mark.
+                // On a video, the thumbnail mark will show the length of the video.
+                // On an ongoing live stream, the thumbnail mark will show the text LIVE with a red background
+                // And, on an upcoming live stream, the thumbnail mark will show the text LIVE with a gray background.
+                // We check what type of the thumbnail mark is by checking its overlay-style attribute.
+                // On a video it will be "DEFAULT"
+                // On an ongoing live stream it will be "LIVE"
+                // And on an upcoming live stream it will be "UPCOMING"
+                return document.querySelector("#overlays > ytd-thumbnail-overlay-time-status-renderer").getAttribute("overlay-style") === "UPCOMING";
+            } else {
+                // When the type it wants to check is "ongoing" then just count how many videos there are being shown
+                // It will always be 1 as there cannot be more than 1 ongoing live stream at any time.
+                return document.querySelector("#contents #items").childElementCount === 1;
+            }
+        }, {}, type)
     ]);
 }
 
@@ -83,14 +90,22 @@ function get_stream_ids(videoList: string): string[] {
     const streamIds: string[] = [];
 
     // Loop through every video element to get their respective IDs
-    $("#items").children().each((i, e) => {
-        const meta = $(e).find("div#dismissible > div#details > div#meta");
+    const items = $("#contents #items").children().toArray();
+
+    for (let i = 0;i < items.length;i++) {
+        const e = $(items[i]);
+
+        if (e.find("#overlays > ytd-thumbnail-overlay-time-status-renderer").attr("overlay-style") === "DEFAULT") {
+            break;
+        }
+
+        const meta = e.find("div#dismissible > div#details > div#meta");
         const streamPath =
             meta.children(":first").children(":last").attr("href") || "";
         const streamId = streamPath.substring("/watch?v=".length);
 
         if (streamId) streamIds.push(streamId);
-    });
+    }
 
     return streamIds;
 }
