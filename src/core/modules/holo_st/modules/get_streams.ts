@@ -6,6 +6,9 @@ import { get_stream_info } from "./get_stream_info";
 import dayjs from "dayjs";
 import _ from "lodash";
 
+import { promises as fs } from "fs";
+import path from "path";
+
 async function get_stream_types(page: Page): Promise<string[]> {
     const url = page.url();
 
@@ -34,7 +37,7 @@ async function get_stream_types(page: Page): Promise<string[]> {
 
 async function get_video_list(page: Page): Promise<string> {
     const videoList = await page.evaluate(() => 
-        (document.querySelector("ytd-app") || {}).innerHTML
+        (document.querySelector("*") || {}).innerHTML
     );
 
     return videoList;
@@ -53,13 +56,24 @@ async function click_dropdown_button(page: Page, type: "ongoing" | "upcoming", s
     // Get selector from index
     const selector = `#menu > a:nth-child(${buttonIndex + 1})`;
 
+    // Get child amount of #contents #items (Number of videos displayed)
+    const previousAmount = await page.evaluate(() => 
+        document.querySelector("#contents #items").childElementCount
+    );
+
     await Promise.all([
         // Click the dropdown button
         page.evaluate((selector) => {
             (document.querySelector(selector) as HTMLElement).click()
         }, selector),
         // Wait to load
-        page.waitForNavigation({waitUntil: "networkidle0"}),
+
+        // TODO: This method of comparing states
+        // TODO: might not work 100% of the time
+        // TODO: and will probably need to be changed sometime soon.
+        page.waitForFunction((previousAmount) => 
+            document.querySelector("#contents #items").childElementCount !== previousAmount
+        , {}, previousAmount)
     ]);
 }
 
@@ -69,7 +83,7 @@ function get_stream_ids(videoList: string): string[] {
     const streamIds: string[] = [];
 
     // Loop through every video element to get their respective IDs
-    $("body").children().each((i, e) => {
+    $("#items").children().each((i, e) => {
         const meta = $(e).find("div#dismissible > div#details > div#meta");
         const streamPath =
             meta.children(":first").children(":last").attr("href") || "";
@@ -229,12 +243,7 @@ export default async function get_streams(
     // If hasOngoingStreams is true, get ongoing streams. If not, define the variable as an empty array
     const ongoingStreams = hasOngoingStreams ? await get_ongoing_streams(page, channels, streamTypes) : [];
     // Same goes with hasUpcomingStreams.
-    const upcomingstreams = hasUpcomingStreams ? await get_upcoming_streams(page, channels, streamTypes) : [];
+    const upcomingStreams = hasUpcomingStreams ? await get_upcoming_streams(page, channels, streamTypes) : [];
 
-    // const streams = await Promise.all(
-    //     [get_ongoing_streams(page, channels, streamTypes),
-    //         get_upcoming_streams(page,channels,streamTypes)
-    //     ]);
-
-    return [ongoingStreams, upcomingstreams];
+    return [ongoingStreams, upcomingStreams];
 }

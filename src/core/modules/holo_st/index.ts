@@ -116,12 +116,12 @@ export async function get_all_streams(
         const channel = channels[i];
         const channelId = channel.channel.id;
         
-        const [ongoingStreams, upcomingStreams] = await get_streams(channelId, channels, browser);;
-        ongoingStreams.push(...ongoingStreams);
-        upcomingStreams.push(...upcomingStreams);
+        const streams = await get_streams(channelId, channels, browser);
+        ongoingStreams.push(...streams[0]);
+        upcomingStreams.push(...streams[1]);
 
         if (typeof check_callback === "function") {
-            check_callback([ongoingStreams, upcomingStreams], i);
+            check_callback(streams, i);
         }
     }
 
