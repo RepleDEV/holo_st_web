@@ -6,8 +6,13 @@
             margin: 1rem 0;
         }
     }
+    .stream-container {
+        margin: 4rem 5vw;
+    }
     .navbar-container {
         grid-template-columns: max-content auto;
+
+        padding: 0 5vw;
     }
     .search-input-container {
         width: 100%;
