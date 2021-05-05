@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { convert_to_ongoing_stream } from "./convert_streams";
 import { get_next_minute } from "./get_next_minute";
 import { Channels, UpcomingStream, YoutubeVideoListResponse } from "./holo_st/globals";
@@ -5,6 +6,9 @@ import { get_channels } from "./holo_st/modules/get_channels";
 import { get_stream_info } from "./holo_st/modules/get_stream_info";
 import { list_streams } from "./list_streams";
 import { StreamList } from "./stream_list";
+
+// eslint-disable-next-line prefer-const
+let listeners: string[] = []
 
 let streamList: StreamList | null = null;
 let channels: Channels | null = null;
@@ -46,6 +50,8 @@ async function upcoming_stream_listener_callback(upcomingStream: UpcomingStream)
 
     if (isStreaming) {
         streamList.addOngoingStream(convert_to_ongoing_stream(streamInfo, channels));
+
+        _.remove(listeners, upcomingStream.streamId);
     } else {
         let time = get_next_minute(5);
         // If it's an hour past the scheduled start time
@@ -59,6 +65,15 @@ async function upcoming_stream_listener_callback(upcomingStream: UpcomingStream)
 }
 
 function add_upcoming_stream_listener(upcomingStream: UpcomingStream, time: number) {
+    const { streamId } = upcomingStream;
+
+    // If there is already a listener for the stream, don't add a new one.
+    if (listeners.includes(streamId)) {
+        return;
+    }
+
+    listeners.push(streamId);
+
     setTimeout(() => {
         upcoming_stream_listener_callback(upcomingStream);
     }, time - Date.now());
@@ -81,7 +96,11 @@ function start_upcoming_stream_listeners(): void {
 }
 
 function stream_refresh_callback(): void {
-    list_streams(streamList).then(() => start_stream_refresh_timer());
+    list_streams(streamList).then(() => {
+        start_stream_refresh_timer();
+
+        start_upcoming_stream_listeners();
+    });
 }
 
 function start_stream_refresh_timer(): void {
