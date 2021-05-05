@@ -17,6 +17,9 @@ export async function list_streams(streamList = new StreamList()): Promise<Strea
 
     // Check if the ongoingStreams property on the streamList already has contents inside.
     if (streamList.ongoingStreams.length) {
+        // TODO: This method also removes any membership ongoing stream that has started.
+        // TODO: Add membershipOnly property to Streams and fix this.
+
         // Check streamList ongoingStreams array if there are any streams that are not present
         // in the ongoingStreams array from the get_all_streams function
         
