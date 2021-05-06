@@ -60,15 +60,15 @@ async function upcoming_stream_listener_callback(upcomingStream: UpcomingStream)
             time += 1000 * 60 * 10; // Add 10 minutes to the time
         }
 
-        add_upcoming_stream_listener(upcomingStream, time);
+        add_upcoming_stream_listener(upcomingStream, time, true);
     }
 }
 
-function add_upcoming_stream_listener(upcomingStream: UpcomingStream, time: number) {
+function add_upcoming_stream_listener(upcomingStream: UpcomingStream, time: number, resetListener?: boolean) {
     const { streamId } = upcomingStream;
 
     // If there is already a listener for the stream, don't add a new one.
-    if (listeners.includes(streamId)) {
+    if (listeners.includes(streamId) && !resetListener) {
         return;
     }
 
