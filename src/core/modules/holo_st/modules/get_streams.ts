@@ -1,10 +1,11 @@
 import cheerio from "cheerio";
 import puppeteer,{ Browser, Page } from "puppeteer";
-import { Channels, OngoingStream, UpcomingStream } from "../globals";
+import { Channels, OngoingStream, Stream, UpcomingStream, YoutubeVideoListResponse } from "../globals";
 import get_collaborators from "./get_collabolators";
 import { get_stream_info } from "./get_stream_info";
 import dayjs from "dayjs";
 import _ from "lodash";
+import check_membership from "./check_membership";
 
 async function get_stream_types(page: Page): Promise<string[]> {
     // Get dropdown inner html from page. (The dropdown that allows you to select video types)
@@ -110,6 +111,69 @@ function get_stream_ids(videoList: string): string[] {
     return streamIds;
 }
 
+// TL;DR If the "type" parameter is "upcoming" it sets the return type of the function
+// to upcomingStreams. But if the "type" parameter is "ongoing" then it sets the return type
+// of the function to ongoingStreams.
+
+// See https://stackoverflow.com/a/54166010/13160047
+
+type StreamTypes = "upcoming" | "ongoing";
+
+type ReturnType<T> = 
+    T extends "upcoming" ? UpcomingStream :
+    T extends "ongoing" ? OngoingStream :
+    never;
+
+async function process_stream_info
+    <T extends StreamTypes>
+    (
+        type: T, 
+        stream_info: YoutubeVideoListResponse, 
+        channels: Channels
+    ): Promise<ReturnType<T>> {
+    const { snippet, liveStreamingDetails, id } = stream_info.items[0];
+    const {
+        publishedAt,
+        channelId,
+        title,
+        description,
+        thumbnails,
+    } = snippet;
+    const {
+        scheduledStartTime,
+        actualStartTime,
+        concurrentViewers,
+        activeLiveChatId,
+    } = liveStreamingDetails;
+
+    const stream: Stream = {
+        scheduledStartTime: +dayjs(scheduledStartTime),
+        activeLiveChatId,
+        description,
+        title,
+        publishedAt: +dayjs(publishedAt),
+        streamId: id,
+        thumbnail: thumbnails,
+        channels: [_.find(channels, (x) => x.channel.id === channelId)],
+        membershipOnly: await check_membership(id)
+    };
+
+    // Add collaborators to channels array.
+    stream.channels.push(...get_collaborators(stream, channelId, channels));
+
+    // We need to check if the stream type is ongoing or upcoming 
+    // because ongoing streams has extra properties
+    if (type == "ongoing") {
+        return { 
+            ...stream,
+            actualStartTime: +dayjs(actualStartTime),
+            concurrentViewers: +concurrentViewers
+        } as ReturnType<T>; // For readability purposes
+    }
+
+    return stream as ReturnType<T>;
+}
+
 async function get_ongoing_streams(page: Page, channels: Channels, streamTypes: string[]): Promise<OngoingStream[]> {
     await click_dropdown_button(page, "ongoing", streamTypes);
 
@@ -121,45 +185,9 @@ async function get_ongoing_streams(page: Page, channels: Channels, streamTypes: 
     for (let i = 0; i < streamIds.length; i++) {
         const streamId = streamIds[i];
         const stream_info = await get_stream_info(streamId);
+        const ongoingStream = await process_stream_info("ongoing", stream_info, channels);
 
-        const { snippet, liveStreamingDetails } = stream_info.items[0];
-        const {
-            publishedAt,
-            channelId,
-            title,
-            description,
-            thumbnails,
-            tags,
-            defaultAudioLanguage,
-        } = snippet;
-        const {
-            scheduledStartTime,
-            actualStartTime,
-            concurrentViewers,
-            activeLiveChatId,
-        } = liveStreamingDetails;
-
-        ongoingStreams.push({
-            streamId: streamId,
-
-            title: title,
-            description: description,
-            publishedAt: +dayjs(publishedAt),
-            tags: tags,
-            thumbnail: thumbnails,
-
-            channels: [_.find(channels, (x) => x.channel.id === channelId)],
-
-            defaultAudioLanguage: defaultAudioLanguage,
-
-            scheduledStartTime: +dayjs(scheduledStartTime),
-            actualStartTime: +dayjs(actualStartTime),
-            concurrentViewers: +concurrentViewers,
-            activeLiveChatId: activeLiveChatId,
-        });
-
-        const s = ongoingStreams[ongoingStreams.length - 1];
-        s.channels.push(...get_collaborators(s, channelId, channels));
+        ongoingStreams.push(ongoingStream);
     }
 
     return ongoingStreams;
@@ -176,41 +204,9 @@ async function get_upcoming_streams(page: Page, channels: Channels, streamTypes:
     for (let i = 0; i < streamIds.length; i++) {
         const streamId = streamIds[i];
         const stream_info = await get_stream_info(streamId);
+        const upcomingStream = await process_stream_info("upcoming", stream_info, channels);
 
-        const { snippet, liveStreamingDetails } = stream_info.items[0];
-        const {
-            publishedAt,
-            channelId,
-            title,
-            description,
-            thumbnails,
-            tags,
-            defaultAudioLanguage,
-        } = snippet;
-        const {
-            scheduledStartTime,
-            activeLiveChatId,
-        } = liveStreamingDetails;
-
-        upcomingStreams.push({
-            streamId: streamId,
-
-            title: title,
-            description: description,
-            publishedAt: +dayjs(publishedAt),
-            tags: tags,
-            thumbnail: thumbnails,
-
-            channels: [_.find(channels, (x) => x.channel.id === channelId)],
-
-            defaultAudioLanguage: defaultAudioLanguage,
-
-            scheduledStartTime: +dayjs(scheduledStartTime),
-            activeLiveChatId: activeLiveChatId,
-        });
-
-        const s = upcomingStreams[upcomingStreams.length - 1];
-        s.channels.push(...get_collaborators(s, channelId, channels));
+        upcomingStreams.push(upcomingStream);
     }
 
     return upcomingStreams;

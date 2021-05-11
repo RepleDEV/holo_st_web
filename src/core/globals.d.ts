@@ -20,6 +20,8 @@ export interface MinimizedStream {
     channels: Channel[];
 
     scheduledStartTime: number;
+
+    membershipOnly?: boolean;
 }
 
 export interface MinimizedUpcomingStream extends MinimizedStream {}

@@ -36,8 +36,8 @@ export interface YoutubeVideoItems {
     liveStreamingDetails: {
         actualStartTime: string;
         scheduledStartTime: string;
-        concurrentViewers: string;
-        activeLiveChatId: string;
+        concurrentViewers?: string;
+        activeLiveChatId?: string;
         [key: string]: any;
     };
     [key: string]: any;
@@ -79,6 +79,8 @@ export interface Stream {
 
     scheduledStartTime: number;
     activeLiveChatId?: string;
+
+    membershipOnly?: boolean;
 }
 
 export interface UpcomingStream extends Stream {

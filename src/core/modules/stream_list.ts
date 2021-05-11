@@ -131,6 +131,8 @@ export class StreamList {
 
                         actualStartTime: x.actualStartTime,
                         concurrentViewers: x.concurrentViewers,
+
+                        membershipOnly: x.membershipOnly
                     };
                     return res;
                 }
@@ -146,6 +148,8 @@ export class StreamList {
                         channels: x.channels,
 
                         scheduledStartTime: x.scheduledStartTime,
+
+                        membershipOnly: x.membershipOnly
                     };
 
                     return res;
