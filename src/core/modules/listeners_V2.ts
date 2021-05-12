@@ -65,14 +65,9 @@ async function upcoming_stream_listener_callback(upcomingStream: UpcomingStream)
 }
 
 function add_upcoming_stream_listener(upcomingStream: UpcomingStream, time: number, resetListener?: boolean) {
-    const { streamId } = upcomingStream;
-
-    // If there is already a listener for the stream, don't add a new one.
-    if (listeners.includes(streamId) && !resetListener) {
-        return;
+    if (!resetListener) {
+        listeners.push(upcomingStream.streamId);
     }
-
-    listeners.push(streamId);
 
     setTimeout(() => {
         upcoming_stream_listener_callback(upcomingStream);
@@ -84,10 +79,14 @@ function add_upcoming_stream_listener(upcomingStream: UpcomingStream, time: numb
 function start_upcoming_stream_listeners(): void {
     const { upcomingStreams } = streamList;
 
-    for (let i = 0;i < upcomingStreams.length;i++) {
-        const upcomingStream = upcomingStreams[i];
+    // Filter the streams so that the streams that already has a listener
+    // won't get iterated.
+    const filteredStreams = upcomingStreams.filter(({streamId}) => listeners.includes(streamId));
+
+    for (let i = 0;i < filteredStreams.length;i++) {
+        const upcomingStream = filteredStreams[i];
         // If upcoming stream starts within the next 2 hours, add the listener.
-        if (upcomingStream.scheduledStartTime <= get_next_minute(60*2)) {
+        if (upcomingStream.scheduledStartTime <= 1000 * (60**2 * 2)) {
             // Add 2 minutes to the scheduledStartTime to compensate the fact that
             // Streams don't start EXACTLY at their scheduled start time.
             add_upcoming_stream_listener(upcomingStream, upcomingStream.scheduledStartTime + 1000 * 60 * 2);
