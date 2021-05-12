@@ -124,6 +124,13 @@ type ReturnType<T> =
     T extends "ongoing" ? OngoingStream :
     never;
 
+/**
+ * Processes YouTube API response and converts it into an OngoingStream or UpcomingStream object.
+ * @param type Type to of stream to process. (Defines return type)
+ * @param stream_info YouTube API response.
+ * @param channels Channels array.
+ * @returns OngoingStream / UpcomingStream
+ */
 async function process_stream_info
     <T extends StreamTypes>
     (
