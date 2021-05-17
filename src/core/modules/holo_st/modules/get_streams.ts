@@ -184,7 +184,7 @@ async function get_ongoing_stream(page: Page, channels: Channels): Promise<Ongoi
 
         const streamId = get_stream_id(videoElement);
         const streamInfo = await get_stream_info(streamId);
-        const ongoingStream = await process_stream_info("ongoing", streamInfo, channels);
+        const ongoingStream = await process_stream_info("ongoing", streamInfo, channels).catch(() => {});
 
         return ongoingStream;
     }
@@ -198,6 +198,8 @@ async function get_upcoming_streams(page: Page, channels: Channels): Promise<Upc
     if (s === -1) {
         return [];
     }
+
+    await page.screenshot({path: "./test.png"});
 
     const videoElementsString = await page.evaluate(() => document.querySelector("#contents #items").outerHTML);
 
