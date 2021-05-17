@@ -7,108 +7,42 @@ import dayjs from "dayjs";
 import _ from "lodash";
 import check_membership from "./check_membership";
 
-async function get_stream_types(page: Page): Promise<string[]> {
-    // Get dropdown inner html from page. (The dropdown that allows you to select video types)
-    const dropdownInnerHTML = await page.evaluate(() => (document.querySelector("#menu") || {}).innerHTML);
-    if (dropdownInnerHTML) {
-        const $ = cheerio.load(dropdownInnerHTML);
+async function click_dropdown_button(page: Page): Promise<number> {
+    // Iterate through the dropdown buttons and find the one that says "Upcoming live streams"
+    const dropdownInnerHTML = await page.evaluate(() => document.querySelector("#menu").innerHTML);
 
-        const streamTypes: string[] = []
+    const $ = cheerio.load(dropdownInnerHTML);
 
-        $("a").each((i, e) => {
-            const streamType = $(e).find("div.item").text();
+    let dropdownIndex = -1;
+    const buttons = $("a").toArray();
 
-            streamTypes.push(streamType);
-        });
+    for (let i = 0;i < buttons.length;i++) {
+        const e = $(buttons[i]);
+        const buttonText = $(e).find("div.item").text();
 
-        return streamTypes;
-    } else {
-        console.log("Unable to get HTML from dropdown.");
-    }
-
-    return [];
-}
-
-async function get_video_list(page: Page): Promise<string> {
-    const videoList = await page.evaluate(() => 
-        (document.querySelector("*") || {}).innerHTML
-    );
-
-    return videoList;
-}
-
-async function click_dropdown_button(page: Page, type: "ongoing" | "upcoming", streamTypes: string[]): Promise<void> {
-    let buttonIndex = -1;
-
-    // Get dropdown button to press from the streamTypes array.
-    if (type === "ongoing") {
-        buttonIndex = streamTypes.indexOf("Live now");
-    } else {
-        buttonIndex = streamTypes.indexOf("Upcoming live streams");
-    }
-
-    // Get selector from index
-    const selector = `#menu > a:nth-child(${buttonIndex + 1})`;
-
-    // // Get child amount of #contents #items (Number of videos displayed)
-    // const previousAmount = await page.evaluate(() => 
-    //     document.querySelector("#contents #items").childElementCount
-    // );
-
-    await Promise.all([
-        // Click the dropdown button
-        page.evaluate((selector) => {
-            (document.querySelector(selector) as HTMLElement).click()
-        }, selector),
-        // Wait to load
-
-        // TODO: This method of comparing states
-        // TODO: might not work 100% of the time
-        // TODO: and will probably need to be changed sometime soon.
-        page.waitForFunction((type) => {
-            if (type === "upcoming") {
-                // This method checks the first video of the list. Checks its thumbnail mark.
-                // On a video, the thumbnail mark will show the length of the video.
-                // On an ongoing live stream, the thumbnail mark will show the text LIVE with a red background
-                // And, on an upcoming live stream, the thumbnail mark will show the text LIVE with a gray background.
-                // We check what type of the thumbnail mark is by checking its overlay-style attribute.
-                // On a video it will be "DEFAULT"
-                // On an ongoing live stream it will be "LIVE"
-                // And on an upcoming live stream it will be "UPCOMING"
-                return document.querySelector("#overlays > ytd-thumbnail-overlay-time-status-renderer").getAttribute("overlay-style") === "UPCOMING";
-            } else {
-                // When the type it wants to check is "ongoing" then just count how many videos there are being shown
-                // It will always be 1 as there cannot be more than 1 ongoing live stream at any time.
-                return document.querySelector("#contents #items").childElementCount === 1;
-            }
-        }, {}, type)
-    ]);
-}
-
-function get_stream_ids(videoList: string): string[] {
-    const $ = cheerio.load(videoList);
-
-    const streamIds: string[] = [];
-
-    // Loop through every video element to get their respective IDs
-    const items = $("#contents #items").children().toArray();
-
-    for (let i = 0;i < items.length;i++) {
-        const e = $(items[i]);
-
-        if (e.find("#overlays > ytd-thumbnail-overlay-time-status-renderer").attr("overlay-style") === "DEFAULT") {
+        // If the button is found
+        if (buttonText === "Upcoming live streams") {
+            // Set the dropdownIndex variable to the i + 1. (i + 1 because nth-child starts from 1)
+            dropdownIndex = i + 1;
             break;
         }
-
-        const meta = e.find("div#dismissible > div#details > div#meta");
-        const streamPath =
-            meta.children(":first").children(":last").attr("href") || "";
-        const streamId = streamPath.substring("/watch?v=".length);
-
-        if (streamId) streamIds.push(streamId);
     }
 
-    return streamIds;
+    if (dropdownIndex !== -1) {
+        // Selector for the dropdown button.
+        const selector = `#menu > a:nth-child(${dropdownIndex})`;
+
+        await Promise.all([
+            // Click the dropdown button
+            page.evaluate((selector) => {
+                (document.querySelector(selector) as HTMLElement).click()
+            }, selector),
+            // Wait for page to load
+            page.waitForNavigation({waitUntil: "networkidle0"})
+        ]);
+    }
+
+    return dropdownIndex;
 }
 
 // TL;DR If the "type" parameter is "upcoming" it sets the return type of the function
@@ -181,44 +115,6 @@ async function process_stream_info
     return stream as ReturnType<T>;
 }
 
-async function get_ongoing_streams(page: Page, channels: Channels, streamTypes: string[]): Promise<OngoingStream[]> {
-    await click_dropdown_button(page, "ongoing", streamTypes);
-
-    const videoList = await get_video_list(page);
-    const streamIds = get_stream_ids(videoList);
-
-    const ongoingStreams: OngoingStream[] = [];
-
-    for (let i = 0; i < streamIds.length; i++) {
-        const streamId = streamIds[i];
-        const stream_info = await get_stream_info(streamId);
-        const ongoingStream = await process_stream_info("ongoing", stream_info, channels);
-
-        ongoingStreams.push(ongoingStream);
-    }
-
-    return ongoingStreams;
-}
-
-async function get_upcoming_streams(page: Page, channels: Channels, streamTypes: string[]): Promise<UpcomingStream[]> {
-    await click_dropdown_button(page, "upcoming", streamTypes);
-
-    const videoList = await get_video_list(page);
-    const streamIds = get_stream_ids(videoList);
-
-    const upcomingStreams: UpcomingStream[] = [];
-
-    for (let i = 0; i < streamIds.length; i++) {
-        const streamId = streamIds[i];
-        const stream_info = await get_stream_info(streamId);
-        const upcomingStream = await process_stream_info("upcoming", stream_info, channels);
-
-        upcomingStreams.push(upcomingStream);
-    }
-
-    return upcomingStreams;
-}
-
 async function get_page(browser: Browser): Promise<Page> {
     const page = await browser.newPage();
 
@@ -230,7 +126,23 @@ async function get_page(browser: Browser): Promise<Page> {
 }
 
 /**
+ * Set browser page to a channel's page.
+ * @param id Channel ID
+ * @param page Browser page
+ */
+async function visit_channel(id: string, page: Page): Promise<void> {
+    const url = `https://www.youtube.com/channel/${id}/videos`;
+    // Do not change waitUntil property. Only works when it's on networkidle0
+    await page.goto(url, { waitUntil: "networkidle0", timeout: 0 });
+
+    await handle_redirect(page, url);
+}
+
+/**
  * Handles redirects when deployed to Heroku.
+ * 
+ * Tl;DR When deployed to Heroku the page (the last time I've observed it) gets redirected
+ * to consent.youtube.com for whatever reason. This fixes it.
  */
 async function handle_redirect(page: Page, url: string): Promise<void> {
     const pageURL = page.url();
@@ -238,6 +150,73 @@ async function handle_redirect(page: Page, url: string): Promise<void> {
         await page.click("div.VfPpkd-RLmnJb");
         await page.waitForNavigation();
     }
+}
+
+/**
+ * Get stream ID from a YT video element.
+ * @param videoElement YouTube video element
+ */
+function get_stream_id(videoElement: string): string {
+    const $ = cheerio.load(videoElement);
+
+    const meta = $("body > *").find("div#dismissible > div#details > div#meta");
+    const streamPath =
+        meta.children(":first").children(":last").attr("href") || "";
+    const streamId = streamPath.substring("/watch?v=".length);
+
+    return streamId;
+}
+
+// These 2 functions only work when the page's url is: https://www.youtube.com/channel/{CHANNEL ID}/videos
+
+async function get_ongoing_stream(page: Page, channels: Channels): Promise<OngoingStream | void> {
+    // The first video on the list will be the current live stream 
+    // So check if that is the case
+    // if it is, get the ID of the live stream
+
+    // This selector returns the text overlay of the first video.
+    const SELECTOR = "#contents #items > *:nth-child(1) #overlays > ytd-thumbnail-overlay-time-status-renderer";
+    const overlayType = await page.evaluate((SELECTOR) => document.querySelector(SELECTOR).getAttribute("overlay-style"), SELECTOR);
+
+    // If the overlay type is LIVE 
+    if (overlayType === "LIVE") {
+        const videoElement = await page.evaluate(() => document.querySelector("#contents #items > *:nth-child(1)").outerHTML)
+
+        const streamId = get_stream_id(videoElement);
+        const streamInfo = await get_stream_info(streamId);
+        const ongoingStream = await process_stream_info("ongoing", streamInfo, channels);
+
+        return ongoingStream;
+    }
+}
+
+async function get_upcoming_streams(page: Page, channels: Channels): Promise<UpcomingStream[]> {
+    // Changes page to view the upcoming streams page (by clicking the dropdown button so that it doesn't reload the whole page by changing the URL)
+    // And extracts the video ID's from that.
+    const s = await click_dropdown_button(page);
+
+    if (s === -1) {
+        return [];
+    }
+
+    const videoElementsString = await page.evaluate(() => document.querySelector("#contents #items").outerHTML);
+
+    const $ = cheerio.load(videoElementsString)
+    const videoElements = $("body > *").children().toArray();
+
+    let upcomingStreams: UpcomingStream[] = [];
+
+    for (let i = 0;i < videoElements.length;i++) {
+        const videoElement = videoElements[i];
+
+        const streamId = get_stream_id($.html(videoElement));
+        const streamInfo = await get_stream_info(streamId);
+        const upcomingStream = await process_stream_info("ongoing", streamInfo, channels);
+
+        upcomingStreams.push(upcomingStream);
+    }
+
+    return upcomingStreams;
 }
 
 export default async function get_streams(
@@ -249,22 +228,13 @@ export default async function get_streams(
     const browser = browser_p || (await puppeteer.launch());
     const page = await get_page(browser);
 
-    const url = `https://www.youtube.com/channel/${id}/videos`;
-    await page.goto(url, { waitUntil: "networkidle0", timeout: 0 });
+    await visit_channel(id, page);
 
-    await handle_redirect(page, url);
-
-    const streamTypes = await get_stream_types(page);
-
-    const hasOngoingStreams = streamTypes.includes("Live now");
-    const hasUpcomingStreams = streamTypes.includes("Upcoming live streams");
-
-    // If hasOngoingStreams is true, get ongoing streams. If not, define the variable as an empty array
-    const ongoingStreams = hasOngoingStreams ? await get_ongoing_streams(page, channels, streamTypes) : [];
-    // Same goes with hasUpcomingStreams.
-    const upcomingStreams = hasUpcomingStreams ? await get_upcoming_streams(page, channels, streamTypes) : [];
+    const ongoingStream = await get_ongoing_stream(page, channels);
+    const upcomingStreams = await get_upcoming_streams(page, channels);
 
     await page.close();
 
-    return [ongoingStreams, upcomingStreams];
+    // return [ongoingStreams, upcomingStreams];
+    return [ongoingStream ? [ongoingStream] : [], upcomingStreams];
 }
