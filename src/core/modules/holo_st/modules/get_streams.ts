@@ -235,6 +235,6 @@ export default async function get_streams(
 
     await page.close();
 
-    // return [ongoingStreams, upcomingStreams];
+    // TL;DR Return [ongoingStream] if ongoingStream is NOT undefined. I'm not sorry
     return [ongoingStream ? [ongoingStream] : [], upcomingStreams];
 }
