@@ -81,7 +81,7 @@ function start_upcoming_stream_listeners(): void {
 
     // Filter the streams so that the streams that already has a listener
     // won't get iterated.
-    const filteredStreams = upcomingStreams.filter(({streamId}) => listeners.includes(streamId));
+    const filteredStreams = upcomingStreams.filter(({streamId}) => !listeners.includes(streamId));
 
     for (let i = 0;i < filteredStreams.length;i++) {
         const upcomingStream = filteredStreams[i];
