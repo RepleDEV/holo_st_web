@@ -95,7 +95,8 @@ function start_upcoming_stream_listeners(): void {
 }
 
 function stream_refresh_callback(): void {
-    list_streams(streamList).then(() => {
+    list_streams(streamList).then((streamList_) => {
+        streamList = streamList_;
         start_stream_refresh_timer();
 
         start_upcoming_stream_listeners();

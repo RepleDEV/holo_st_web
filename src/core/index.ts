@@ -8,7 +8,6 @@ import { StreamList } from "./modules/stream_list";
 import { list_streams } from "./modules/list_streams";
 import { init } from "./modules/listeners";
 import startListeners from "./modules/listeners_V2";
-import { Streams } from "./globals";
 
 const app = express();
 app.use(compression())
@@ -17,9 +16,8 @@ let streamList: StreamList | null = null;
 
 const PORT = process.env.PORT || 9106;
 
-function checkStreamsCallback(streams: Streams) {
-    streamList = new StreamList();
-    streamList.importStreams(streams);
+function checkStreamsCallback(streamList_: StreamList) {
+    streamList = streamList_;
     // init(streamList);
     startListeners(streamList);
     console.log("Finished checking streams!");

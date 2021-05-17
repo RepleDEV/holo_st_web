@@ -3,9 +3,8 @@ import logUpdate from "log-update";
 import * as holo_st from "./holo_st";
 
 import { StreamList } from "./stream_list";
-import { Streams } from "../globals";
 
-export async function list_streams(streamList = new StreamList()): Promise<Streams> {
+export async function list_streams(streamList = new StreamList()): Promise<StreamList> {
     const t = Date.now();
 
     console.log("Checking for streams...");
@@ -50,5 +49,5 @@ export async function list_streams(streamList = new StreamList()): Promise<Strea
 
     console.log(`Finished checking for streams. Time to finish: ${Date.now() - t}ms.`);
 
-    return streamList.export();
+    return streamList;
 }
