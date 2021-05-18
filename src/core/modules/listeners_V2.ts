@@ -35,9 +35,14 @@ async function ongoing_stream_listener_callback(): Promise<void> {
     }
 }
 
+/**
+ * Start ongoing stream listeners.   
+ * This starts a loop that checks each of the ongoing streams in the stream list
+ * every 15 minutes.
+ * It checks the streams whether or not they have ended or not by calling
+ * the YouTube API.
+ */
 function start_ongoing_stream_listeners(): void {
-    // Start timer that executes the ongoing_stream_listener_callback() function
-    // Every 15th minute after the start of the hour.
     setTimeout(() => {
         ongoing_stream_listener_callback().then(() => {
             start_ongoing_stream_listeners();
@@ -86,17 +91,18 @@ function start_upcoming_stream_listeners(): void {
     for (let i = 0;i < filteredStreams.length;i++) {
         const upcomingStream = filteredStreams[i];
         // If upcoming stream starts within the next 2 hours, add the listener.
-        if (upcomingStream.scheduledStartTime <= 1000 * (60**2 * 2)) {
+        if (upcomingStream.scheduledStartTime <= (Date.now() + 1000 * (60**2 * 2))) {
             // Add 2 minutes to the scheduledStartTime to compensate the fact that
             // Streams don't start EXACTLY at their scheduled start time.
             add_upcoming_stream_listener(upcomingStream, upcomingStream.scheduledStartTime + 1000 * 60 * 2);
         }
     }
+    
+    console.log(listeners);
 }
 
 function stream_refresh_callback(): void {
-    list_streams(streamList).then((streamList_) => {
-        streamList = streamList_;
+    list_streams(streamList).then(() => {
         start_stream_refresh_timer();
 
         start_upcoming_stream_listeners();

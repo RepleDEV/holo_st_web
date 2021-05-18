@@ -12,12 +12,11 @@ import startListeners from "./modules/listeners_V2";
 const app = express();
 app.use(compression())
 
-let streamList: StreamList | null = null;
+const streamList = new StreamList();
 
 const PORT = process.env.PORT || 9106;
 
-function checkStreamsCallback(streamList_: StreamList) {
-    streamList = streamList_;
+function checkStreamsCallback() {
     // init(streamList);
     startListeners(streamList);
     console.log("Finished checking streams!");
@@ -25,12 +24,13 @@ function checkStreamsCallback(streamList_: StreamList) {
 }
 
 function checkStreamsProduction() {
-    list_streams(streamList || undefined).then(checkStreamsCallback);
+    list_streams(streamList).then(checkStreamsCallback);
 }
 function checkStreamsDev() {
-    axios.get("https://holo-st-dev.herokuapp.com/streams", { params: { minimize: 1 } })
+    axios.get("https://holo-st-dev.herokuapp.com/streams")
         .then(({data}) => {
-            checkStreamsCallback(data);
+            streamList.importStreams(data);
+            checkStreamsCallback();
         })
         .catch(() => {
             console.log("Unable to reach hosted server. Checking using production method.");
