@@ -98,6 +98,19 @@ export class StreamList {
         }
         return;
     }
+    // Function for editing the scheduledStartTime property on a given UpcomingStream object.
+    rescheduleUpcomingStream(streamId: string, time: number): UpcomingStream {
+        for (let i = 0;i < this.upcomingStreams.length;i++) {
+            const upcomingStream = this.upcomingStreams[i];
+            const { streamId: id } = upcomingStream;
+
+            if (id === streamId) {
+                upcomingStream.scheduledStartTime = time;
+
+                return upcomingStream;
+            }
+        }
+    }
     getOngoingStream(streamId: string): OngoingStream | undefined {
         for (let i = 0; i < this.ongoingStreams.length; i++) {
             const ongoingStream = this.ongoingStreams[i];

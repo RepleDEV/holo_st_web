@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { convert_to_ongoing_stream } from "./convert_streams";
+import { convert_to_ongoing_stream, convert_to_upcoming_stream } from "./convert_streams";
 import { get_next_minute } from "./get_next_minute";
 import { Channels, UpcomingStream, YoutubeVideoListResponse } from "./holo_st/globals";
 import { get_channels } from "./holo_st/modules/get_channels";
@@ -58,9 +58,15 @@ async function upcoming_stream_listener_callback(upcomingStream: UpcomingStream)
 
         _.remove(listeners, upcomingStream.streamId);
     } else {
+        // Check for reschedule
+        if (+streamInfo.items[0].liveStreamingDetails.scheduledStartTime !== upcomingStream.scheduledStartTime) {
+            streamList.rescheduleUpcomingStream(upcomingStream.streamId, upcomingStream.scheduledStartTime);
+            return;
+        }
+
         let time = get_next_minute(5);
         // If it's an hour past the scheduled start time
-        if (Date.now() <= upcomingStream.scheduledStartTime + 1000 * 60**2) {
+        if (Date.now() >= upcomingStream.scheduledStartTime + 1000 * 60**2) {
             // Start checking every 15 minutes (to save API quota)
             time += 1000 * 60 * 10; // Add 10 minutes to the time
         }
@@ -94,7 +100,9 @@ function start_upcoming_stream_listeners(): void {
         if (upcomingStream.scheduledStartTime <= (Date.now() + 1000 * (60**2 * 2))) {
             // Add 2 minutes to the scheduledStartTime to compensate the fact that
             // Streams don't start EXACTLY at their scheduled start time.
-            add_upcoming_stream_listener(upcomingStream, upcomingStream.scheduledStartTime + 1000 * 60 * 2);
+            const time = upcomingStream.scheduledStartTime + 1000 * 60 * 2;
+
+            add_upcoming_stream_listener(upcomingStream, time);
         }
     }
 }
