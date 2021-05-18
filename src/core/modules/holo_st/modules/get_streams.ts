@@ -199,7 +199,8 @@ async function get_upcoming_streams(page: Page, channels: Channels): Promise<Upc
         return [];
     }
 
-    await page.screenshot({path: "./test.png"});
+    // Testing purposes only.
+    if (process.env.NODE_ENV !== "production")await page.screenshot({path: "./test.png"});
 
     const videoElementsString = await page.evaluate(() => document.querySelector("#contents #items").outerHTML);
 
