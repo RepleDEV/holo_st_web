@@ -97,8 +97,6 @@ function start_upcoming_stream_listeners(): void {
             add_upcoming_stream_listener(upcomingStream, upcomingStream.scheduledStartTime + 1000 * 60 * 2);
         }
     }
-    
-    console.log(listeners);
 }
 
 function stream_refresh_callback(): void {
