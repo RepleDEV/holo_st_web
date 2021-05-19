@@ -4,9 +4,10 @@ import {
     MinimizedOngoingStream,
     MinimizedUpcomingStream,
 } from "../globals";
-import { OngoingStream, UpcomingStream } from "./holo_st/globals";
+import { OngoingStream, UpcomingStream, YoutubeVideoListResponse } from "./holo_st/globals";
 
 import moment from "moment";
+import _ from "lodash";
 
 export class StreamList {
     upcomingStreams: UpcomingStream[] = [];
@@ -69,22 +70,23 @@ export class StreamList {
             (a, b) => a.scheduledStartTime - b.scheduledStartTime
         );
     }
-    removeOngoingStream(streamId: string): OngoingStream[] | undefined {
+    removeOngoingStream(streamId: string): OngoingStream | void {
         for (let i = 0; i < this.ongoingStreams.length; i++) {
             const ongoingStream = this.ongoingStreams[i];
 
             if (ongoingStream.streamId === streamId) {
-                return this.ongoingStreams.splice(i, 1);
+                this.ongoingStreams.splice(i, 1);
+                return ongoingStream;
             }
         }
     }
-    removeUpcomingStream(streamId: string): void {
+    removeUpcomingStream(streamId: string): UpcomingStream | void {
         for (let i = 0; i < this.upcomingStreams.length; i++) {
             const upcomingStream = this.upcomingStreams[i];
 
             if (upcomingStream.streamId === streamId) {
                 this.upcomingStreams.splice(i, 1);
-                return;
+                return upcomingStream;
             }
         }
     }
@@ -110,6 +112,34 @@ export class StreamList {
                 return upcomingStream;
             }
         }
+    }
+    // Change an upcomingStream object to ongoingStream. Basically like starting it.
+    startUpcomingStream(streamInfo: YoutubeVideoListResponse): OngoingStream | void {
+        const streamId = streamInfo.items[0].id;
+
+        let exists = false;
+
+        // Check if the upcomingStream actually exists by iterating through the list
+        for (let i = 0;i < this.upcomingStreams.length;i++) {
+            const upcomingStream = this.upcomingStreams[i];
+
+            if (upcomingStream.streamId === streamId) {
+                exists = true;
+
+                break;
+            }
+        }
+
+        if (!exists)return;
+
+        // Remove the upcomingStream from the list;
+        const upcomingStream = this.removeUpcomingStream(streamId);
+        if (!upcomingStream)return;
+
+        const { actualStartTime, concurrentViewers } = streamInfo.items[0].liveStreamingDetails;
+
+        const ongoingStream: OngoingStream = {...upcomingStream, actualStartTime: +actualStartTime, concurrentViewers: +concurrentViewers };
+        this.addOngoingStream(ongoingStream);
     }
     getOngoingStream(streamId: string): OngoingStream | undefined {
         for (let i = 0; i < this.ongoingStreams.length; i++) {

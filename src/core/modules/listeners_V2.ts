@@ -55,7 +55,7 @@ async function upcoming_stream_listener_callback(upcomingStream: UpcomingStream)
     const [isStreaming, streamInfo] = await check_stream(upcomingStream.streamId);
 
     if (isStreaming) {
-        streamList.addOngoingStream(convert_to_ongoing_stream(streamInfo, channels));
+        streamList.startUpcomingStream(streamInfo);
 
         _.remove(listeners, (v) => v === upcomingStream.streamId);
 
