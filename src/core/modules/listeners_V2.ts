@@ -56,11 +56,30 @@ async function upcoming_stream_listener_callback(upcomingStream: UpcomingStream)
     if (isStreaming) {
         streamList.addOngoingStream(convert_to_ongoing_stream(streamInfo, channels));
 
-        _.remove(listeners, upcomingStream.streamId);
+        _.remove(listeners, (v) => v === upcomingStream.streamId);
+
+        console.log(`Stream is now live: ${upcomingStream.streamId}`);
     } else {
+        // Checks if the stream no longer exists (deleted / set to private)
+        // Then remove it from existence.
+        if (streamInfo.items.length === 0) {
+            console.log(`Stream no longer exists: ${upcomingStream.streamId}`);
+
+            streamList.removeUpcomingStream(upcomingStream.streamId);
+            _.remove(listeners, (v) => v === upcomingStream.streamId);
+            return;
+        }
+
         // Check for reschedule
         if (+streamInfo.items[0].liveStreamingDetails.scheduledStartTime !== upcomingStream.scheduledStartTime) {
-            streamList.rescheduleUpcomingStream(upcomingStream.streamId, upcomingStream.scheduledStartTime);
+            console.log(`Stream rescheduled: ${upcomingStream.streamId}`);
+
+            const rescheduledStream = convert_to_upcoming_stream(streamInfo, channels);
+            streamList.rescheduleUpcomingStream(upcomingStream.streamId, rescheduledStream.scheduledStartTime);
+
+            const time = rescheduledStream.scheduledStartTime + 1000 * 60 * 2;
+
+            add_upcoming_stream_listener(upcomingStream, time, true);
             return;
         }
 
@@ -71,11 +90,15 @@ async function upcoming_stream_listener_callback(upcomingStream: UpcomingStream)
             time += 1000 * 60 * 10; // Add 10 minutes to the time
         }
 
+        console.log(`Reinitialized listener: ${upcomingStream.streamId}`);
+
         add_upcoming_stream_listener(upcomingStream, time, true);
     }
 }
 
 function add_upcoming_stream_listener(upcomingStream: UpcomingStream, time: number, resetListener?: boolean) {
+    // This checks if resetListener IS NOT true.
+    // It will still return true if resetListener is undefined or null.
     if (!resetListener) {
         listeners.push(upcomingStream.streamId);
     }

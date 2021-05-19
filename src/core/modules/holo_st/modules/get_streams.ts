@@ -108,7 +108,7 @@ async function process_stream_info
         return { 
             ...stream,
             actualStartTime: +dayjs(actualStartTime),
-            concurrentViewers: +concurrentViewers
+            concurrentViewers: concurrentViewers ? "" : +concurrentViewers
         } as ReturnType<T>; // For readability purposes
     }
 
