@@ -1,4 +1,4 @@
-import _ from "lodash";
+import _, { Dictionary } from "lodash";
 import $ from "jquery";
 import {
     MinimizedOngoingStream,
@@ -97,67 +97,42 @@ export default class StreamDisplay {
         }
     }
     async display(): Promise<void> {
-        let rows = "";
+        const ongoingStreamCards = [...this.ongoingStreamCards];
+        const upcomingStreamCards = [...this.upcomingStreamCards];
 
-        const splitOngoingStreams: OngoingStreamCard[][] = [];
-        const splitUpcomingStreams: UpcomingStreamCard[][] = [];
-
-        this.ongoingStreamCards.forEach((x) => {
-            if (
-                splitOngoingStreams.length == 0 ||
-                splitOngoingStreams[splitOngoingStreams.length - 1][0].stream
-                    .scheduledStartTime !== x.stream.scheduledStartTime
-            ) {
-                splitOngoingStreams.push([x]);
-            } else {
-                splitOngoingStreams[splitOngoingStreams.length - 1].push(x);
-            }
-        });
-        this.upcomingStreamCards.forEach((x) => {
-            if (
-                splitUpcomingStreams.length == 0 ||
-                splitUpcomingStreams[splitUpcomingStreams.length - 1][0].stream
-                    .scheduledStartTime !== x.stream.scheduledStartTime
-            ) {
-                splitUpcomingStreams.push([x]);
-            } else {
-                splitUpcomingStreams[splitUpcomingStreams.length - 1].push(x);
-            }
-        });
+        // Sort cards by time
+        const sortedStreamCards: 
+            (OngoingStreamCard | UpcomingStreamCard)[] = 
+            [...ongoingStreamCards, ...upcomingStreamCards]
+            .sort((a, b) => 
+                a.stream.scheduledStartTime - b.stream.scheduledStartTime
+            );
+        const groupedStreamCards:
+            Dictionary<(OngoingStreamCard | UpcomingStreamCard)[]> =
+            _.groupBy(sortedStreamCards, (x) => x.stream.scheduledStartTime);
 
         const stream_row = await $.get("./public/layouts/stream_row.html");
 
-        splitOngoingStreams.forEach((x) => {
-            const time_section_element = $(stream_row);
-            time_section_element
+        // Key is also the scheduledStartTime (epoch ms time)
+        for (const key of Object.keys(groupedStreamCards)) {
+            const streams = groupedStreamCards[key];
+
+            const row_container = $(stream_row);
+            row_container
                 .find(".time-text-container")
                 .html(
-                    moment(x[0].stream.scheduledStartTime).format(
+                    moment(+key).format(
                         "HH:mm, D/M/YYYY"
                     )
                 );
-            x.forEach((y) => {
-                time_section_element.find(".streams").append(y.card);
+            streams.forEach((y) => {
+                row_container.find(".streams").append(y.card);
             });
 
-            rows += time_section_element[0].outerHTML;
-        });
-        splitUpcomingStreams.forEach((x) => {
-            const time_section_element = $(stream_row);
-            time_section_element
-                .find(".time-text-container")
-                .html(
-                    moment(x[0].stream.scheduledStartTime).format(
-                        "HH:mm, D/M/YYYY"
-                    )
-                );
-            x.forEach((y) => {
-                time_section_element.find(".streams").append(y.card);
-            });
-
-            rows += time_section_element[0].outerHTML;
-        });
-
+            $(".stream-container").append(row_container);
+        }
+    }
+    setStreamClickListeners(): void {
         function clickHandler(e: JQuery.ClickEvent) {
             const card = $(e.target);
 
@@ -171,8 +146,6 @@ export default class StreamDisplay {
             if (id) window.open(`https://youtu.be/${id}`, "_blank").focus();
         }
 
-        $(".stream-container").html(rows);
-
         $(".stream-layout").on("click", (e) => {
             clickHandler(e);
         });
@@ -182,19 +155,6 @@ export default class StreamDisplay {
 
             clickHandler(e);
         });
-    }
-    async display_V2(): Promise<void> {
-        const ongoingStreamCards = [...this.ongoingStreamCards];
-        const upcomingStreamCards = [...this.upcomingStreamCards];
-
-        // Sort cards by time
-        const sortedStreamCards: 
-            (OngoingStreamCard | UpcomingStreamCard)[] = 
-            [...ongoingStreamCards, ...upcomingStreamCards]
-            .sort((a, b) => 
-                a.stream.scheduledStartTime - b.stream.scheduledStartTime
-            );
-        
     }
     // TODO: Optimize query algorithm. Reduce looping! Current amount of loops: 10.
     // TODO: If it is unable to optimize this any further, move the query algorithm to back-end.
