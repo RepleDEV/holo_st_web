@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import _ from "lodash";
 import { convert_to_ongoing_stream, convert_to_upcoming_stream } from "./convert_streams";
 import { get_next_minute } from "./get_next_minute";
@@ -71,7 +72,7 @@ async function upcoming_stream_listener_callback(upcomingStream: UpcomingStream)
         }
 
         // Check for reschedule
-        if (+streamInfo.items[0].liveStreamingDetails.scheduledStartTime !== upcomingStream.scheduledStartTime) {
+        if (+dayjs(streamInfo.items[0].liveStreamingDetails.scheduledStartTime) !== upcomingStream.scheduledStartTime) {
             console.log(`Stream rescheduled: ${upcomingStream.streamId}`);
 
             const rescheduledStream = convert_to_upcoming_stream(streamInfo, channels);

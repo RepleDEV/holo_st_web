@@ -187,6 +187,13 @@ export default class StreamDisplay {
         const ongoingStreamCards = [...this.ongoingStreamCards];
         const upcomingStreamCards = [...this.upcomingStreamCards];
 
+        // Sort cards by time
+        const sortedStreamCards: 
+            (OngoingStreamCard | UpcomingStreamCard)[] = 
+            [...ongoingStreamCards, ...upcomingStreamCards]
+            .sort((a, b) => 
+                a.stream.scheduledStartTime - b.stream.scheduledStartTime
+            );
         
     }
     // TODO: Optimize query algorithm. Reduce looping! Current amount of loops: 10.
