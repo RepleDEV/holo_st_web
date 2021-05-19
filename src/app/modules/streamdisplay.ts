@@ -183,6 +183,12 @@ export default class StreamDisplay {
             clickHandler(e);
         });
     }
+    async display_V2(): Promise<void> {
+        const ongoingStreamCards = [...this.ongoingStreamCards];
+        const upcomingStreamCards = [...this.upcomingStreamCards];
+
+        
+    }
     // TODO: Optimize query algorithm. Reduce looping! Current amount of loops: 10.
     // TODO: If it is unable to optimize this any further, move the query algorithm to back-end.
     updateQuery(query: string, gen_filter?: Generation[]): void {

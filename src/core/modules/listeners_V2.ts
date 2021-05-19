@@ -77,7 +77,7 @@ async function upcoming_stream_listener_callback(upcomingStream: UpcomingStream)
             const rescheduledStream = convert_to_upcoming_stream(streamInfo, channels);
             streamList.rescheduleUpcomingStream(upcomingStream.streamId, rescheduledStream.scheduledStartTime);
 
-            const time = rescheduledStream.scheduledStartTime + 1000 * 60 * 2;
+            const time = get_next_minute(5);
 
             add_upcoming_stream_listener(upcomingStream, time, true);
             return;
