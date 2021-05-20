@@ -23,18 +23,18 @@
 
     &:hover {
         transform: translateY(-0.2rem) translateX(0.2rem);
-        box-shadow: -0.2rem 0.2rem 1rem 0.5rem #E7E7E7;
+        box-shadow: -0.2rem 0.2rem 1rem 0.5rem #e7e7e7;
         cursor: pointer;
     }
 
     &:active {
         transform: translateY(-0.1rem) translateX(0.1rem);
-        box-shadow: -0.1rem 0.1rem 1rem 0.5rem #E3E3E3;
+        box-shadow: -0.1rem 0.1rem 1rem 0.5rem #e3e3e3;
     }
 }
 
 .stream-layout.streaming {
-    border: 4px solid #F00;
+    border: 4px solid #f00;
 }
 
 .thumbnail-container {
@@ -64,11 +64,11 @@
     img {
         width: 100%;
         height: 100%;
-    
+
         vertical-align: middle;
-    
+
         border-radius: 50%;
-        box-shadow: 0 0 0.5rem 0.25rem #BBB;
+        box-shadow: 0 0 0.5rem 0.25rem #bbb;
     }
 }
 
@@ -128,7 +128,8 @@
     }
 }
 
-.thumbnail-container img, .streamer-icon img {
+.thumbnail-container img,
+.streamer-icon img {
     max-width: 100%;
     width: 100%;
 

@@ -33,5 +33,7 @@ export default function get_collaborators(
         );
     }
 
-    return channels.filter((x) => ids.includes(x.channel.id) && x.channel.id !== channelId);
+    return channels.filter(
+        (x) => ids.includes(x.channel.id) && x.channel.id !== channelId
+    );
 }

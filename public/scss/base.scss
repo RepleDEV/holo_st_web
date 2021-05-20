@@ -20,7 +20,8 @@ body {
     background-color: $main_background_color;
 }
 
-.main-loading, .main-error {
+.main-loading,
+.main-error {
     display: flex;
     flex-direction: column;
 
@@ -41,5 +42,5 @@ body {
     }
 }
 
-// This removes the need to use !important on every single line 
+// This removes the need to use !important on every single line
 @import "./modules/mobile";

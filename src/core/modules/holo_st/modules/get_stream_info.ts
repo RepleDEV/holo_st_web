@@ -6,7 +6,9 @@ import { config } from "dotenv";
 try {
     config();
 } catch (err) {
-    console.log("Error whilst trying to load .env variables using dotenv.config().")
+    console.log(
+        "Error whilst trying to load .env variables using dotenv.config()."
+    );
 }
 
 export async function get_stream_info(
@@ -14,7 +16,7 @@ export async function get_stream_info(
 ): Promise<YoutubeVideoListResponse> {
     const key = process.env.API_KEY;
 
-    if (typeof key !== "string" || !key.length)throw "NO API KEY AVAILABLE."
+    if (typeof key !== "string" || !key.length) throw "NO API KEY AVAILABLE.";
 
     const res = await axios.get(
         `https://youtube.googleapis.com/youtube/v3/videos`,

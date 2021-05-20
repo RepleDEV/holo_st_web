@@ -10,7 +10,7 @@ import { init } from "./modules/listeners";
 import startListeners from "./modules/listeners_V2";
 
 const app = express();
-app.use(compression())
+app.use(compression());
 
 const streamList = new StreamList();
 
@@ -27,13 +27,16 @@ function checkStreamsProduction() {
     list_streams(streamList).then(checkStreamsCallback);
 }
 function checkStreamsDev() {
-    axios.get("https://holo-st-dev.herokuapp.com/streams")
-        .then(({data}) => {
+    axios
+        .get("https://holo-st-dev.herokuapp.com/streams")
+        .then(({ data }) => {
             streamList.importStreams(data);
             checkStreamsCallback();
         })
         .catch(() => {
-            console.log("Unable to reach hosted server. Checking using production method.");
+            console.log(
+                "Unable to reach hosted server. Checking using production method."
+            );
             checkStreamsProduction();
         });
 }
@@ -46,7 +49,7 @@ function checkStreamsDev() {
         console.log("Override argument detected. Using production method.");
         checkStreamsProduction();
     } else if (process.env.NODE_ENV === "production") {
-        checkStreamsProduction()
+        checkStreamsProduction();
     } else {
         console.log("Development build detected. Using alternate method.");
         checkStreamsDev();

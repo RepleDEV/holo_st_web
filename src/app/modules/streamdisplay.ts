@@ -101,15 +101,15 @@ export default class StreamDisplay {
         const upcomingStreamCards = [...this.upcomingStreamCards];
 
         // Sort cards by time
-        const sortedStreamCards: 
-            (OngoingStreamCard | UpcomingStreamCard)[] = 
-            [...ongoingStreamCards, ...upcomingStreamCards]
-            .sort((a, b) => 
-                a.stream.scheduledStartTime - b.stream.scheduledStartTime
-            );
-        const groupedStreamCards:
-            Dictionary<(OngoingStreamCard | UpcomingStreamCard)[]> =
-            _.groupBy(sortedStreamCards, (x) => x.stream.scheduledStartTime);
+        const sortedStreamCards: (OngoingStreamCard | UpcomingStreamCard)[] = [
+            ...ongoingStreamCards,
+            ...upcomingStreamCards,
+        ].sort(
+            (a, b) => a.stream.scheduledStartTime - b.stream.scheduledStartTime
+        );
+        const groupedStreamCards: Dictionary<
+            (OngoingStreamCard | UpcomingStreamCard)[]
+        > = _.groupBy(sortedStreamCards, (x) => x.stream.scheduledStartTime);
 
         const stream_row = await $.get("./public/layouts/stream_row.html");
 
@@ -120,11 +120,7 @@ export default class StreamDisplay {
             const row_container = $(stream_row);
             row_container
                 .find(".time-text-container")
-                .html(
-                    moment(+key).format(
-                        "HH:mm, D/M/YYYY"
-                    )
-                );
+                .html(moment(+key).format("HH:mm, D/M/YYYY"));
             streams.forEach((y) => {
                 row_container.find(".streams").append(y.card);
             });
@@ -207,23 +203,27 @@ export default class StreamDisplay {
             }
         });
 
-        $(".stream-container").children().each((i,e) => {
-            const row = $(e);
-            const streams = row.find(".streams").children().toArray();
-            const time_section_element = row.find(".time-section-container");
-            for (let i = 0;i < streams.length;i++) {
-                const stream = $(streams[i]);
+        $(".stream-container")
+            .children()
+            .each((i, e) => {
+                const row = $(e);
+                const streams = row.find(".streams").children().toArray();
+                const time_section_element = row.find(
+                    ".time-section-container"
+                );
+                for (let i = 0; i < streams.length; i++) {
+                    const stream = $(streams[i]);
 
-                if (!stream.hasClass("hidden")) {
-                    row.removeClass("hidden");
-                    time_section_element.removeClass("hidden");
-                    return;
+                    if (!stream.hasClass("hidden")) {
+                        row.removeClass("hidden");
+                        time_section_element.removeClass("hidden");
+                        return;
+                    }
                 }
-            }
-            time_section_element.addClass("hidden");
-            // Hide the container
-            row.addClass("hidden");
-        });
+                time_section_element.addClass("hidden");
+                // Hide the container
+                row.addClass("hidden");
+            });
     }
     clearQuery(): void {
         $(".stream-layout").each((i, e) => {
@@ -232,12 +232,16 @@ export default class StreamDisplay {
             card.removeClass("hidden");
         });
 
-        $(".stream-container").children().each((i,e) => {
-            const row = $(e);
-            const time_section_element = row.find(".time-section-container");
-            time_section_element.removeClass("hidden");
-            // Show the container
-            row.removeClass("hidden");
-        });
+        $(".stream-container")
+            .children()
+            .each((i, e) => {
+                const row = $(e);
+                const time_section_element = row.find(
+                    ".time-section-container"
+                );
+                time_section_element.removeClass("hidden");
+                // Show the container
+                row.removeClass("hidden");
+            });
     }
 }

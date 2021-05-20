@@ -25,7 +25,8 @@
     }
     // This makes sure the search bar is the largest, and the only element (except for the sidebar toggle)
     // To be shown
-    .navbar-container .divider, .navbar-container .theme-toggle {
+    .navbar-container .divider,
+    .navbar-container .theme-toggle {
         display: none;
     }
     .main-loading {

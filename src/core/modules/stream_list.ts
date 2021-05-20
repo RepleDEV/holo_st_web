@@ -4,7 +4,11 @@ import {
     MinimizedOngoingStream,
     MinimizedUpcomingStream,
 } from "../globals";
-import { OngoingStream, UpcomingStream, YoutubeVideoListResponse } from "./holo_st/globals";
+import {
+    OngoingStream,
+    UpcomingStream,
+    YoutubeVideoListResponse,
+} from "./holo_st/globals";
 
 import moment from "moment";
 import _ from "lodash";
@@ -102,7 +106,7 @@ export class StreamList {
     }
     // Function for editing the scheduledStartTime property on a given UpcomingStream object.
     rescheduleUpcomingStream(streamId: string, time: number): UpcomingStream {
-        for (let i = 0;i < this.upcomingStreams.length;i++) {
+        for (let i = 0; i < this.upcomingStreams.length; i++) {
             const upcomingStream = this.upcomingStreams[i];
             const { streamId: id } = upcomingStream;
 
@@ -114,13 +118,15 @@ export class StreamList {
         }
     }
     // Change an upcomingStream object to ongoingStream. Basically like starting it.
-    startUpcomingStream(streamInfo: YoutubeVideoListResponse): OngoingStream | void {
+    startUpcomingStream(
+        streamInfo: YoutubeVideoListResponse
+    ): OngoingStream | void {
         const streamId = streamInfo.items[0].id;
 
         let exists = false;
 
         // Check if the upcomingStream actually exists by iterating through the list
-        for (let i = 0;i < this.upcomingStreams.length;i++) {
+        for (let i = 0; i < this.upcomingStreams.length; i++) {
             const upcomingStream = this.upcomingStreams[i];
 
             if (upcomingStream.streamId === streamId) {
@@ -130,15 +136,22 @@ export class StreamList {
             }
         }
 
-        if (!exists)return;
+        if (!exists) return;
 
         // Remove the upcomingStream from the list;
         const upcomingStream = this.removeUpcomingStream(streamId);
-        if (!upcomingStream)return;
+        if (!upcomingStream) return;
 
-        const { actualStartTime, concurrentViewers } = streamInfo.items[0].liveStreamingDetails;
+        const {
+            actualStartTime,
+            concurrentViewers,
+        } = streamInfo.items[0].liveStreamingDetails;
 
-        const ongoingStream: OngoingStream = {...upcomingStream, actualStartTime: +actualStartTime, concurrentViewers: +concurrentViewers };
+        const ongoingStream: OngoingStream = {
+            ...upcomingStream,
+            actualStartTime: +actualStartTime,
+            concurrentViewers: +concurrentViewers,
+        };
         this.addOngoingStream(ongoingStream);
     }
     getOngoingStream(streamId: string): OngoingStream | undefined {
@@ -175,7 +188,7 @@ export class StreamList {
                         actualStartTime: x.actualStartTime,
                         concurrentViewers: x.concurrentViewers,
 
-                        membershipOnly: x.membershipOnly
+                        membershipOnly: x.membershipOnly,
                     };
                     return res;
                 }
@@ -192,7 +205,7 @@ export class StreamList {
 
                         scheduledStartTime: x.scheduledStartTime,
 
-                        membershipOnly: x.membershipOnly
+                        membershipOnly: x.membershipOnly,
                     };
 
                     return res;

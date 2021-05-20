@@ -4,18 +4,21 @@ $color_primary: #29292b;
 $color_secondary: #1f2021;
 $color_tertiary: #444447;
 
-$color_box-shadow: #1C1C1C;
+$color_box-shadow: #1c1c1c;
 
-$text-color: #DEDEDE;
+$text-color: #dedede;
 
 body.dark {
-    color: #DEDEDE;
+    color: #dedede;
 
     background-color: $color_primary;
 
-    .main-error h1, .main-loading h1, #search_input, #search_input::placeholder {
-        color: #DEDEDE;
-        caret-color: #DEDEDE;
+    .main-error h1,
+    .main-loading h1,
+    #search_input,
+    #search_input::placeholder {
+        color: #dedede;
+        caret-color: #dedede;
     }
 
     .navbar-container {
@@ -24,10 +27,10 @@ body.dark {
         border-bottom: 2px solid default.$color_accent;
     }
     .nav-panel-toggle-container svg {
-        fill: #ECECEC;
+        fill: #ececec;
 
         &:hover {
-            fill: #DDD;
+            fill: #ddd;
         }
     }
     #search_input {
@@ -49,7 +52,7 @@ body.dark {
         border-width: 2px;
 
         &:hover {
-            box-shadow: -0.2rem 0.2rem 1rem 0.5rem #1F1F1F;
+            box-shadow: -0.2rem 0.2rem 1rem 0.5rem #1f1f1f;
         }
     }
     #channel_icon {
@@ -59,9 +62,9 @@ body.dark {
         color: inherit;
     }
     .streamer-name {
-        color: #CCC;
+        color: #ccc;
     }
-    
+
     .streamers hr {
         background-color: $color_tertiary;
     }

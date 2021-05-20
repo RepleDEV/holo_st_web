@@ -43,30 +43,41 @@ export default async function streamCardCreator(
         // Get the element with the class "streamers" (the element containing the streamer name)
         const streamersElement = $(".streamers");
         // Find the collaboration-only icon container
-        const streamerIconContainerElement = streamersElement.find(".streamer-icons-container");
+        const streamerIconContainerElement = streamersElement.find(
+            ".streamer-icons-container"
+        );
         // Un-hide hr element (divider) & the collaboration-only container
         streamersElement.find("hr").removeClass("hidden");
         streamerIconContainerElement.removeClass("hidden");
 
         // Get the streamer-icon element
-        const streamerIconElement = $(".streamers > .streamer-icons-container > .streamer-icon");
+        const streamerIconElement = $(
+            ".streamers > .streamer-icons-container > .streamer-icon"
+        );
         // CLONE IT (to make a component out of it)
         const streamerIconComponent = streamerIconElement.clone();
-        
+
         // Remove the original element
         streamerIconElement.remove();
 
         // Loop over every channel
         // Variable i is 1 because the first element of the array is the live stream's host.
-        for (let i = 1;i < channels.length;i++) {
+        for (let i = 1; i < channels.length; i++) {
             const channel = channels[i];
 
             // CLONE THE COMPONENT
             const streamerIconComponentClone = streamerIconComponent.clone();
 
             // Insert the necessary data (link URL & image URL)
-            streamerIconComponentClone.find(".streamer-icon-link").attr("href", `https://youtube.com/channel/${channel.channel.id}`);
-            streamerIconComponentClone.find("img").attr("src", channel.icon.replace("{size}", "64"));
+            streamerIconComponentClone
+                .find(".streamer-icon-link")
+                .attr(
+                    "href",
+                    `https://youtube.com/channel/${channel.channel.id}`
+                );
+            streamerIconComponentClone
+                .find("img")
+                .attr("src", channel.icon.replace("{size}", "64"));
 
             // Add the image to the parent's container;
             streamerIconContainerElement.append(streamerIconComponentClone);

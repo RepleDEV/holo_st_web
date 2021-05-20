@@ -21,23 +21,21 @@ import get_streams from "./modules/get_streams";
 async function get_browser(): Promise<Browser> {
     // If the environment is production, pass no argument to puppeteer.
     const browser = await puppeteer.launch(
-        (
-            process.env.NODE_ENV === "production" ?
-            {
-                args: [
-                    "--no-sandbox",
-                    "--disable-setuid-sandbox"
-                ]
-            } :
-            undefined
-        )
+        process.env.NODE_ENV === "production"
+            ? {
+                  args: ["--no-sandbox", "--disable-setuid-sandbox"],
+              }
+            : undefined
     );
 
     return browser;
 }
 
 export async function get_all_streams(
-    check_callback: (streams: [OngoingStream[], UpcomingStream[]], i: number) => void
+    check_callback: (
+        streams: [OngoingStream[], UpcomingStream[]],
+        i: number
+    ) => void
 ): Promise<[OngoingStream[], UpcomingStream[]]> {
     // Get channels array.
     const channels = await get_channels();
@@ -50,7 +48,7 @@ export async function get_all_streams(
     for (let i = 0; i < channels.length; i++) {
         const channel = channels[i];
         const channelId = channel.channel.id;
-        
+
         const streams = await get_streams(channelId, channels, browser);
         ongoingStreams.push(...streams[0]);
         upcomingStreams.push(...streams[1]);

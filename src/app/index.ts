@@ -20,7 +20,8 @@ async function gen_checkbox_callback(e: JQuery.TriggeredEvent): Promise<void> {
 
     // One liner for: if target value is select_all, set variable as target's checked status
     // Else set variable as null;
-    const selectAll: boolean | null = target.val() === "select_all" ? target.is(":checked") : null;
+    const selectAll: boolean | null =
+        target.val() === "select_all" ? target.is(":checked") : null;
 
     const filter: Generation[] = [];
 
@@ -29,11 +30,13 @@ async function gen_checkbox_callback(e: JQuery.TriggeredEvent): Promise<void> {
         const child = children[i];
 
         const checkbox = $(child).find(".gen-checkbox");
-        
-        if (selectAll !== null)checkbox.prop("checked", selectAll);
+
+        if (selectAll !== null) checkbox.prop("checked", selectAll);
 
         const valRaw = checkbox.attr("value");
-        const value = checkbox.attr("value").replace(/(st|nd|rd|th|id|en)/gi, "");
+        const value = checkbox
+            .attr("value")
+            .replace(/(st|nd|rd|th|id|en)/gi, "");
         const checked = checkbox.is(":checked");
 
         const ID = valRaw.includes("ID");
@@ -42,8 +45,8 @@ async function gen_checkbox_callback(e: JQuery.TriggeredEvent): Promise<void> {
 
         if (!checked) {
             let div: "JP" | "EN" | "ID" = "JP";
-            if (ID)div = "ID";
-            else if (EN)div = "EN";
+            if (ID) div = "ID";
+            else if (EN) div = "EN";
 
             // Short for: If GAMERS is true, return as "GAMERS." Else, return [div, +value]
             // +value = parseInt(value)
@@ -173,7 +176,7 @@ function initializeListeners() {
         }
     });
 
-    $(".theme-toggle").on("click", ({target}) => {
+    $(".theme-toggle").on("click", ({ target }) => {
         const e = $(target);
         if (preferred_theme === "light") {
             $("body").addClass("dark");
@@ -218,7 +221,9 @@ function initializeListeners() {
 
 function checkDarkTheme() {
     // This checks dark theme. See https://stackoverflow.com/a/57795495/13160047
-    const DARK_THEME = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
+    const DARK_THEME =
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches;
     if (DARK_THEME) {
         $("body").addClass("dark");
         preferred_theme = "dark";
