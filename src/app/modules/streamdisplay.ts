@@ -127,6 +127,8 @@ export default class StreamDisplay {
 
             $(".stream-container").append(row_container);
         }
+
+        this.setStreamClickListeners();
     }
     setStreamClickListeners(): void {
         function clickHandler(e: JQuery.ClickEvent) {
