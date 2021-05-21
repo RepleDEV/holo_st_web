@@ -13,15 +13,7 @@ export default function get_collaborators(
     let links = description.match(REGEX);
     let ids: string[] = [];
 
-    if (links === null) {
-        for (let i = 0; i < channels.length; i++) {
-            const { channel } = channels[i];
-
-            // Fixes where channels are linked using @ (@ChannelName, @Tom Scott, etc.)
-            if (description.includes(`@${channel.name}`))
-                ids.push(`${channel.id}`);
-        }
-    } else {
+    if (links !== null) {
         ids.push(
             ...links.map(
                 (x) =>
@@ -32,6 +24,16 @@ export default function get_collaborators(
             )
         );
     }
+
+    for (let i = 0; i < channels.length; i++) {
+        const { channel } = channels[i];
+
+        // Fixes where channels are linked using @ (@ChannelName, @Tom Scott, etc.)
+        if (description.includes(`@${channel.name}`))
+            ids.push(`${channel.id}`);
+    }
+
+    ids = [...new Set(ids)];
 
     return channels.filter(
         (x) => ids.includes(x.channel.id) && x.channel.id !== channelId
