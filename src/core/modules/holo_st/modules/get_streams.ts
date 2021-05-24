@@ -80,7 +80,12 @@ async function process_stream_info<T extends StreamTypes>(
     channels: Channels
 ): Promise<ReturnType<T>> {
     const { snippet, liveStreamingDetails, id } = stream_info.items[0];
-    const { publishedAt, channelId, title, description, thumbnails } = snippet;
+    const { publishedAt, channelId, title, description, thumbnails, liveBroadcastContent } = snippet;
+
+    if (liveBroadcastContent === "none") {
+        throw `NOT A LIVE STREAM. ID: ${id}.`;
+    }
+
     const {
         scheduledStartTime,
         actualStartTime,
@@ -183,7 +188,13 @@ async function get_ongoing_stream(
         "#contents #items > *:nth-child(1) #overlays > ytd-thumbnail-overlay-time-status-renderer";
     const overlayType = await page.evaluate(
         (SELECTOR) =>
-            document.querySelector(SELECTOR).getAttribute("overlay-style"),
+            {
+                const overlay_style = document.querySelector(SELECTOR);
+                if (overlay_style) {
+                    return overlay_style.getAttribute("overlay-style")
+                }
+                return "";
+            },
         SELECTOR
     );
 
@@ -241,9 +252,13 @@ async function get_upcoming_streams(
             "ongoing",
             streamInfo,
             channels
-        );
+        ).catch((err) => {
+            console.log("An error occurred whilst trying to get the upcomingStream for:");
+            console.log(`Stream ID: ${streamId}\n`);
+            console.log(`Error message: \n${err}`);
+        });
 
-        upcomingStreams.push(upcomingStream);
+        if (upcomingStream)upcomingStreams.push(upcomingStream);
     }
 
     return upcomingStreams;
