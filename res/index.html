@@ -6,6 +6,12 @@
         <title>HS</title>
         <link rel="stylesheet" href="./public/webpack/main.css" />
         <script src="./public/webpack/webpack.js"></script>
+
+        <!-- Twitter embed script -->
+        <script
+            src="https://platform.twitter.com/widgets.js"
+            charset="utf-8"
+        ></script>
     </head>
     <body>
         <nav class="side-navbar hidden">
@@ -122,11 +128,26 @@
             </div>
         </div>
         <div class="navbar-container">
-            <div class="nav-panel-toggle-container">
+            <!-- <div class="nav-panel-toggle-container">
                 <i id="load-icon" data-icon="bars-solid"></i>
+            </div> -->
+            <div class="nav-item" id="home">
+                <div class="text-container">
+                    <span>home</span>
+                </div>
+            </div>
+            <div class="nav-item" id="tweets">
+                <div class="text-container">
+                    <span>tweets</span>
+                </div>
+            </div>
+            <div class="nav-item">
+                <div class="text-container">
+                    <span>About</span>
+                </div>
             </div>
             <div class="divider"></div>
-            <div class="theme-toggle">
+            <div class="nav-item theme-toggle">
                 <div class="text-container">
                     <span>light</span>
                     <span class="hidden">dark</span>
@@ -149,7 +170,14 @@
             </h1>
         </div>
         <main class="hidden">
-            <div class="stream-container"></div>
+            <div class="stream-container" data-active="true" data-page="main"></div>
+            <div class="twitter-overview hidden" data-page="twitter-overview">
+                <div class="loading-page">
+                    <h1 class="kaomoji">(ﾉ*ФωФ)ﾉ</h1>
+                    <h1>Loading tweets...</h1>
+                </div>
+                <div id="main" class="hidden"></div>
+            </div>
         </main>
     </body>
 </html>

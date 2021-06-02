@@ -16,6 +16,7 @@ body.dark {
 
     .main-error h1,
     .main-loading h1,
+    .twitter-overview > .loading-page h1,
     #search_input,
     #search_input::placeholder {
         color: #dedede;
@@ -45,10 +46,12 @@ body.dark {
         height: 0.1rem;
     }
 
+    .twitter-overview #main > *,
+    .stream-layout {
+        box-shadow: $box-shadow-dark;
+    }
     .stream-layout {
         background-color: $color_primary;
-
-        box-shadow: $box-shadow-dark;
 
         border-width: 2px;
 

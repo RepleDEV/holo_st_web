@@ -15,7 +15,10 @@
 
     // NAVBAR DISPLAY
     display: grid;
-    grid-template-columns: max-content auto repeat(2, max-content);
+    // Determines how the navbar buttons are arranged. The "auto" in the middle is for the
+    // .divider element (divides left from right)
+    // the repeat() is just so that I don't have to type "max-content" 5 times.
+    grid-template-columns: repeat(3, max-content) auto repeat(2, max-content);
     grid-template-rows: 100%;
     column-gap: 2rem;
 
@@ -47,7 +50,7 @@
     }
 }
 
-.theme-toggle {
+.nav-item {
     display: flex;
 
     justify-content: center;
@@ -66,6 +69,14 @@
 
     &:hover {
         cursor: pointer;
+    }
+
+    .text-container {
+        transition: transform 80ms ease-in-out;
+    }
+
+    &:hover .text-container {
+        transform: translate(0.1rem, -0.1rem);
     }
 }
 

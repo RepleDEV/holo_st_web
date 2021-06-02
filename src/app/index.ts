@@ -3,12 +3,14 @@ import "../../public/scss/base.scss";
 import $ from "jquery";
 import anime from "animejs";
 
-import { Generation } from "../core/modules/holo_st/globals";
+import { Channels, Generation } from "../core/modules/holo_st/globals";
 import StreamDisplay from "./modules/streamdisplay";
+import Pages from "./modules/pages";
 import { MinimizedStreams } from "../core/globals";
 
 let is_default = true;
 let preferred_theme: "light" | "dark" = "light";
+let loaded_twitter_overview = false;
 
 let streamDisplay: StreamDisplay | null = null;
 
@@ -75,6 +77,60 @@ async function load_icons(): Promise<void> {
             e.replaceWith(icon);
         }
     }
+}
+
+function load_twitter_embeds(): Promise<void> {
+    return new Promise((resolve, reject) => {
+        $.get("/public/files/channels.json").then((channels: Channels) => {
+            const options = {
+                width: 400,
+                height: 400,
+                theme: "dark",
+                chrome: "transparent noborders noscrollbar",
+                dnt: "true",
+                "tweet-limit": 10
+            }
+    
+            const promises: Promise<any>[] = [];
+    
+            for (let i = 0;i < channels.length;i++) {
+                const channel = channels[i];
+                const { twitter } = channel;
+    
+                if (typeof twitter == "string") {
+                    promises.push(
+                        globalThis.twttr.widgets.createTimeline(
+                            {
+                                sourceType: "profile",
+                                screenName: twitter
+                            },
+                            $(".twitter-overview #main")[0],
+                            options
+                        )
+                    )
+    
+                    continue;
+                }
+    
+                // Some members have 2 twitter accounts (e.g. @7216_2nd)
+                for (let i = 0;i < channel.twitter.length;i++) {
+                    promises.push(
+                        globalThis.twttr.widgets.createTimeline(
+                            {
+                                sourceType: "profile",
+                                screenName: twitter[i]
+                            },
+                            $(".twitter-overview #main")[0],
+                            options
+                        )
+                    );
+                }
+            }
+    
+            // Return promise after everything is finished
+            Promise.all(promises).then(() => resolve());
+        });
+    });    
 }
 
 function toggle_sidepanel(): void {
@@ -176,6 +232,26 @@ function initializeListeners() {
         }
     });
 
+    $(".nav-item#home").on("click", () => {
+        Pages.enable("main");
+    });
+
+    $(".nav-item#tweets").on("click", () => {
+        Pages.enable("twitter-overview");
+
+        // Only load tweets when switching to page
+        if (!loaded_twitter_overview) {
+            // Set to true before finished loading to prevent it loading twice
+            loaded_twitter_overview = true;
+
+            load_twitter_embeds().then(() => {
+                // Show tweets when finished loading
+                $(".twitter-overview .loading-page").addClass("hidden"); // Also hide loading page
+                $(".twitter-overview #main").removeClass("hidden");
+            });
+        }
+    });
+
     $(".theme-toggle").on("click", ({ target }) => {
         const e = $(target);
         if (preferred_theme === "light") {
@@ -250,4 +326,6 @@ $(async () => {
 
     $("body .main-loading").addClass("hidden");
     $("body > main").removeClass("hidden");
+
+    globalThis.Pages = Pages;
 });

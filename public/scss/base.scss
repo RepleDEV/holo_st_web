@@ -1,4 +1,5 @@
 @import "./modules/defaults";
+@import "./modules/twitter-overview";
 @import "./modules/stream-container";
 @import "./modules/stream-card";
 @import "./modules/navbar";
@@ -21,7 +22,8 @@ body {
 }
 
 .main-loading,
-.main-error {
+.main-error,
+.twitter-overview > .loading-page {
     display: flex;
     flex-direction: column;
 

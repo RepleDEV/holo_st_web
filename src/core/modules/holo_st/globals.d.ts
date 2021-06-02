@@ -103,6 +103,7 @@ export interface Channel {
         id: string;
     };
     icon: string;
+    twitter: string | string[];
 }
 
 export type Channels = Channel[];
