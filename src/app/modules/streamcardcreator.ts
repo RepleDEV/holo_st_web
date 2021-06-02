@@ -81,6 +81,19 @@ export default async function streamCardCreator(
 
             // Add the image to the parent's container;
             streamerIconContainerElement.append(streamerIconComponentClone);
+
+            // Also, add the name of the collaborating member to the sub-title
+            $(".streamer-name-container") // Get parent container
+                // Get the first child
+                .children(":first")
+                // Clone the FIRST CHILD
+                .clone()
+                // Change the text
+                .text(`, ${channel.name}`)
+                // Change the URL
+                .attr("href", `https://youtube.com/channel/${channel.channel.id}`)
+                // Append to parent
+                .appendTo($(".streamer-name-container"));
         }
     }
 
