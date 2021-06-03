@@ -2,14 +2,17 @@ import "../../public/scss/base.scss";
 
 import $ from "jquery";
 import anime from "animejs";
+import { io, Socket } from "socket.io-client";
 
-import { Generation } from "../core/modules/holo_st/globals";
+import { Generation, OngoingStream, UpcomingStream } from "../core/modules/holo_st/globals";
 import StreamDisplay from "./modules/streamdisplay";
 import Cookie from "./modules/cookies";
 import { MinimizedStreams } from "../core/globals";
+import dayjs from "dayjs";
 
 let is_default = true;
 let preferred_theme: "light" | "dark" = "light";
+let socket: Socket | null = null;
 
 let streamDisplay: StreamDisplay | null = null;
 
@@ -242,6 +245,30 @@ function checkDarkTheme() {
     }
 }
 
+function listenToSocket(): void {
+    socket = io();
+
+    socket.on("connect", () => {
+        console.log(`${dayjs().format()} - Successfully connected to WebSocket! ID: ${socket.id}`);
+    });
+    socket.on("disconnect", () => {
+        console.log(`${dayjs().format()} - Disconnected from WebSocket`);
+    });
+
+    // When stream starts
+    socket.on("start", (id: string) => {
+        console.log(`${dayjs().format()} - Started stream! ID: ${id}`);
+    });
+    // When stream ends
+    socket.on("end", (id: string) => {
+        console.log(`${dayjs().format()} - Ended stream! ID: ${id}`);
+    });
+    // When a stream is rescheduled
+    socket.on("reschedule", (stream: UpcomingStream) => {
+        console.log(`${dayjs().format()} - Rescheduled stream! ID: ${stream.streamId}`);
+    });
+}
+
 $(async () => {
     checkDarkTheme();
     await load_icons();
@@ -259,6 +286,7 @@ $(async () => {
     }
 
     initializeListeners();
+    listenToSocket();
 
     $("body .main-loading").addClass("hidden");
     $("body > main").removeClass("hidden");

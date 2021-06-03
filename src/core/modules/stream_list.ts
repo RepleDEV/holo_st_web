@@ -171,6 +171,39 @@ export class StreamList {
             lastUpdated: Date.now(),
         };
     }
+    static minimizeOngoingStream(stream: OngoingStream): MinimizedOngoingStream {
+        const res: MinimizedOngoingStream = {
+            streamId: stream.streamId,
+
+            title: stream.title,
+            thumbnail: stream.thumbnail,
+
+            channels: stream.channels,
+
+            scheduledStartTime: stream.scheduledStartTime,
+
+            actualStartTime: stream.actualStartTime,
+            concurrentViewers: stream.concurrentViewers,
+
+            membershipOnly: stream.membershipOnly,
+        };
+        return res;
+    }
+    static minimizeUpcomingStream(stream: UpcomingStream): MinimizedUpcomingStream {
+        const res: MinimizedUpcomingStream = {
+            streamId: stream.streamId,
+
+            title: stream.title,
+            thumbnail: stream.thumbnail,
+
+            channels: stream.channels,
+
+            scheduledStartTime: stream.scheduledStartTime,
+
+            membershipOnly: stream.membershipOnly,
+        };
+        return res;
+    }
     exportMinimized(): MinimizedStreams {
         return {
             ongoingStreams: this.ongoingStreams.map<MinimizedOngoingStream>(

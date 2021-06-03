@@ -2,6 +2,7 @@ import express from "express";
 import path from "path";
 import compression from "compression";
 import axios from "axios";
+import { Server } from "socket.io";
 
 import * as routes from "./modules/routes";
 import { StreamList } from "./modules/stream_list";
@@ -11,6 +12,7 @@ import startListeners from "./modules/listeners_V2";
 
 const app = express();
 app.use(compression());
+let io: Server | null = null;
 
 const streamList = new StreamList();
 
@@ -18,7 +20,7 @@ const PORT = process.env.PORT || 9106;
 
 function checkStreamsCallback() {
     // init(streamList);
-    startListeners(streamList);
+    startListeners(streamList, io);
     console.log("Finished checking streams!");
     routes.setStreamList(streamList);
 }
@@ -63,7 +65,9 @@ function checkStreamsDev() {
     // 404 redirect.
     app.use(routes.redirect); //! DO NOT MOVE
 
-    app.listen(PORT, () => {
+    const server = app.listen(PORT, () => {
         console.log("App Started!");
     });
+
+    io = new Server(server, { serveClient: false });
 })();

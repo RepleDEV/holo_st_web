@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import _ from "lodash";
+import { Server } from "socket.io";
 import {
     convert_to_ongoing_stream,
     convert_to_upcoming_stream,
@@ -20,6 +21,7 @@ let listeners: string[] = [];
 
 let streamList: StreamList | null = null;
 let channels: Channels | null = null;
+let io: Server | null = null;
 
 async function check_stream(
     id: string
@@ -45,6 +47,9 @@ async function ongoing_stream_listener_callback(): Promise<void> {
 
         if (!isStreaming) {
             streamList.removeOngoingStream(streamId);
+
+            // Send end event to webSocket
+            io.emit("end", streamId);
         }
     }
 }
@@ -72,9 +77,14 @@ async function upcoming_stream_listener_callback(
     );
 
     if (isStreaming) {
-        streamList.startUpcomingStream(streamInfo);
+        const ongoingStream = streamList.startUpcomingStream(streamInfo);
 
         _.remove(listeners, (v) => v === upcomingStream.streamId);
+
+        // Emit event to webSocket
+        if (ongoingStream) {
+            io.emit("start", StreamList.minimizeOngoingStream(ongoingStream));
+        }
 
         console.log(`Stream is now live: ${upcomingStream.streamId}`);
     } else {
@@ -108,6 +118,9 @@ async function upcoming_stream_listener_callback(
             const time = get_next_minute(5);
 
             add_upcoming_stream_listener(upcomingStream, time, true);
+
+            io.emit("reschedule", rescheduledStream);
+
             return;
         }
 
@@ -181,9 +194,10 @@ function start_stream_refresh_timer(): void {
     }, get_next_minute(60) - Date.now());
 }
 
-export default async function start(streamList_: StreamList): Promise<void> {
+export default async function start(streamList_: StreamList, io_: Server): Promise<void> {
     channels = await get_channels();
     streamList = streamList_;
+    io = io_;
 
     start_ongoing_stream_listeners();
     start_upcoming_stream_listeners();
