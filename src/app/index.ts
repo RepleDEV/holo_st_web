@@ -5,6 +5,7 @@ import anime from "animejs";
 
 import { Generation } from "../core/modules/holo_st/globals";
 import StreamDisplay from "./modules/streamdisplay";
+import Cookie from "./modules/cookies";
 import { MinimizedStreams } from "../core/globals";
 
 let is_default = true;
@@ -181,9 +182,11 @@ function initializeListeners() {
         if (preferred_theme === "light") {
             $("body").addClass("dark");
             preferred_theme = "dark";
+            new Cookie("preferred_theme", "dark", 5);
         } else {
             $("body").removeClass("dark");
             preferred_theme = "light";
+            new Cookie("preferred_theme", "light", 5);
         }
         // Find span (text for light / dark) & iterate
         e.find(" > * > span").each((i, e) => {
@@ -221,9 +224,18 @@ function initializeListeners() {
 
 function checkDarkTheme() {
     // This checks dark theme. See https://stackoverflow.com/a/57795495/13160047
+    const preferred_theme_c = Cookie.get("preferred_theme");
     const DARK_THEME =
-        window.matchMedia &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches;
+        (
+            // Check if the cookie for "preferred_theme" exists
+            preferred_theme_c ? 
+            // If it does, return if the cookie's value is "dark"
+            preferred_theme_c === "dark" :
+            // If the cookie does not exist, return true if the device
+            // prefers dark mode.
+            window.matchMedia &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches
+        );
     if (DARK_THEME) {
         $("body").addClass("dark");
         preferred_theme = "dark";
