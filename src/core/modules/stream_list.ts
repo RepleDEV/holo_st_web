@@ -16,6 +16,7 @@ import _ from "lodash";
 export class StreamList {
     upcomingStreams: UpcomingStream[] = [];
     ongoingStreams: OngoingStream[] = [];
+    lastModified = Date.now();
     constructor() {}
     // These two functions make sure that no duplicate is made on either of the arrays.
     addUpcomingStream(stream: UpcomingStream): void {
@@ -23,7 +24,9 @@ export class StreamList {
             const upcomingStream = this.upcomingStreams[i];
 
             if (upcomingStream.streamId === stream.streamId) {
-                // If stream already exists in the list, don't add it.
+                // If stream already exists in the list, replace it
+                this.upcomingStreams[i] = stream;
+                this.lastModified = Date.now();
                 return;
             }
         }
@@ -42,6 +45,8 @@ export class StreamList {
             (a, b) =>
                 +moment(a.scheduledStartTime) - +moment(b.scheduledStartTime)
         );
+
+        this.lastModified = Date.now();
     }
     addOngoingStream(stream: OngoingStream): void {
         for (let i = 0; i < this.ongoingStreams.length; i++) {
@@ -73,6 +78,8 @@ export class StreamList {
         this.ongoingStreams.sort(
             (a, b) => a.scheduledStartTime - b.scheduledStartTime
         );
+
+        this.lastModified = Date.now();
     }
     removeOngoingStream(streamId: string): OngoingStream | void {
         for (let i = 0; i < this.ongoingStreams.length; i++) {
@@ -80,6 +87,7 @@ export class StreamList {
 
             if (ongoingStream.streamId === streamId) {
                 this.ongoingStreams.splice(i, 1);
+                this.lastModified = Date.now();
                 return ongoingStream;
             }
         }
@@ -90,6 +98,7 @@ export class StreamList {
 
             if (upcomingStream.streamId === streamId) {
                 this.upcomingStreams.splice(i, 1);
+                this.lastModified = Date.now();
                 return upcomingStream;
             }
         }
@@ -113,6 +122,8 @@ export class StreamList {
             if (id === streamId) {
                 upcomingStream.scheduledStartTime = time;
 
+                this.lastModified = Date.now();
+
                 return upcomingStream;
             }
         }
@@ -123,23 +134,9 @@ export class StreamList {
     ): OngoingStream | void {
         const streamId = streamInfo.items[0].id;
 
-        let exists = false;
-
-        // Check if the upcomingStream actually exists by iterating through the list
-        for (let i = 0; i < this.upcomingStreams.length; i++) {
-            const upcomingStream = this.upcomingStreams[i];
-
-            if (upcomingStream.streamId === streamId) {
-                exists = true;
-
-                break;
-            }
-        }
-
-        if (!exists) return;
-
-        // Remove the upcomingStream from the list;
+        // Remove the upcomingStream from the list
         const upcomingStream = this.removeUpcomingStream(streamId);
+        // If the stream does not exist, return
         if (!upcomingStream) return;
 
         const {
@@ -168,7 +165,7 @@ export class StreamList {
         return {
             ongoingStreams: this.ongoingStreams,
             upcomingStreams: this.upcomingStreams,
-            lastUpdated: Date.now(),
+            lastUpdated: this.lastModified,
         };
     }
     static minimizeOngoingStream(stream: OngoingStream): MinimizedOngoingStream {
@@ -244,7 +241,7 @@ export class StreamList {
                     return res;
                 }
             ),
-            lastUpdated: Date.now(),
+            lastUpdated: this.lastModified,
         };
     }
     importStreams(stream: Streams): void {
