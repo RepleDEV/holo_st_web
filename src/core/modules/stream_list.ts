@@ -203,44 +203,8 @@ export class StreamList {
     }
     exportMinimized(): MinimizedStreams {
         return {
-            ongoingStreams: this.ongoingStreams.map<MinimizedOngoingStream>(
-                (x) => {
-                    const res: MinimizedOngoingStream = {
-                        streamId: x.streamId,
-
-                        title: x.title,
-                        thumbnail: x.thumbnail,
-
-                        channels: x.channels,
-
-                        scheduledStartTime: x.scheduledStartTime,
-
-                        actualStartTime: x.actualStartTime,
-                        concurrentViewers: x.concurrentViewers,
-
-                        membershipOnly: x.membershipOnly,
-                    };
-                    return res;
-                }
-            ),
-            upcomingStreams: this.upcomingStreams.map<MinimizedUpcomingStream>(
-                (x) => {
-                    const res: MinimizedUpcomingStream = {
-                        streamId: x.streamId,
-
-                        title: x.title,
-                        thumbnail: x.thumbnail,
-
-                        channels: x.channels,
-
-                        scheduledStartTime: x.scheduledStartTime,
-
-                        membershipOnly: x.membershipOnly,
-                    };
-
-                    return res;
-                }
-            ),
+            ongoingStreams: this.ongoingStreams.map((val) => StreamList.minimizeOngoingStream(val)),
+            upcomingStreams: this.upcomingStreams.map((val) => StreamList.minimizeUpcomingStream(val)),
             lastUpdated: this.lastModified,
         };
     }

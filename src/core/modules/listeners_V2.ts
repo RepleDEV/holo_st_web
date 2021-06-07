@@ -184,6 +184,8 @@ function stream_refresh_callback(): void {
     list_streams(streamList).then(() => {
         start_stream_refresh_timer();
 
+        io.emit("refresh");
+
         start_upcoming_stream_listeners();
     });
 }

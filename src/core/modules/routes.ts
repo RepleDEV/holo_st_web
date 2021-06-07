@@ -15,9 +15,25 @@ export function redirect(req: express.Request, res: express.Response): void {
 export function streams(req: express.Request, res: express.Response): void {
     const minimize =
         req.query.minimize === "true" || req.query.minimize === "1";
+    const specificId = (req.query.id || "").toString();
 
     if (streamList) {
-        res.json(minimize ? streamList.exportMinimized() : streamList.export());
+        if (specificId) {
+            const upcomingStream = streamList.getUpcomingStream(specificId);
+            // The && is for: if upcomingStream is NOT undefined (found the stream already)
+            // loop through the ongoingStreams array
+            const ongoingStream = upcomingStream && streamList.getOngoingStream(specificId);
+
+            if (upcomingStream) {
+                res.json(minimize ? StreamList.minimizeUpcomingStream(upcomingStream) : upcomingStream);
+            } else if (ongoingStream) {
+                res.json(minimize ? StreamList.minimizeOngoingStream(ongoingStream) : ongoingStream);
+            } else {
+                res.status(404).json("Streams not found. Sorry.");        
+            }
+        } else {
+            res.json(minimize ? streamList.exportMinimized() : streamList.export());
+        }
     } else {
         res.status(404).json("Streams not found. Sorry.");
     }

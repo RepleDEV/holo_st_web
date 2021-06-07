@@ -14,7 +14,7 @@ let is_default = true;
 let preferred_theme: "light" | "dark" = "light";
 let socket: Socket | null = null;
 
-let streamDisplay: StreamDisplay | null = null;
+const streamDisplay = new StreamDisplay();
 
 async function gen_checkbox_callback(e: JQuery.TriggeredEvent): Promise<void> {
     const target = $(e.target);
@@ -258,32 +258,42 @@ function listenToSocket(): void {
     // When stream starts
     socket.on("start", (id: string) => {
         console.log(`${dayjs().format()} - Started stream! ID: ${id}`);
+
+        $(`.stream-layout[data-id=${id}]`).addClass(".streaming");
     });
     // When stream ends
     socket.on("end", (id: string) => {
         console.log(`${dayjs().format()} - Ended stream! ID: ${id}`);
+        $(`.stream-layout[data-id=${id}]`).remove();
     });
     // When a stream is rescheduled
     socket.on("reschedule", (stream: UpcomingStream) => {
         console.log(`${dayjs().format()} - Rescheduled stream! ID: ${stream.streamId}`);
     });
+    // On hourly refresh
+    socket.on("refresh", () => {
+        // Do stuff
+    });
+}
+
+async function load_streams(): Promise<void> {
+    const minimized_streams = await getStreams();
+
+    if (minimized_streams) {
+        await streamDisplay.init(minimized_streams);
+        await streamDisplay.display();
+    } else {
+        // If /streams returns 404 (stream data has not finished initializing)
+        // Show loading page
+        $("body .main-loading").addClass("hidden");
+        $("body .main-error").removeClass("hidden");
+    }
 }
 
 $(async () => {
     checkDarkTheme();
     await load_icons();
-
-    const minimized_streams = await getStreams();
-
-    streamDisplay = new StreamDisplay();
-
-    if (!minimized_streams) {
-        $("body .main-loading").addClass("hidden");
-        $("body .main-error").removeClass("hidden");
-    } else {
-        await streamDisplay.init(minimized_streams);
-        await streamDisplay.display();
-    }
+    await load_streams();
 
     initializeListeners();
     listenToSocket();
