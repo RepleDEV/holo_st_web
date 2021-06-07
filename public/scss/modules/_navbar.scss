@@ -15,7 +15,7 @@
 
     // NAVBAR DISPLAY
     display: grid;
-    grid-template-columns: max-content auto repeat(2, max-content);
+    grid-template-columns: repeat(3, max-content) auto repeat(2, max-content);
     grid-template-rows: 100%;
     column-gap: 2rem;
 
@@ -47,7 +47,7 @@
     }
 }
 
-.theme-toggle {
+.nav-item {
     display: flex;
 
     justify-content: center;

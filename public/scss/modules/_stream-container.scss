@@ -16,6 +16,17 @@
     flex-direction: column;
 }
 
+.control-bar {
+    height: 3rem;
+
+    box-sizing: border-box;
+
+    border-radius: 3rem;
+    border: 2px solid $color_tertiary;
+
+    background-color: #FFF;
+}
+
 .stream-container .streams {
     display: grid;
 

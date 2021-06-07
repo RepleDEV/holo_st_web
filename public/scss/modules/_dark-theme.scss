@@ -45,6 +45,12 @@ body.dark {
         height: 0.1rem;
     }
 
+    .control-bar {
+        background-color: $color_secondary;
+
+        border-color: $color_tertiary;
+    }
+
     .stream-layout {
         background-color: $color_primary;
 
