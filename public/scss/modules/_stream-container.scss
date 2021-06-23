@@ -1,17 +1,19 @@
 @import "globals";
 
 .stream-container {
+    margin: 4rem 2rem;
+    margin-bottom: 4rem;
+}
+
+.stream-container, .main-container {
     display: grid;
 
     grid-template-columns: auto;
 
     row-gap: 2rem;
-
-    margin: 4rem 2rem;
-    margin-bottom: 4rem;
 }
 
-.stream-container > .row {
+.main-container > .row {
     display: flex;
     flex-direction: column;
 }
@@ -23,8 +25,17 @@
 
     border-radius: 3rem;
     border: 2px solid $color_tertiary;
+    padding: 0 2rem;
 
     background-color: #FFF;
+
+    // Grid layout
+    display: grid;
+    
+    grid-template-columns: auto repeat(2, max-content);
+    grid-template-rows: 100%;
+
+    column-gap: 2rem;
 }
 
 .stream-container .streams {

@@ -125,7 +125,7 @@ export default class StreamDisplay {
                 row_container.find(".streams").append(y.card);
             });
 
-            $(".stream-container").append(row_container);
+            $(".main-container").append(row_container);
         }
 
         this.setStreamClickListeners();

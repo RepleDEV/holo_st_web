@@ -1,0 +1,38 @@
+.compact-container {
+    display: grid;
+
+    grid-template-columns: auto;
+}
+
+.compact-container .stream {
+    height: 6rem;
+
+    padding: 1rem 0;
+
+    display: flex;
+    flex-direction: row;
+
+    // Dividers
+    border-top: 1px solid #555;
+}
+
+.stream img {
+    height: 100%;
+}
+
+.stream .stream-info, .stream .stream-time {
+    align-self: center;
+}
+
+.stream .stream-time {
+    text-align: center;
+}
+
+.stream .stream-info {
+    padding: 0 1rem;
+
+    & .title {
+        font-size: 1.2rem;
+        font-weight: 500;
+    }
+}

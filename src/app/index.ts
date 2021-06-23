@@ -144,6 +144,15 @@ async function getStreams(): Promise<MinimizedStreams | void> {
     }
 }
 
+// function computeCompactMode(): JQuery<HTMLElement> {
+    
+// }
+
+let compactMode = false;
+function toggleCompactMode(): void {
+    compactMode = !compactMode;
+}
+
 function initializeListeners() {
     $(".nav-panel-toggle-container").on("click", toggle_sidepanel);
 
@@ -223,6 +232,8 @@ function initializeListeners() {
         "input",
         gen_checkbox_callback
     );
+
+    $(".ui-toggle").on("click", toggleCompactMode);
 }
 
 function checkDarkTheme() {
