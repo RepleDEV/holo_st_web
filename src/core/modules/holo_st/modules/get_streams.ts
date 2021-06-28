@@ -174,9 +174,6 @@ async function handle_redirect(page: Page, url: string): Promise<void> {
                 }
                 (currentElement as HTMLElement).click();
             }
-
-            // Click submit
-            (document.querySelector("#yDmH0d > c-wiz > div > div > div > div.VP4fnf > form > div > button") as HTMLElement).click();
         });
 
         await page.waitForNavigation();
