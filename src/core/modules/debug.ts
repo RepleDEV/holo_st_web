@@ -25,12 +25,10 @@ export default class Debug {
 
         await visit_channel(randomChannelId, page);
 
+        // Screenshot, and save html
         await page.screenshot({ path: "./test.png", fullPage: true });
-
         const pageHTML = await page.evaluate(() => document.querySelector("*").outerHTML);
-
         await browser.close();
-
         await this.write(pageHTML, `pageHTML-${randomChannelId}.html`);
         
         return randomChannelId;
