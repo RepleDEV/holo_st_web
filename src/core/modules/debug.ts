@@ -25,7 +25,7 @@ export default class Debug {
 
         await visit_channel(randomChannelId, page);
 
-        await page.screenshot({ path: "./test.png" });
+        await page.screenshot({ path: "./test.png", fullPage: true });
 
         const pageHTML = await page.evaluate(() => document.querySelector("*").outerHTML);
 

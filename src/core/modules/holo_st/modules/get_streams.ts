@@ -157,6 +157,8 @@ async function handle_redirect(page: Page, url: string): Promise<void> {
     if (pageURL !== url && pageURL.includes("consent.youtube.com")) {
         await page.click("button.VfPpkd-LgbsSe");
 
+        return;
+
         await page.waitForNavigation();
 
         const buttonCoords = await page.evaluate(() => {
