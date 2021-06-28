@@ -155,7 +155,7 @@ export async function visit_channel(id: string, page: Page): Promise<void> {
 async function handle_redirect(page: Page, url: string): Promise<void> {
     const pageURL = page.url();
     if (pageURL !== url && pageURL.includes("consent.youtube.com")) {
-        await page.click("div.VfPpkd-RLmnJb");
+        await page.click("#yDmH0d > c-wiz > div > div > div > div.VP4fnf > form > div > button");
         await page.waitForNavigation();
     }
 }
