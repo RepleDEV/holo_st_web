@@ -18,7 +18,7 @@ import get_streams from "./modules/get_streams";
 // }
 
 // TODO: Move this function to get_browser.ts in modules/ to allow imports
-async function get_browser(): Promise<Browser> {
+export async function get_browser(): Promise<Browser> {
     // If the environment is production, pass no argument to puppeteer.
     const browser = await puppeteer.launch(
         process.env.NODE_ENV === "production"

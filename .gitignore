@@ -7,5 +7,6 @@ dev/
 
 # DEBUG PUPPETEER
 test.png
+debug/
 
 .env

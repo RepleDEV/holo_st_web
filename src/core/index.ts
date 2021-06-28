@@ -9,6 +9,7 @@ import { StreamList } from "./modules/stream_list";
 import { list_streams } from "./modules/list_streams";
 import { init } from "./modules/listeners";
 import startListeners from "./modules/listeners_V2";
+import Debug from "./modules/debug";
 
 const app = express();
 app.use(compression());
@@ -46,15 +47,27 @@ function checkStreamsDev() {
 (async () => {
     console.log("Starting app.");
 
-    console.log("Checking streams.");
-    if (process.argv.includes("override")) {
-        console.log("Override argument detected. Using production method.");
-        checkStreamsProduction();
-    } else if (process.env.NODE_ENV === "production") {
-        checkStreamsProduction();
+    // Check debug environment
+    if (process.env.DEBUG === "TRUE") {
+        console.log("Detected debug environment. Starting debug procedure.");
+        const debug = new Debug();
+        const channelId = await debug.get();
+
+        // Add /debug path to url
+        app.get("/debug", (req, res) => {
+            res.sendFile(path.resolve(`./debug/pageHTML-${channelId}.html`));
+        });
     } else {
-        console.log("Development build detected. Using alternate method.");
-        checkStreamsDev();
+        console.log("Checking streams.");
+        if (process.argv.includes("override")) {
+            console.log("Override argument detected. Using production method.");
+            checkStreamsProduction();
+        } else if (process.env.NODE_ENV === "production") {
+            checkStreamsProduction();
+        } else {
+            console.log("Development build detected. Using alternate method.");
+            checkStreamsDev();
+        }
     }
 
     // Routes

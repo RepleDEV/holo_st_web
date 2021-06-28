@@ -16,6 +16,8 @@ import check_membership from "./check_membership";
 async function click_dropdown_button(page: Page): Promise<number> {
     // Iterate through the dropdown buttons and find the one that says "Upcoming live streams"
     const dropdownInnerHTML = await page.evaluate(
+        // TODO: Fix: Cannot read property "innerHTML" of null
+        // TODO: Solution: Fix selector
         () => document.querySelector("#menu").innerHTML
     );
 
@@ -121,7 +123,7 @@ async function process_stream_info<T extends StreamTypes>(
     return stream as ReturnType<T>;
 }
 
-async function get_page(browser: Browser): Promise<Page> {
+export async function get_page(browser: Browser): Promise<Page> {
     const page = await browser.newPage();
 
     await page.setUserAgent(
@@ -136,7 +138,7 @@ async function get_page(browser: Browser): Promise<Page> {
  * @param id Channel ID
  * @param page Browser page
  */
-async function visit_channel(id: string, page: Page): Promise<void> {
+export async function visit_channel(id: string, page: Page): Promise<void> {
     const url = `https://www.youtube.com/channel/${id}/videos`;
     // Do not change waitUntil property. Only works when it's on networkidle0
     await page.goto(url, { waitUntil: "networkidle0", timeout: 0 });
