@@ -57,6 +57,10 @@ function checkStreamsDev() {
         app.get("/debug", (req, res) => {
             res.sendFile(path.resolve(`./debug/pageHTML-${channelId}.html`));
         });
+        // Path fro test.png
+        app.get("/debug/photo", (req, res) => {
+            res.sendFile(path.resolve("./test.png"));
+        })
     } else {
         console.log("Checking streams.");
         if (process.argv.includes("override")) {
