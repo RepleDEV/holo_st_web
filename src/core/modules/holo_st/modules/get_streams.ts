@@ -176,7 +176,9 @@ async function handle_redirect(page: Page, url: string): Promise<void> {
             }
         });
 
-        // await page.waitForNavigation();
+        await page.click("button.VfPpkd-LgbsSe");
+
+        await page.waitForNavigation();
     }
 }
 
