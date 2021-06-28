@@ -155,20 +155,8 @@ export async function visit_channel(id: string, page: Page): Promise<void> {
 async function handle_redirect(page: Page, url: string): Promise<void> {
     const pageURL = page.url();
     if (pageURL !== url && pageURL.includes("consent.youtube.com")) {
-        await page.evaluate(() => {
-            // Select all cookie options as "no"
-            let buttons = Array.from(document.querySelectorAll("div.uScs5d div.VfPpkd-dgl2Hf-ppHlrf-sM5MNb button.VfPpkd-LgbsSe"));
-            
-            // Filter every other element (Remove "yes" options) and get the first 3 elements
-            buttons = buttons.filter((v, i) => i % 2 == 0).slice(0, 3);
-
-            // Click each button
-            buttons.forEach((button) => {
-                (button as HTMLElement).click();
-            });
-        });
-
-        // await page.click("form.bBXLMd button.VfPpkd-LgbsSe");
+        await page.waitForSelector("form button.VfPpkd-LgbsSe");
+        await page.click("form button.VfPpkd-LgbsSe");
 
         // await page.waitForNavigation({ waitUntil: "networkidle0", timeout: 0 });
     }
