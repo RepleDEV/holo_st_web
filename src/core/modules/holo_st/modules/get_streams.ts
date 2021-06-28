@@ -155,7 +155,30 @@ export async function visit_channel(id: string, page: Page): Promise<void> {
 async function handle_redirect(page: Page, url: string): Promise<void> {
     const pageURL = page.url();
     if (pageURL !== url && pageURL.includes("consent.youtube.com")) {
-        await page.click("div.VfPpkd-RLmnJb");
+        await page.evaluate(() => {
+            // Select all cookie options as "no"
+            const optionElements = document.querySelectorAll(".VfPpkd-WsjYwc");
+            const select = 0;
+            let childPath = [1, 0, 1, select, 0, 0];
+
+            for (let i = 0;i < optionElements.length;i++) {
+                let currentElement = optionElements[i];
+
+                if (i == 2) {
+                    childPath = [1, 1, 0, 1, select, 0, 0];
+                }
+
+                for (let j = 0;j < childPath.length;j++) {
+                    const childIndex = childPath[j];
+                    currentElement = currentElement.children[childIndex];
+                }
+                (currentElement as HTMLElement).click();
+            }
+
+            // Click submit
+            (document.querySelector("#yDmH0d > c-wiz > div > div > div > div.VP4fnf > form > div > button") as HTMLElement).click();
+        });
+
         await page.waitForNavigation();
     }
 }
