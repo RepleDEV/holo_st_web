@@ -158,7 +158,7 @@ async function handle_redirect(page: Page, url: string): Promise<void> {
         await page.waitForSelector("form button.VfPpkd-LgbsSe");
         await page.click("form button.VfPpkd-LgbsSe");
 
-        // await page.waitForNavigation({ waitUntil: "networkidle0", timeout: 0 });
+        await page.waitForNavigation({ waitUntil: "networkidle0" });
     }
 }
 
