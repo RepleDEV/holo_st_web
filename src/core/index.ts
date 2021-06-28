@@ -51,7 +51,9 @@ function checkStreamsDev() {
     if (process.env.DEBUG === "TRUE") {
         console.log("Detected debug environment. Starting debug procedure.");
         const debug = new Debug();
-        const channelId = await debug.get();
+        const channelId = await debug.get().catch((e) => {
+            console.log(e);
+        });
 
         // Add /debug path to url
         app.get("/debug", (req, res) => {
