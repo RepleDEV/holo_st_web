@@ -155,6 +155,10 @@ export async function visit_channel(id: string, page: Page): Promise<void> {
 async function handle_redirect(page: Page, url: string): Promise<void> {
     const pageURL = page.url();
     if (pageURL !== url && pageURL.includes("consent.youtube.com")) {
+        await page.click("button.VfPpkd-LgbsSe");
+
+        await page.waitForNavigation();
+
         await page.evaluate(() => {
             // Select all cookie options as "no"
             const optionElements = document.querySelectorAll(".VfPpkd-WsjYwc");
@@ -175,10 +179,6 @@ async function handle_redirect(page: Page, url: string): Promise<void> {
                 (currentElement as HTMLElement).click();
             }
         });
-
-        await page.click("button.VfPpkd-LgbsSe");
-
-        await page.waitForNavigation();
     }
 }
 
