@@ -159,13 +159,26 @@ async function handle_redirect(page: Page, url: string): Promise<void> {
 
         await page.waitForNavigation();
 
-        await page.evaluate(() => {
+        const buttonCoords = await page.evaluate(() => {
             // Select all cookie options as "no"
             let buttons = Array.from(document.querySelectorAll("div.uScs5d div.VfPpkd-dgl2Hf-ppHlrf-sM5MNb button.VfPpkd-LgbsSe"));
             
+            // Filter every other element (Remove "yes" options) and get the first 3 elements
             buttons = buttons.filter((v, i) => i % 2 == 0).slice(0, 3);
-            buttons.forEach((button) => (button as HTMLElement).click());
+            // Return every element's coordinate relative to viewport
+            const coords = buttons.map((button) => {
+                const { x, y } = button.getBoundingClientRect();
+                return [x, y];
+            });
+
+            return coords;
         });
+
+        for (let i = 0;i < buttonCoords.length;i++) {
+            const [x, y] = buttonCoords[i];
+
+            await page.mouse.click(x, y);
+        }
 
         await page.click("button.VfPpkd-LgbsSe");
     }
