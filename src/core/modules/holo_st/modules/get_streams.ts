@@ -179,6 +179,10 @@ async function handle_redirect(page: Page, url: string): Promise<void> {
                 (currentElement as HTMLElement).click();
             }
         });
+
+        await page.click("button.VfPpkd-LgbsSe");
+
+        await page.waitForNavigation({ waitUntil: "networkidle0" });
     }
 }
 
