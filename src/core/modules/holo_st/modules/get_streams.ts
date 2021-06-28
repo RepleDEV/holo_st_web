@@ -161,28 +161,13 @@ async function handle_redirect(page: Page, url: string): Promise<void> {
 
         await page.evaluate(() => {
             // Select all cookie options as "no"
-            const optionElements = document.querySelectorAll(".VfPpkd-WsjYwc");
-            const select = 0;
-            let childPath = [1, 0, 1, select, 0, 0];
-
-            for (let i = 0;i < optionElements.length;i++) {
-                let currentElement = optionElements[i];
-
-                if (i == 2) {
-                    childPath = [1, 1, 0, 1, select, 0, 0];
-                }
-
-                for (let j = 0;j < childPath.length;j++) {
-                    const childIndex = childPath[j];
-                    currentElement = currentElement.children[childIndex];
-                }
-                (currentElement as HTMLElement).click();
-            }
+            let buttons = Array.from(document.querySelectorAll("div.uScs5d div.VfPpkd-dgl2Hf-ppHlrf-sM5MNb button.VfPpkd-LgbsSe"));
+            
+            buttons = buttons.filter((v, i) => i % 2 == 0).slice(0, 3);
+            buttons.forEach((button) => (button as HTMLElement).click());
         });
 
         await page.click("button.VfPpkd-LgbsSe");
-
-        await page.waitForNavigation();
     }
 }
 
