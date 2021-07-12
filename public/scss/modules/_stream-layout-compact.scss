@@ -2,37 +2,74 @@
     display: grid;
 
     grid-template-columns: auto;
-}
 
-.compact-container .stream {
-    height: 6rem;
 
-    padding: 1rem 0;
+    // Card layout
+    .stream {
+        height: 6rem;
+    
+        padding: 1rem 0;
+    
+        display: flex;
+        flex-direction: row;
+    
+        // Dividers
+        border-top: 1px solid #454545;
+    }
 
-    display: flex;
-    flex-direction: row;
+    .stream:hover {
+        cursor: default;
+    }
+    
+    .stream img {
+        height: 100%;
+    }
+    
+    .stream .stream-info, .stream .stream-time {
+        align-self: center;
+    }
+    .stream .stream-time {
+        flex: 1;
+        text-align: right;
+        user-select: none;
+    }
 
-    // Dividers
-    border-top: 1px solid #555;
-}
+    .stream .start-time {
+        box-sizing: border-box;
+        width: max-content;
 
-.stream img {
-    height: 100%;
-}
+        float: right;
 
-.stream .stream-info, .stream .stream-time {
-    align-self: center;
-}
+        padding-left: 0.2rem;
+    }
+    .stream.streaming .start-time {
+        border-left: 2px solid #f00;
+    }
+    
+    .stream .stream-info {
+        padding: 0 1rem;
+        max-width: 60%;
 
-.stream .stream-time {
-    text-align: center;
-}
+        .streamer {
+            width: max-content;
 
-.stream .stream-info {
-    padding: 0 1rem;
+            margin-top: 0.4rem;
+        }
 
-    & .title {
-        font-size: 1.2rem;
-        font-weight: 500;
+        .streamer a,
+        .title a {
+            color: #000;
+            text-decoration: none;
+        }
+
+        .title a {
+            font-size: 1.2rem;
+            font-weight: 500;
+
+            overflow: hidden;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            text-overflow: ellipsis;
+        }
     }
 }

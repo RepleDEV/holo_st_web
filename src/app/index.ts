@@ -10,6 +10,8 @@ import Cookie from "./modules/cookies";
 import { MinimizedStreams } from "../core/globals";
 import dayjs from "dayjs";
 
+import * as compactMode from "./modules/compactMode";
+
 let is_default = true;
 let preferred_theme: "light" | "dark" = "light";
 let socket: Socket | null = null;
@@ -144,15 +146,6 @@ async function getStreams(): Promise<MinimizedStreams | void> {
     }
 }
 
-// function computeCompactMode(): JQuery<HTMLElement> {
-    
-// }
-
-let compactMode = false;
-function toggleCompactMode(): void {
-    compactMode = !compactMode;
-}
-
 function initializeListeners() {
     $(".nav-panel-toggle-container").on("click", toggle_sidepanel);
 
@@ -233,7 +226,7 @@ function initializeListeners() {
         gen_checkbox_callback
     );
 
-    $(".ui-toggle").on("click", toggleCompactMode);
+    compactMode.initializeListeners();
 }
 
 function checkDarkTheme() {
@@ -293,6 +286,7 @@ async function load_streams(): Promise<void> {
     if (minimized_streams) {
         await streamDisplay.init(minimized_streams);
         await streamDisplay.display();
+        await compactMode.computeCompactMode(minimized_streams);
     } else {
         // If /streams returns 404 (stream data has not finished initializing)
         // Show loading page

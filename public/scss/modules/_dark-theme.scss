@@ -79,4 +79,11 @@ body.dark {
     .side-navbar {
         background-color: $color_primary;
     }
+
+    .compact-container {
+        .stream .stream-info .title a,
+        .stream .stream-info .streamer a {
+            color: $text-color;
+        }
+    }
 }
