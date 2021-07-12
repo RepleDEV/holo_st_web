@@ -92,7 +92,7 @@ export interface OngoingStream extends Stream {
     concurrentViewers: number;
 }
 
-type Generation = ["JP" | "ID" | "EN", number] | "GAMERS";
+type Generation = ["JP" | "ID" | "EN", number] | "GAMERS" | ["EN", "HOPE"];
 
 export interface Channel {
     name: string;

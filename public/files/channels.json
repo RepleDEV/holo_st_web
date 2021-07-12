@@ -418,5 +418,15 @@
             "id": "UCyl1z3jo3XHR1riLFKG5UAg"
         },
         "icon": "https://yt3.ggpht.com/ytc/AAUvwngENhxNHPzV4jjip28G3vswMxutvkaBhBjAMS0i=s{size}-c-k-c0x00ffffff-no-rj"
+    },
+    {
+        "name": "IRyS",
+        "alias": [],
+        "generation": ["EN", "HOPE"],
+        "channel": {
+            "name": "IRyS Ch. hololive-EN",
+            "id": "UC8rcEBzJSleTkf_-agPM20g"
+        },
+        "icon": "https://yt3.ggpht.com/UwxlX1PuB_RwJyEUW_ofbBR6saY8n5_p8A9_1bY65zygFrfqIb1GM8dIK33EJboDDnRVyw=s{size}-c-k-c0x00ffffff-no-rj"
     }
 ]
