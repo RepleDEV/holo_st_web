@@ -15,6 +15,12 @@
     
         // Dividers
         border-top: 1px solid #454545;
+
+        transition: 120ms background-color ease-in-out;
+    }
+
+    .stream:hover {
+        background-color: #eee;
     }
 
     .stream:hover {

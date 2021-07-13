@@ -81,6 +81,9 @@ body.dark {
     }
 
     .compact-container {
+        .stream:hover {
+            background-color: #323234;
+        }
         .stream .stream-info .title a,
         .stream .stream-info .streamer a {
             color: $text-color;
