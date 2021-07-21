@@ -260,9 +260,16 @@ async function get_upcoming_streams(
             console.log("An error occurred whilst trying to get the upcomingStream for:");
             console.log(`Stream ID: ${streamId}\n`);
             console.log(`Error message: \n${err}`);
+
+            if ((err as string).startsWith("NOT A LIVE STREAM")) {
+                return -1;
+            }
         });
 
-        if (upcomingStream)upcomingStreams.push(upcomingStream);
+        if (upcomingStream == -1)
+            break;
+
+        if (typeof upcomingStream !== "number")upcomingStreams.push(upcomingStream);
     }
 
     return upcomingStreams;

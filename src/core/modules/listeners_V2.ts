@@ -62,11 +62,13 @@ async function ongoing_stream_listener_callback(): Promise<void> {
  * the YouTube API.
  */
 function start_ongoing_stream_listeners(): void {
+    const cooldown = +process.env.o_stream_cooldown || 2;
+
     setTimeout(() => {
         ongoing_stream_listener_callback().then(() => {
             start_ongoing_stream_listeners();
         });
-    }, get_next_minute(15) - Date.now());
+    }, get_next_minute(cooldown) - Date.now());
 }
 
 async function upcoming_stream_listener_callback(
@@ -115,7 +117,7 @@ async function upcoming_stream_listener_callback(
                 rescheduledStream.scheduledStartTime
             );
 
-            const time = get_next_minute(5);
+            const time = get_next_minute(1);
 
             add_upcoming_stream_listener(upcomingStream, time, true);
 

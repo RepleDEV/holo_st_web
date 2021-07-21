@@ -51,8 +51,10 @@ export class StreamList {
     addOngoingStream(stream: OngoingStream): void {
         for (let i = 0; i < this.ongoingStreams.length; i++) {
             const ongoingStream = this.ongoingStreams[i];
-            // If stream already exists in the list, don't add it.
+            // If the stream already exists in the list, replace it (changes titles & other stuff in cases where they're changed)
             if (ongoingStream.streamId === stream.streamId) {
+                this.ongoingStreams[i] = stream;
+                this.lastModified = Date.now();
                 return;
             }
         }

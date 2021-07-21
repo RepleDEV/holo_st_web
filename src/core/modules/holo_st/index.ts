@@ -1,23 +1,11 @@
 import puppeteer, { Browser } from "puppeteer";
+import { MinimizedStreams } from "../../globals";
+import { StreamList } from "../stream_list";
 
 import { OngoingStream, UpcomingStream } from "./globals";
 import { get_channels } from "./modules/get_channels";
 import get_streams from "./modules/get_streams";
 
-// TODO: Write these functions :)
-// export async function get_all_upcoming_streams(
-//     check_callback?: (upcoming_streams: UpcomingStream[], i: number) => void
-// ): Promise<UpcomingStream[]> {
-//     return [];
-// }
-
-// export async function get_all_ongoing_streams(
-//     check_callback?: (ongoing_streams: OngoingStream[], i: number) => void
-// ): Promise<OngoingStream[]> {
-//     return [];
-// }
-
-// TODO: Move this function to get_browser.ts in modules/ to allow imports
 export async function get_browser(): Promise<Browser> {
     // If the environment is production, pass no argument to puppeteer.
     const browser = await puppeteer.launch(
@@ -35,7 +23,8 @@ export async function get_all_streams(
     check_callback: (
         streams: [OngoingStream[], UpcomingStream[]],
         i: number
-    ) => void
+    ) => void,
+    streamList?: MinimizedStreams | StreamList
 ): Promise<[OngoingStream[], UpcomingStream[]]> {
     // Get channels array.
     const channels = await get_channels();
@@ -48,6 +37,33 @@ export async function get_all_streams(
     for (let i = 0; i < channels.length; i++) {
         const channel = channels[i];
         const channelId = channel.channel.id;
+
+        // First, check if any of the upcoming streams from channel[i]
+        // is not starting within the next 2 hours
+
+        // TODO: Improve this PLEASE
+        if (streamList) {
+            let filter = false;
+            for (let j = 0;j < streamList.upcomingStreams.length;j++) {
+                const upcomingStream = streamList.upcomingStreams[j];
+
+                if (
+                    upcomingStream.channels[0].channel.id === channel.channel.id && 
+                    // Check 2 hours here (epoch diff)
+                    upcomingStream.scheduledStartTime - Date.now() < 7.2e+6
+                ) filter = true;
+            }
+
+            // Also check for ongoing streams.
+            for (let j = 0;j < streamList.ongoingStreams.length;i++) {
+                const ongoingStream = streamList.ongoingStreams[j];
+
+                if (ongoingStream.channels[0].channel.id === channel.channel.id)
+                    filter = true;
+            }
+
+            if (filter)continue;
+        }
 
         const streams = await get_streams(channelId, channels, browser);
         ongoingStreams.push(...streams[0]);
