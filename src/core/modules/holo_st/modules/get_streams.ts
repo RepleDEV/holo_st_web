@@ -172,7 +172,13 @@ function get_stream_id(videoElement: string): string {
     const meta = $("body > *").find("div#dismissible > div#details > div#meta");
     const streamPath =
         meta.children(":first").children(":last").attr("href") || "";
-    const streamId = streamPath.substring("/watch?v=".length);
+    const firstFillerLength = "/watch?v=".length;
+    const lastFillerIndex = streamPath.indexOf("&pp=");
+    const streamId = streamPath
+        // Remove first few characters
+        .substring(firstFillerLength)
+        // Remove last few characters
+        .substring(0, lastFillerIndex - firstFillerLength);
 
     return streamId;
 }
