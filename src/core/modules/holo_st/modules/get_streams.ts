@@ -172,13 +172,13 @@ function get_stream_id(videoElement: string): string {
     const meta = $("body > *").find("div#dismissible > div#details > div#meta");
     const streamPath =
         meta.children(":first").children(":last").attr("href") || "";
-    const firstFillerLength = "/watch?v=".length;
-    const lastFillerIndex = streamPath.indexOf("&pp=");
-    const streamId = streamPath
-        // Remove first few characters
-        .substring(firstFillerLength)
-        // Remove last few characters
-        .substring(0, lastFillerIndex - firstFillerLength);
+    const firstFillerLength = "/watch".length;
+    // Remove first few characters
+    const trimmedStreamPath = streamPath.substring(firstFillerLength);
+    // Get all url params. See: https://stackoverflow.com/a/901144/13160047
+    const streamPathParams = new URLSearchParams(trimmedStreamPath);
+    // Get the "v" parameter (contains video id)
+    const streamId = streamPathParams.get("v");
 
     return streamId;
 }

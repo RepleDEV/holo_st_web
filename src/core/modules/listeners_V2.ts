@@ -56,8 +56,11 @@ async function ongoing_stream_listener_callback(): Promise<void> {
 
 /**
  * Start ongoing stream listeners.
+ * 
  * This starts a loop that checks each of the ongoing streams in the stream list
- * every 15 minutes.
+ * every few minutes specified by the environment variable o_stream_cooldown
+ * with a default value of 2 (minutes) if not specified.
+ * 
  * It checks the streams whether or not they have ended or not by calling
  * the YouTube API.
  */
