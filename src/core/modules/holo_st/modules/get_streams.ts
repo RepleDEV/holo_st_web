@@ -141,7 +141,13 @@ export async function get_page(browser: Browser): Promise<Page> {
 export async function visit_channel(id: string, page: Page): Promise<void> {
     const url = `https://www.youtube.com/channel/${id}/videos`;
     // Do not change waitUntil property. Only works when it's on networkidle0
-    await page.goto(url, { waitUntil: "networkidle0", timeout: 0 });
+    await page.goto(url, { 
+        waitUntil: "networkidle0",
+        // In production, set timeout as 30 seconds. If not, disable timeout.
+        // !Heroku does not allow any outgoing request to NOT TIMEOUT after 30 seconds.
+        // !So this would not work if not for the 30 second timeout.
+        timeout: process.env.NODE_ENV == "production" ? 30000 : 0
+    });
 
     await handle_redirect(page, url);
 }
@@ -290,7 +296,28 @@ export default async function get_streams(
     const browser = browser_p || (await puppeteer.launch());
     const page = await get_page(browser);
 
-    await visit_channel(id, page);
+    // Retry promise until works (or until 10 time fail)
+    const MAXRETRIES = 10;
+
+    let i = 0;
+    while (i < MAXRETRIES || i != -1) {
+        await visit_channel(id, page)
+            .then(() => {
+                i = -1;
+            })
+            .catch((err) => {
+                console.log("An error occurred when executing the function: visit_channel");
+                console.log("Error message: ");
+                console.log(err);
+                console.log("Retrying... Current retries: %s", i);
+            });
+    }
+
+    if (i == -1 ) {
+        console.log("Unable to successfully execute function: visit_channel");
+        console.log("Exiting...");
+        throw "Error: visit_channel";
+    }
 
     const ongoingStream = await get_ongoing_stream(page, channels);
     const upcomingStreams = await get_upcoming_streams(page, channels);
