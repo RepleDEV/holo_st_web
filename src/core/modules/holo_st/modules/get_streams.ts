@@ -300,7 +300,7 @@ export default async function get_streams(
     const MAXRETRIES = 10;
 
     let i = 0;
-    while (i < MAXRETRIES || i != -1) {
+    while (i < MAXRETRIES && i != -1) {
         await visit_channel(id, page)
             .then(() => {
                 i = -1;
@@ -310,10 +310,12 @@ export default async function get_streams(
                 console.log("Error message: ");
                 console.log(err);
                 console.log("Retrying... Current retries: %s", i);
+
+                i++;
             });
     }
 
-    if (i == -1 ) {
+    if (i == MAXRETRIES) {
         console.log("Unable to successfully execute function: visit_channel");
         console.log("Exiting...");
         throw "Error: visit_channel";
